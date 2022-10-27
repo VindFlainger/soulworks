@@ -1,13 +1,16 @@
 <template>
-  <v-dialog :value="true" @click:outside="$root.$emit('confirmation')" max-width="400">
-    <v-card class="pa-3 confirm__main" elevation="0" color="transparent">
+  <v-dialog :value="true" @click:outside="$root.$emit('close-confirm')" max-width="400">
+    <v-card class="pa-3 confirm__main" elevation="0" color="white" outlined style="border-color: black">
 
-      <div class="fs-22 font-title font-weight-bold text-center pa-4" style="letter-spacing: 2px">
+      <div class="fs-22 font-title font-weight-bold text-center pt-4 pl-4 pr-4" style="letter-spacing: 2px">
         Вы уверены?
+      </div>
+      <div class="mt-2 mb-2 text-center fs-14">
+        {{text}}
       </div>
       <v-card-actions class="pa-0">
         <v-btn
-            @click="$root.$emit('confirmation'); $root.$emit('cancel')"
+            @click="$root.$emit('close-confirm', false)"
             outlined
             color="red lighten-3"
             width="150">
@@ -15,7 +18,7 @@
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn
-            @click="$root.$emit('confirmation'); $root.$emit('confirm')"
+            @click="$root.$emit('close-confirm', true)"
             outlined
             color="green lighten-3"
             width="150"
@@ -30,31 +33,13 @@
 
 <script>
 export default {
-  name: "ConfirmDialog"
+  name: "ConfirmDialog",
+  props: {
+    text: String
+  }
 }
 </script>
 
 <style scoped>
-.confirm__main::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: -1;
-  opacity: 0.1;
-  background: url('@/assets/images/confirm-bg.png') 0 0 / cover ;
-}
 
-.confirm__main::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  z-index: -1;
-  background: white ;
-}
 </style>

@@ -8,17 +8,16 @@ export default new Vuex.Store({
             loading: 0,
             width: 0,
             alerts: [{title: '', text: '', type: '', id: -1}], // don't even think about deleting this
-            auth: false
+            token: null,
+            email: null,
+            role: null
         },
         getters: {
             mobile(state) {
                 return state.width < 1264
             },
-            token() {
-                return localStorage.getItem('token')
-            },
-            email() {
-                return localStorage.getItem('email')
+            isLogin(state) {
+                return !!(state.token && state.email)
             }
         },
         mutations: {
@@ -29,13 +28,16 @@ export default new Vuex.Store({
                 state.width = val
             },
             setToken(state, val) {
+                state.token = val
                 localStorage.setItem('token', val)
             },
             setEmail(state, val) {
+                state.email = val
                 localStorage.setItem('email', val)
             },
-            setAuth(state, val){
-                state.auth = val
+            setRole(state, val) {
+                state.role = val
+                localStorage.setItem('role', val)
             }
         },
         actions: {
@@ -46,6 +48,15 @@ export default new Vuex.Store({
                 setTimeout(() => {
                     state.alerts = state.alerts.filter(alert => alert.id !== val.id)
                 }, val.time)
+            },
+            setAuthData({state}) {
+                const email = localStorage.getItem('email')
+                const token = localStorage.getItem('token')
+                const role = localStorage.getItem('role')
+
+                state.email = email
+                state.token = token
+                state.role = role
             }
         },
     },

@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "AccountTab"
+  name: "UserProfileView"
 }
 </script>
 

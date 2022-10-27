@@ -1,12 +1,10 @@
 <template>
-  <div>
-      <v-tabs vertical></v-tabs>
-  </div>
+<div></div>
 </template>
 
 <script>
 export default {
-  name: "ProfileView"
+  name: "UserAccountView"
 }
 </script>
 

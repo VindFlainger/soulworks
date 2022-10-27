@@ -8,12 +8,13 @@
               v-if="!!alert.title"
               style="outline: 1px solid grey"
               class="pa-0"
+              color=""
               >
-            <v-row align="center" class="white pa-2" >
+            <v-row align="center" class="white pa-2 flex-nowrap" >
               <v-icon :color="alert.type" class="mr-2" size="37">
                {{getIcon(alert.type)}}
               </v-icon>
-              <div class="font-title font-weight-bold fs-20 black--text">{{alert.title}}</div>
+              <div class="font-title font-weight-bold fs-16 black--text">{{alert.title}}</div>
             </v-row>
 
             <div class="pa-2" v-if="alert.text">{{alert.text}}</div>

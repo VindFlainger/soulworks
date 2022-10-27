@@ -5,13 +5,14 @@
       <template v-slot:activator="{on, attrs}">
         <v-avatar
             :color="order.color"
-            size="30"
+            :size="size"
             v-on="on"
             v-bind="attrs"
             class="ma-1"
         >
-          <v-icon color="white">{{order.icon}}</v-icon>
+          <v-icon color="white" :size="Number(size-size/3)">{{order.icon}}</v-icon>
         </v-avatar>
+
       </template>
       {{ order.name | capitalize }}
     </v-tooltip>
@@ -27,7 +28,11 @@
 export default {
   name: "UiOrderBar",
   props: {
-    orders: Array
+    orders: Array,
+    size: {
+      type: Number,
+      default: 30
+    }
   },
   computed: {
     activeOrders() {

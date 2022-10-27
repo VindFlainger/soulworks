@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="z-index: 1">
     <main-header>
 
     </main-header>
@@ -11,12 +11,11 @@
       <main-loader></main-loader>
 
       <div>
-        <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps"></component>
-        <component :is="infoDialog?'info-dialog':''" v-bind="dynProps"></component>
-        <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps"></component>
-        <component :is="loginDialog?'login-dialog':''" v-bind="dynProps"></component>
+        <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="infoDialog?'info-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="loginDialog?'login-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
       </div>
-
 
     </v-main>
     <main-footer>
@@ -30,7 +29,6 @@ import MainHeader from "@/components/Header/MainHeader";
 import MainFooter from "@/components/MainFooter";
 import AlertsBox from "@/components/AlertsBox";
 import MainLoader from "@/components/MainLoader";
-import {default as axios} from "axios";
 
 export default {
   components: {MainLoader, AlertsBox, MainFooter, MainHeader},
@@ -40,7 +38,7 @@ export default {
       infoDialog: false,
       registrationDialog: false,
       loginDialog: false,
-      dynProps: {}
+      dynProps: {},
     }
   },
   mounted() {
@@ -49,6 +47,8 @@ export default {
     window.addEventListener('resize', callback)
   },
   created() {
+    this.$store.dispatch('setAuthData')
+
     this.$root.$on('show-confirm', (props = {}) => {
       this.dynProps = props
       this.confirmDialog = true
@@ -79,21 +79,7 @@ export default {
     })
 
 
-    const getSessionsToken = () => {
-      return axios.post('http://localhost:3000/login/session', {
-        email: this.$store.getters.email,
-        token: this.$store.getters.token
-      })
-    }
 
-
-    if (this.$store.getters.token && this.$store.getters.email) {
-      getSessionsToken()
-          .then(resp => {
-            if (resp.data.success){ this.$store.commit('setAuth', true)}
-          })
-          .catch()
-    }
   },
 }
 </script>
@@ -110,7 +96,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.router-link-exact-active{
+.router-link-exact-active {
   text-decoration: none;
   font-size: 16px;
 }
@@ -139,6 +125,10 @@ nav {
 .v-chip--select {
   margin-bottom: 4px !important;
   margin-top: 4px !important;
+}
+
+.v-application--wrap{
+  z-index: 1;
 }
 
 

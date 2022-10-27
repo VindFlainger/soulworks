@@ -85,15 +85,23 @@ export default {
     login() {
       if (this.$refs.loginForm.validate()) {
         this.localLoading = true
-        this.postData('http://localhost:3000/login', {
+        this.postData('http://localhost:3000/auth/login', {
           email: this.email,
           password: this.password,
           device: window.navigator.userAgent
         })
             .then(resp => {
-              this.$store.commit('setToken', resp.data.token )
-              this.$store.commit('setEmail', this.email )
+              this.$store.commit('setToken', resp.data.token)
+              this.$store.commit('setEmail', this.email)
+              this.$store.commit('setRole', resp.data.role)
               this.$root.$emit('close-login')
+
+              return this.getSessionToken()
+            })
+            .then(() => {
+              if (this.$route.query.redirect) {
+                this.$router.push(this.$route.query.redirect)
+              }
             })
             .catch(err => {
               if (err.response.status === 401) {
@@ -109,7 +117,7 @@ export default {
     recover() {
       if (this.$refs.recoverForm.validate()) {
         this.localLoading = true
-        this.postData('http://localhost:3000/recover', {
+        this.postData('http://localhost:3000/auth/recover', {
           email: this.email,
         })
             .then(() => {

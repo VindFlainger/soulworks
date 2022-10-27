@@ -8,8 +8,7 @@
     </template>
 
     <v-card class="" elevation="0" max-width="350">
-
-      <div v-if="!this.$store.state.auth" class="menu__content">
+      <div v-if="!this.$store.getters.isLogin" class="menu__content">
         <div class="pa-2">
           <v-row class="text-center fs-14" justify="center">
 
@@ -30,8 +29,7 @@
 
       </div>
 
-      <div v-if="this.$store.state.auth && shortInfo" class="menu__content">
-
+      <div v-if="this.isLogin && shortInfo" class="menu__content">
         <v-row align="center" class="pa-2">
           <v-avatar size="55">
             <v-img :src="shortInfo.avatar"></v-img>
@@ -54,7 +52,7 @@
           <v-row>
 
           </v-row>
-          <v-list-item v-for="item in listItems" :key="item.text" dense class="pt-2 pb-2" :link="item.link">
+          <v-list-item v-for="item in listItems" :key="item.text" dense class="pt-2 pb-2" :to="item.link" link>
             <v-list-item-icon>
               <v-icon size="40" v-text="item.icon" :color="item.iconColor"></v-icon>
             </v-list-item-icon>
@@ -73,6 +71,8 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "HeaderUserMenu",
   data() {
@@ -82,26 +82,14 @@ export default {
           icon: 'mdi-account-box',
           iconColor: 'blue lighten-3',
           text: 'Личный кабинет',
-          link: {}
+          link: {name: this.$store.state.role}
         },
         {
           icon: 'mdi-forum-outline',
           iconColor: 'orange lighten-3',
           text: 'Чаты',
-          link: {}
+          link: {name: 'specialists'}
         },
-        {
-          icon: 'mdi-account-group',
-          iconColor: 'purple lighten-3',
-          text: 'Консультации',
-          link: {}
-        },
-        {
-          icon: 'mdi-timetable',
-          iconColor: 'green lighten-3',
-          text: 'Расписание',
-          link: {}
-        }
       ],
       shortInfo: undefined
     }
@@ -112,10 +100,17 @@ export default {
           .then(resp => {
             this.shortInfo = resp.data
           })
+          .finally(() => {
+          })
     }
   },
   mounted() {
     this.getShortInfo()
+  },
+  computed: {
+    ...mapGetters({
+      isLogin: 'isLogin'
+    })
   }
 }
 </script>

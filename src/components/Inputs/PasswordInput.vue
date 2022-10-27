@@ -1,14 +1,15 @@
 <template>
   <v-text-field
-      label="Пароль"
+      :label="label"
       type="password"
       filled
-      background-color="grey lighten-3"
+      background-color="white"
       class="rounded-pill"
-      style="max-width: 300px;"
+      style="outline-color: black;"
+      :style="{'max-width': maxWidth}"
       dense
       outlined
-      color="grey darken-2"
+      color="black"
       @input="$emit('input', $event)"
       :value="value"
       :rules="[
@@ -27,7 +28,15 @@
 export default {
   name: "PasswordInput",
   props: {
-    value: String
+    value: String,
+    label: {
+      type: String,
+      default: 'Пароль'
+    },
+    maxWidth: {
+      type: String,
+      default: '300px'
+    }
   }
 
 }

@@ -1,12 +1,12 @@
 <template>
   <div>
-
+    dassda
   </div>
 </template>
 
 <script>
 export default {
-  name: "ClassesTab"
+  name: "SpecConfirmationTab"
 }
 </script>
 

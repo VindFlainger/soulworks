@@ -128,7 +128,7 @@
             <v-row>
               <select-input multiple
                             label="Специализация"
-                            :items="specializationsParams"
+                            :items="specializationsParams.map(el => {return {text: el.text, value: el._id}})"
                             v-model="specializations"
                             chips
                             small-chips
@@ -141,7 +141,7 @@
               <select-input
                   multiple
                   label="Методы"
-                  :items="methodsParams"
+                  :items="methodsParams.map(el => {return {text: el.text, value: el._id}})"
                   v-model="methods_"
                   chips
                   small-chips

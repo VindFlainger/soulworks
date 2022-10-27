@@ -27,7 +27,6 @@
 
           <v-spacer></v-spacer>
 
-
           <v-spacer></v-spacer>
 
 
@@ -109,7 +108,11 @@ import UiContentWrapper from "@/components/UI/UiContentWrapper";
 export default {
   name: "MainView",
   components: {UiNumberCard, UiContentWrapper},
-
+  mounted() {
+    if (this.$route.query.redirect){
+      this.$root.$emit('show-login')
+    }
+  }
 }
 </script>
 

@@ -1,3 +1,5 @@
+import auth from "@/mixins/auth";
+
 const axios = require('axios').default
 axios.defaults.withCredentials = true
 
@@ -7,6 +9,7 @@ export default {
             localLoading: false
         }
     },
+    mixins: [auth],
     computed: {
         mobile() {
             return this.$store.getters.mobile
@@ -60,7 +63,6 @@ export default {
         getData(url, options, axiosConfig = {}) {
             const {headers, ...config} = axiosConfig
 
-
             return this.getFormatResponse(
                 axios.get(
                     url,
@@ -86,6 +88,7 @@ export default {
          */
         postData(url, data, options, axiosConfig = {}) {
             const {headers, ...config} = axiosConfig
+
             return this.getFormatResponse(
                 axios.post(
                     url,
@@ -100,7 +103,43 @@ export default {
                 ),
                 options
             )
+        },
 
+        putData(url, data, options, axiosConfig = {}) {
+            const {headers, ...config} = axiosConfig
+
+            return this.getFormatResponse(
+                axios.put(
+                    url,
+                    data,
+                    {
+                        ...config,
+                        headers: {
+                            ...this.getDefaultHeaders(),
+                            ...headers
+                        },
+                    }
+                ),
+                options
+            )
+        },
+
+        delData(url, options, axiosConfig = {}) {
+            const {headers, ...config} = axiosConfig
+
+            return this.getFormatResponse(
+                axios.delete(
+                    url,
+                    {
+                        ...config,
+                        headers: {
+                            ...this.getDefaultHeaders(),
+                            ...headers
+                        },
+                    }
+                ),
+                options
+            )
         },
 
         getDefaultHeaders() {
@@ -138,14 +177,22 @@ export default {
                         if (err?.response?.data?.error && options.handleErrorResponse) {
                             this.showAlert(
                                 'error',
-                                options.alertErrorResponseTitle || 'Что-то пошло не так',
+                                options.alertErrorResponseTitle || 'Произошла ошибка',
                                 3000,
-                                err.response.data.code ? `Код ошибки ${err.response.data.code}` : err.response.data.error
+                                err.response.data.code ? `Код ошибки ${err.response.data.code}` : err.response.data.message
                             )
                         } else if (options.handleError) this.showAlert('error', options.alertErrorTitle || 'Ошибка выполнения запроса', 2000)
                         throw err
                     }
                 )
+        },
+        getSessionToken() {
+            return axios.post('http://localhost:3000/auth/session', {
+                token: this.$store.state.token,
+                email: this.$store.state.email,
+            })
         }
+
+
     }
 }

@@ -4,6 +4,7 @@ import vuetify from './plugins/vuetify'
 import store from './store'
 import router from './router'
 
+import Moment from "@/plugins/moment";
 import Validator from "./plugins/validator";
 
 import mixin from "@/mixins/index.js";
@@ -21,6 +22,7 @@ textFilters.forEach(tf => {
 Vue.config.productionTip = false
 
 Vue.use(Validator)
+Vue.use(Moment)
 
 Vue.component('ConfirmDialog', ConfirmDialog)
 Vue.component('RegistrationDialog', RegistrationDialog)

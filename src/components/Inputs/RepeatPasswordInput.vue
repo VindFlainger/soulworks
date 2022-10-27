@@ -3,12 +3,12 @@
       label="Повторите пароль"
       type="password"
       filled
-      background-color="grey lighten-3"
+      background-color="white"
       class="rounded-pill"
-      style="max-width: 300px;"
+      :style="{maxWidth}"
       dense
       outlined
-      color="grey darken-2"
+      color="black"
       :rules="[
           v => !!v || 'Повторите пароль',
           v => v === value || 'Пароли не совпадают'
@@ -25,7 +25,11 @@
 export default {
   name: "RepeatPasswordInput",
   props: {
-    value: String
+    value: String,
+    maxWidth: {
+      type: String,
+      default: '300px'
+    }
   }
 }
 </script>
