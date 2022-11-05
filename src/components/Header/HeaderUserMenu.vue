@@ -1,68 +1,62 @@
 <template>
-  <v-menu offset-y min-width="350" content-class="menu">
+  <v-menu offset-y left min-width="350" open-on-hover>
     <template v-slot:activator="{on, attrs}">
       <div v-bind="attrs" v-on="on">
         <slot></slot>
       </div>
-
     </template>
 
-    <v-card class="" elevation="0" max-width="350">
-      <div v-if="!this.$store.getters.isLogin" class="menu__content">
-        <div class="pa-2">
-          <v-row class="text-center fs-14" justify="center">
-
-            <div>
-              Войдите в аккаунт или зарегистрируйте новый для получения доступа к уникальному функционалу!
-            </div>
-          </v-row>
-          <v-card-actions class="pa-0 pt-3">
-            <v-btn outlined color="blue lighten-3" width="45%" @click="$root.$emit('show-login')">
-              Войти
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-btn outlined color="blue lighten-3" width="45%" @click="$root.$emit('show-registration')">
-              Регистрация
-            </v-btn>
-          </v-card-actions>
+    <v-card color="white" elevation="0" max-width="350" outlined class="pa-3">
+      <div v-if="!this.isLogin" class="menu__content pa-2">
+        <div class="text-center fs-14">
+          Войдите в аккаунт или зарегистрируйте новый для получения доступа к уникальному функционалу!
         </div>
-
+        <v-card-actions class="pa-0 pt-3">
+          <ui-default-button width="45%" @click="$root.$emit('show-login')">Войти</ui-default-button>
+          <v-spacer></v-spacer>
+          <ui-default-button width="45%" @click="$root.$emit('show-registration')">Регистрация</ui-default-button>
+        </v-card-actions>
       </div>
 
       <div v-if="this.isLogin && shortInfo" class="menu__content">
         <v-row align="center" class="pa-2">
-          <v-avatar size="55">
+          <v-avatar size="55" style="border: 1px solid black">
             <v-img :src="shortInfo.avatar"></v-img>
           </v-avatar>
 
           <div class="ml-3">
-            <div class="font-title font-weight-bold fs-22">
+            <div class="font-title font-weight-bold fs-20" style="line-height: 100%">
               {{ shortInfo.name }}
               {{ shortInfo.surname }}
             </div>
 
-            <div class="fs-14 grey--text text--lighten-1">
-              {{ shortInfo.email }}
+            <div class="fs-16 grey--text text--lighten-1" style="font-weight: 300; letter-spacing: 1px">
+              {{ this.$store.state.role === 'spec' ? 'Психолог' : 'Пользователь' }}
             </div>
           </div>
-
         </v-row>
 
-        <v-list class="">
-          <v-row>
-
-          </v-row>
-          <v-list-item v-for="item in listItems" :key="item.text" dense class="pt-2 pb-2" :to="item.link" link>
-            <v-list-item-icon>
-              <v-icon size="40" v-text="item.icon" :color="item.iconColor"></v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>
-              <div class="fs-18 black--text font-title">{{ item.text }}</div>
-            </v-list-item-title>
-          </v-list-item>
-
-        </v-list>
+        <div style="border-bottom: 1px solid black; border-top: 1px solid black">
+          <div class="pa-1" v-if="this.$store.state.role === 'spec'">
+            <router-link :to="{name: 'specAccount'}" class="link">Личный кабинет</router-link>
+            <router-link :to="{name: 'specClasses'}" class="link">Консультации</router-link>
+            <router-link :to="{name: 'specTimetable'}" class="link">Расписание</router-link>
+            <router-link :to="{name: 'specReviews'}" class="link">Отзывы</router-link>
+            <router-link :to="{name: 'specSecurity'}" class="link">Безопасность</router-link>
+          </div>
+          <div v-if="this.$store.state.role === 'user'">
+            <router-link :to="{name: 'specAccount'}" class="link">Личный кабинет</router-link>
+            <router-link :to="{name: 'specClasses'}" class="link">Консультации</router-link>
+            <router-link :to="{name: 'specTimetable'}" class="link">Расписание</router-link>
+            <router-link :to="{name: 'specReviews'}" class="link">Отзывы</router-link>
+            <router-link :to="{name: 'specSecurity'}" class="link">Безопасность</router-link>
+          </div>
+        </div>
+        <div @click="logOut(false)" class="pa-1 link" style="font-weight: 600; cursor: pointer">
+          Выход
+        </div>
       </div>
+
     </v-card>
 
 
@@ -72,25 +66,13 @@
 
 <script>
 import {mapGetters} from "vuex";
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 
 export default {
   name: "HeaderUserMenu",
+  components: {UiDefaultButton},
   data() {
     return {
-      listItems: [
-        {
-          icon: 'mdi-account-box',
-          iconColor: 'blue lighten-3',
-          text: 'Личный кабинет',
-          link: {name: this.$store.state.role}
-        },
-        {
-          icon: 'mdi-forum-outline',
-          iconColor: 'orange lighten-3',
-          text: 'Чаты',
-          link: {name: 'specialists'}
-        },
-      ],
       shortInfo: undefined
     }
   },
@@ -109,19 +91,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      isLogin: 'isLogin'
-    })
+      isLogin: 'isLogin',
+    }),
   }
 }
 </script>
 
 <style scoped>
-.menu {
-  box-shadow: none !important;
-}
-
-.menu__content {
-  box-shadow: inset 0 0 1px grey;
-  padding: 1px;
+.link {
+  display: block;
+  font-size: 20px;
+  text-decoration: none;
+  color: #000;
 }
 </style>

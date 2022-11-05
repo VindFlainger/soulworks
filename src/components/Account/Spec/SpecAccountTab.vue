@@ -70,7 +70,7 @@
         <v-row align="center">
           <span class="font-text fs-16">Социальные сети:</span>
           <!-- TODO: Implement prefixes to links-->
-          <a v-for="link in accountData.contacts.links" :key="link" :href="link.link" style="max-height: 32px;">
+          <a v-for="link in accountData.contacts.links" :key="link.name" :href="link.link" style="max-height: 32px;">
             <v-img
                    :src="require(`@/assets/images/networks/${link.name}.png`)"
                    max-width="28" height="28"

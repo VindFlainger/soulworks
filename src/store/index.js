@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import content from "@/store/content";
 
 Vue.use(Vuex)
 
@@ -10,7 +11,8 @@ export default new Vuex.Store({
             alerts: [{title: '', text: '', type: '', id: -1}], // don't even think about deleting this
             token: null,
             email: null,
-            role: null
+            role: null,
+            sessionEnd: 0
         },
         getters: {
             mobile(state) {
@@ -59,5 +61,8 @@ export default new Vuex.Store({
                 state.role = role
             }
         },
+        modules: {
+            content: content,
+        }
     },
 )

@@ -1,10 +1,12 @@
 <template>
-<div></div>
+  <div>
+    О нас
+  </div>
 </template>
 
 <script>
 export default {
-  name: "UserProfileView"
+  name: "AboutView"
 }
 </script>
 

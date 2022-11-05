@@ -4,9 +4,9 @@ export default  {
             type: Boolean,
             default: true
         },
-        requiredIndicator: {
+        showRequiredBadge: {
             type: Boolean,
-            default: true
+            default: false
         }
     }
 }

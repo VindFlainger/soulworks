@@ -9,11 +9,10 @@
       </div>
     </ui-full-width-banner>
 
-    <v-row >
+    <v-row>
       <v-col class="col-3">
-        <v-list-item-group class="pa-0" @change="changeDay" :value="activeDay-1" mandatory ref="day-list">
-          <v-list-item v-for="(day,index) in days" :key="day" dense class="rounded overflow-x-hidden"
-                       :ref="`day-${index+1}`">
+        <v-list-item-group class="pa-0" v-model="activeDay" mandatory>
+          <v-list-item v-for="day in days" :key="day" dense class="rounded overflow-x-hidden">
             {{ day }}
           </v-list-item>
         </v-list-item-group>
@@ -26,22 +25,27 @@
             <v-list>
               <v-list-item
                   v-for="j in [0,1,2,3,4,5,6,7]" :key="j"
-                  :class="timetable[activeDay].includes(j + i * 8)?'green lighten-5':''"
+                  :class="
+                  timetable.includes(
+                        ( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168
+                      )
+                  ?'green lighten-5':''"
                   class="d-inline-block pt-2 ma-1 rounded">
+
             <span class="fs-18" style="font-weight: 600">
               {{ j + i * 8 < 10 ? `0${j + i * 8}` : j + i * 8 }}:00
             </span>
                 <v-btn fab outlined x-small class="rounded ml-3" elevation="0"
                        style="position:relative; border: 2px #C8E6C9 solid;"
-                       :class="{'d-none': timetable[activeDay].includes(j + i * 8)}"
-                       @click="timetable[activeDay].push(j + i * 8); unsaved = true"
+                       :class="{'d-none': timetable.includes(  ( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168 ) }"
+                       @click="addTime(( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168)"
                 >
                   <div class="plus"></div>
                 </v-btn>
                 <v-btn fab outlined color="blue lighten-4" x-small class="rounded ml-3" elevation="0"
                        style="position:relative; border: 2px #FFCDD2 solid"
-                       @click="timetable[activeDay].splice(timetable[activeDay].indexOf(j + i * 8), 1); unsaved = true"
-                       :class="{'d-none': !timetable[activeDay].includes(j + i * 8)}"
+                       @click="delTime(( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168)"
+                       :class="{'d-none': !timetable.includes(  ( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168 )}"
                 >
                   <div class="close"></div>
                 </v-btn>
@@ -61,12 +65,6 @@
             В случае если вы не успеете изменить расписание заблаговременно пользователю сможет записаться к
             вам на консультацию, а за ее отмену или пропуск Вам будут начислены штрафные баллы.
           </div>
-          <v-row class="align-self-end mt-3">
-            <v-btn color="red lighten-3" outlined @click="deleteTimetable(activeDay)">Очистить</v-btn>
-            <v-spacer></v-spacer>
-            <v-btn color="green lighten-3" outlined @click="setTimetable(activeDay, timetable[activeDay])">Сохранить
-            </v-btn>
-          </v-row>
         </div>
 
 
@@ -77,6 +75,7 @@
 
 <script>
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
+
 export default {
   name: "SpecTimetableTab",
   components: {UiFullWidthBanner},
@@ -84,54 +83,34 @@ export default {
   data() {
     return {
       days: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
-      activeDay: 1,
+      activeDay: 0,
       timetable: undefined,
-      unsaved: false
+      timeOffset: -new Date().getTimezoneOffset() / 60
     }
   },
   methods: {
     getTimetable() {
       this.getData('http://localhost:3000/spec/timetable', {handleError: true, handleErrorResponse: true})
           .then(resp => {
-            this.timetable = resp.data.timetable
+            this.timetable = resp.data
           })
           .catch()
     },
-    setTimetable(day, timetable) {
+    addTime(time) {
       this.putData('http://localhost:3000/spec/timetable', {
-        day, timetable
+        time
       })
           .then(() => {
-            this.showAlert('success', 'Расписание успешно обновлено', 2000)
-            this.unsaved = false
+            this.timetable.push(time)
           })
           .catch()
     },
-    deleteTimetable(day) {
-      this.delData(`http://localhost:3000/spec/timetable?day=${day}`)
+    delTime(time) {
+      this.delData(`http://localhost:3000/spec/timetable?time=${time}`)
           .then(() => {
-            this.timetable[day] = []
-            this.showAlert('success', 'Расписание успешно удалено', 2000)
+            this.timetable = this.timetable.filter(el => el !== time)
           })
           .catch()
-    },
-    changeDay(v) {
-      console.log(v)
-      if (this.unsaved) {
-        this.$root.$emit('show-confirm', {text: 'Вы не сохранили внесенные изменения'})
-
-        this.$root.$once('close-confirm', (confirm) => {
-          if (confirm) {
-            this.activeDay = v + 1;
-            this.unsaved = false
-          } else {
-            this.$refs["day-list"].$data.internalLazyValue = this.activeDay - 1
-          }
-        })
-      } else {
-        this.activeDay = v + 1
-        this.unsaved = false
-      }
     },
   },
 

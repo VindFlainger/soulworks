@@ -19,8 +19,6 @@
                      @change="getClasses(new Date($event).getTime())"
                      color="blue lighten-3"
       >
-
-
       </v-date-picker>
       <v-col class="ml-16">
         <div class="font-title fs-22 font-weight-bold">

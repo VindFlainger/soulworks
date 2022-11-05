@@ -5,8 +5,6 @@
            :key="tab.title"
            active-class="black--text white"
            :ripple="false"
-
-
     >
       {{tab.title | capitalize }}
     </v-tab>
@@ -15,7 +13,7 @@
 
 <script>
 export default {
-  name: "ProfileTabs",
+  name: "AccountTabs",
   props: {
     tabs: Array
   }

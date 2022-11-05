@@ -13,7 +13,7 @@
 
       <v-col>
         <v-card-title class="pa-0 mb-3 font-title fs-20 font-weight-bold">
-          {{ specialist.name }} {{specialist.surname}}
+          {{ specialist.name }} {{ specialist.surname }}
         </v-card-title>
         <v-card-subtitle class="text-left pa-0">
           <span v-if="specialist.degree.approve">
@@ -45,50 +45,16 @@
         </v-row>
 
         <ui-order-bar class="pt-2"
-                      :orders="[
-                          {
-                            show: specialist.sex === 'male',
-                            name: specialist.sex,
-                            color: 'blue lighten-4',
-                            icon: 'mdi-gender-male'
-                          },
-                          {
-                            show: specialist.sex === 'female',
-                            name: specialist.sex,
-                            color: 'pink lighten-4',
-                            icon: 'mdi-gender-female'
-                          },
-                          {
-                            show: specialist.stats.confirmed >= 100,
-                            name: 'провел более ста занятий',
-                            color: 'indigo lighten-4',
-                            icon: 'mdi-decagram-outline'
-                          },
-                          {
-                            show: specialist.stats.cancelled >= 100,
-                            name: 'отменил более ста занятий',
-                            color: 'red lighten-4',
-                            icon: 'mdi-close'
-                          },
-                          {
-                            show: specialist.stats.missed >= 100,
-                            name: 'пропустил более ста занятий',
-                            color: 'red lighten-4',
-                            icon: 'mdi-call-missed'
-                          },
-                          {
-                            show: specialist.privileges.premium,
-                            name: 'владелец премиум аккаунта',
-                            color: 'purple lighten-4',
-                            icon: 'mdi-star'
-                          },
-                          {
-                            show: specialist.privileges.medals.includes('odmen'),
-                            name: 'его криворучиство одмен',
-                            color: 'green lighten-4',
-                            icon: 'mdi-code-tags'
-                          },
-                      ]"
+                      :orders=" $store.state.content.medals.filter(
+                        medal => [
+                        ...[
+                          specialist.sex,
+                          specialist.stats.confirmed >= 100 ? 'hardwoker' : null,
+                          specialist.stats.cancelled >= 100 ? 'cancelman' : null,
+                          specialist.stats.missed >= 100 ? 'truant' : null,
+                          specialist.privileges.premium >= Date.now() ? 'premium' : null,
+                        ],
+                        ...specialist.privileges.medals].includes(medal.name))"
         >
         </ui-order-bar>
 
@@ -130,11 +96,16 @@
             <div v-if="specialist.opportunities.children">Работа с детьми</div>
             <div v-if="specialist.opportunities.teens">Работа с подростками</div>
             <div v-if="specialist.opportunities.family">Семейный психолог</div>
-            <div v-if="specialist.opportunities.family">Возможнен личный прием</div>
+            <div v-if="specialist.opportunities.internal">Возможнен личный прием</div>
+            <div
+                v-if="!specialist.opportunities.children && !specialist.opportunities.teens &&
+                !specialist.opportunities.family && !specialist.opportunities.internal">Онлайн консултации
+            </div>
           </div>
         </v-row>
 
-        <v-row class="text-left mt-2" align="center">
+        <v-row class="text-left mt-2" align="center"
+               v-if="specialist.contacts.address || specialist.contacts.connection">
           <div>
             <v-icon size="40" color="indigo lighten-3">mdi-account-box-outline</v-icon>
           </div>
@@ -147,62 +118,18 @@
       </v-col>
 
 
-      <v-col class="pa-0 text-left" v-if="contactsVisible">
-        <div v-if="specialist.contacts.online">
-          <v-row>
-            <span class="font-title fs-22">  +{{ specialist.contacts.online.tel }}</span>
-            <v-avatar v-for="messenger in specialist.contacts.online.messengers"
-                      :key="messenger" size="25"
-                      class="ma-1"
-            >
-              <v-img
-                  :src="require(`@/assets/images/${messenger}.png`)">
-              </v-img>
-            </v-avatar>
-
-          </v-row>
-
-
-          <v-row v-if="specialist.contacts.online.telegram" class="ma-2">
-            <v-avatar size="30" class="mr-3">
-              <v-img src="@/assets/images/vk.png"></v-img>
-            </v-avatar>
-            <div class="fs-16 font-title font-weight-bold">
-              {{ specialist.contacts.online.telegram }}
-            </div>
-          </v-row>
-          <v-row v-if="specialist.contacts.online.instagram" class="ma-2">
-            <v-avatar size="30" class="mr-3">
-              <v-img src="@/assets/images/instagram.png"></v-img>
-            </v-avatar>
-            <div class="fs-16 font-title font-weight-bold">
-              {{ specialist.contacts.online.instagram }}
-            </div>
-          </v-row>
-          <v-row v-if="specialist.contacts.online.skype" class="ma-2">
-            <v-avatar size="30" class="mr-3">
-              <v-img src="@/assets/images/skype.png"></v-img>
-            </v-avatar>
-            <div class="fs-16 font-title font-weight-bold">
-              {{ specialist.contacts.online.skype }}
-            </div>
-          </v-row>
-        </div>
-      </v-col>
-
       <v-col class="pa-0 col-2 d-flex align-end">
         <div>
-          <v-btn outlined color="blue lighten-3" class="mb-2" width="100%" elevation="0">
-            написать
-          </v-btn>
-          <v-btn outlined color="blue lighten-3" class="mb-2" width="100%" elevation="0"
-                 @click="contactsVisible = true">
-            контакты
-          </v-btn>
-          <v-btn outlined color="blue lighten-3" width="100%" elevation="0">
-            записаться
-          </v-btn>
-
+          <ui-default-button class="mb-2" width="100%">Написать</ui-default-button>
+          <ui-default-button
+              class="mb-2"
+              width="100%"
+              @click="$emit('open-contacts', {...specialist.contacts, name: specialist.name, surname: specialist.surname})">
+            Контакты
+          </ui-default-button>
+          <ui-default-button width="100%" @click="booking" v-if="this.$store.state.role !== 'spec'">
+            Запись
+          </ui-default-button>
         </div>
       </v-col>
 
@@ -212,18 +139,25 @@
 
 <script>
 import UiOrderBar from "@/components/UI/UiOrderBar";
+import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 
 export default {
   name: "SpecialistCard",
-  components: {UiOrderBar},
-  data() {
-    return {
-      contactsVisible: false
-    }
-  },
+  components: {UiDefaultButton, UiConfirmButton, UiOrderBar},
   props: {
     specialist: Object
+  },
+  methods: {
+    booking() {
+      if (!this.$store.getters.isLogin) {
+        this.$root.$emit('show-login')
+      } else {
+        this.$emit('open-booking', this.specialist._id)
+      }
+    }
   }
+
 }
 </script>
 

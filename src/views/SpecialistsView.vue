@@ -22,7 +22,6 @@
                 min: filters.price.min,
                 max: filters.price.max
             }"
-
           @find="find()"
           :price.sync="price"
           :methods.sync="methods"
@@ -30,14 +29,16 @@
           :opportunities.sync="opportunities"
           :internal.sync="internal"
 
-          style="align-self: start"
+          style="align-self: start; border-radius: 15px;"
 
       >
 
       </specialists-filters>
 
-      <v-card max-width="900" elevation="0" style="flex-grow: 1" v-if="specialists && specialists.length" class="ml-10">
-        <v-card elevation="0" outlined>
+      <v-card max-width="900" elevation="0" style="flex-grow: 1; border-radius: 15px;"
+              v-if="specialists && specialists.length" class="ml-10 pa-4">
+
+        <v-card elevation="0" outlined style="border-radius: 15px">
           <v-card-actions>
             <v-select :items="[
                       {
@@ -84,24 +85,27 @@
               <v-icon size="35">mdi-apps</v-icon>
             </v-btn>
           </v-card-actions>
-
-
         </v-card>
+
+
         <specialist-list
             :specialists="specialists"
             class="mt-3"
         >
         </specialist-list>
 
-        <v-pagination v-if="specialists && specialists.length"
-                      :length="totalPages"
-                      :value="Number($route.query.page || 1)"
-                      @input="$router.push({name: 'specialists', query: {...$route.query, page: $event}})"
-                      circle
-                      color="purple lighten-4"
 
-        >
-        </v-pagination>
+        <v-row justify="center">
+          <div style="width: 350px">
+            <ui-pagination v-if="specialists && specialists.length"
+                           :length="totalPages"
+                           :value="Number($route.query.page || 1)"
+                           @input="$router.push({name: 'specialists', query: {...$route.query, page: $event}})"
+            >
+            </ui-pagination>
+          </div>
+        </v-row>
+
       </v-card>
 
       <v-card v-if="(!specialists ||!specialists.length) && !globalLoading"
@@ -138,6 +142,7 @@
 import SpecialistList from "@/components/SpecialistList";
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
 import SpecialistsFilters from "@/components/SpecialistsFilters";
+import UiPagination from "@/components/UI/UiPagination";
 
 
 export default {
@@ -163,15 +168,15 @@ export default {
       this.addLoadingProcess()
       this.getData('http://localhost:3000/specialists', null, {
         params: {
-          limit: query.limit || 10,
-          offset: (query.page - 1) * (query.limit || 10) || 0,
+          limit: query.limit || 10, //
+          offset: (query.page - 1) * (query.limit || 10) || 0, //
           sort: query.sort || 4,
           form: query.form || 'online',
           ...query
         }
       })
           .then(resp => {
-            this.totalPages = Math.ceil(resp.data.count / (query.limit || 10))
+            this.totalPages = Math.ceil(resp.data.count / (query.limit || 10)) //
             this.specialists = resp.data.specialists
           })
           .finally(() => {
@@ -235,7 +240,7 @@ export default {
     this.getSpecialists(to.query)
     next()
   },
-  components: {SpecialistsFilters, UiContentWrapper, SpecialistList}
+  components: {UiPagination, SpecialistsFilters, UiContentWrapper, SpecialistList}
 }
 </script>
 
@@ -250,4 +255,6 @@ export default {
   background: url("@/assets/images/not-found.png") 0 0 / cover;
   opacity: 0.2;
 }
+
+
 </style>

@@ -3,17 +3,21 @@ import VueRouter from 'vue-router'
 import MainView from "@/views/MainView";
 import SpecialistsView from "@/views/SpecialistsView";
 import store from '../store'
-import SpecProfileView from "@/views/SpecProfileView";
-import UserProfileView from "@/views/UserProfileView";
-import SpecAccountTab from "@/components/Profile/Spec/SpecAccountTab";
-import SpecTimetableTab from "@/components/Profile/Spec/SpecTimetableTab";
-import SecurityTab from "@/components/Profile/SecurityTab";
-import SpecReviewsTab from "@/components/Profile/Spec/SpecReviewsTab";
-import SpecConfirmationTab from "@/components/Profile/Spec/SpecConfirmationTab";
-import SpecClassesTab from "@/components/Profile/Spec/SpecClassesTab";
-import SpecMaterials from "@/components/Profile/Spec/SpecMaterialsTab";
+import SpecAccountTab from "@/components/Account/Spec/SpecAccountTab";
+import SpecTimetableTab from "@/components/Account/Spec/SpecTimetableTab";
+import SecurityTab from "@/components/Account/SecurityTab";
+import SpecReviewsTab from "@/components/Account/Spec/SpecReviewsTab";
+import SpecConfirmationTab from "@/components/Account/Spec/SpecConfirmationTab";
+import SpecClassesTab from "@/components/Account/Spec/SpecClassesTab";
+import SpecMaterials from "@/components/Account/Spec/SpecMaterialsTab";
 import SpecAccountView from "@/views/SpecAccountView";
 import UserAccountView from "@/views/UserAccountView";
+import ProfileView from "@/views/ProfileView";
+import NotFoundView from "@/views/NotFoundView";
+import RulesView from "@/views/RulesView";
+import PublicationsView from "@/views/PublicationsView";
+import AboutView from "@/views/AboutView";
+import SupportView from "@/views/SupportView";
 
 Vue.use(VueRouter)
 
@@ -25,7 +29,7 @@ const routes = [
     },
     {
         path: '/spec',
-        component: SpecProfileView,
+        component: SpecAccountView,
         meta: {
             requiredAuth: 'spec'
         },
@@ -69,27 +73,46 @@ const routes = [
     },
     {
         path: '/user',
-        component: UserProfileView,
+        component: UserAccountView,
         meta: {
             requiredAuth: 'user'
         },
         children: []
     },
     {
-        path: '/spec/:id',
+        path: '/profile/:id',
         name: 'spec',
-        component: SpecAccountView
-    },
-    {
-        path: '/user/:id',
-        name: 'user',
-        component: UserAccountView
+        component: ProfileView
     },
     {
         path: '/specialists',
         name: 'specialists',
         component: SpecialistsView
     },
+    {
+        path: '/rules',
+        name: 'rules',
+        component: RulesView
+    },
+    {
+        path: '/publications',
+        name: 'publications',
+        component: PublicationsView
+    },
+    {
+        path: '/about',
+        name: 'about',
+        component: AboutView
+    },
+    {
+        path: '/support',
+        name: 'support',
+        component: SupportView
+    },
+    {
+        path: '*',
+        component: NotFoundView
+    }
 ]
 
 const router = new VueRouter({

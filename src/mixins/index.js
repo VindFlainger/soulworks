@@ -38,6 +38,7 @@ export default {
          *        handleErrorResponse: Boolean?,
          *        alertErrorTitle: String?,
          *        alertErrorResponseTitle: String?,
+         *        needAuth: Boolean
          *      }
          * }
          */
@@ -60,8 +61,10 @@ export default {
          * @param {Object?} axiosConfig
          * @return {Promise<requestResponse> || Promise<Error>}
          */
-        getData(url, options, axiosConfig = {}) {
+        async getData(url, options, axiosConfig = {}) {
             const {headers, ...config} = axiosConfig
+
+            await this.authInterceptor(true)
 
             return this.getFormatResponse(
                 axios.get(
@@ -69,7 +72,6 @@ export default {
                     {
                         ...config,
                         headers: {
-                            ...this.getDefaultHeaders(),
                             ...headers
                         },
                     }
@@ -86,8 +88,10 @@ export default {
          * @param {Object?} axiosConfig
          * @return {Promise<requestResponse> || Promise<Error>}
          */
-        postData(url, data, options, axiosConfig = {}) {
+        async postData(url, data, options, axiosConfig = {}) {
             const {headers, ...config} = axiosConfig
+
+            await this.authInterceptor(true)
 
             return this.getFormatResponse(
                 axios.post(
@@ -96,7 +100,6 @@ export default {
                     {
                         ...config,
                         headers: {
-                            ...this.getDefaultHeaders(),
                             ...headers
                         },
                     }
@@ -105,8 +108,10 @@ export default {
             )
         },
 
-        putData(url, data, options, axiosConfig = {}) {
+        async putData(url, data, options, axiosConfig = {}) {
             const {headers, ...config} = axiosConfig
+
+            await this.authInterceptor(true)
 
             return this.getFormatResponse(
                 axios.put(
@@ -115,7 +120,6 @@ export default {
                     {
                         ...config,
                         headers: {
-                            ...this.getDefaultHeaders(),
                             ...headers
                         },
                     }
@@ -124,8 +128,10 @@ export default {
             )
         },
 
-        delData(url, options, axiosConfig = {}) {
+        async delData(url, options, axiosConfig = {}) {
             const {headers, ...config} = axiosConfig
+
+            await this.authInterceptor(true)
 
             return this.getFormatResponse(
                 axios.delete(
@@ -133,7 +139,6 @@ export default {
                     {
                         ...config,
                         headers: {
-                            ...this.getDefaultHeaders(),
                             ...headers
                         },
                     }
@@ -142,11 +147,14 @@ export default {
             )
         },
 
-        getDefaultHeaders() {
-            return {
-                token: this.$store.state.token
+
+        async authInterceptor(active) {
+            if (active && this.$store.state.sessionEnd < Date.now()){
+                return this.getSessionToken()
             }
+            return
         },
+
 
 
         /**
@@ -191,8 +199,14 @@ export default {
                 token: this.$store.state.token,
                 email: this.$store.state.email,
             })
+                .then(() => {
+                    this.$store.state.sessionEnd = Date.now() + 1000 * 60 * (5 * 0.8) // 80% percents from 5 min
+                })
+                .catch(err=>{
+                    if (err.response.data.code === 104){
+                        this.logOut()
+                    }
+                })
         }
-
-
     }
 }

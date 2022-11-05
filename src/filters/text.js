@@ -42,6 +42,7 @@ export default [
     {
         name: 'activity',
         filter: v => {
+            if (!v) return 'онлайн'
             const offset = Math.floor((Date.now() - v) / 86400000)
             switch (offset) {
                 case 0:

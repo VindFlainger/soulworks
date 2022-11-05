@@ -1,7 +1,7 @@
 <template>
   <v-row class="ma-n1">
 
-    <v-tooltip v-for="order in activeOrders" :key="order.name" bottom>
+    <v-tooltip v-for="order in activeOrders" :key="order.tip" bottom>
       <template v-slot:activator="{on, attrs}">
         <v-avatar
             :color="order.color"
@@ -10,11 +10,11 @@
             v-bind="attrs"
             class="ma-1"
         >
-          <v-icon color="white" :size="Number(size-size/3)">{{order.icon}}</v-icon>
+          <v-icon color="white" :size="Number(size-size/3)">{{ order.icon }}</v-icon>
         </v-avatar>
 
       </template>
-      {{ order.name | capitalize }}
+      {{ order.tip | capitalize }}
     </v-tooltip>
 
     <slot>
