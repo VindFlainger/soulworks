@@ -1,12 +1,15 @@
 <template>
   <div>
-    О нас
+    sadsad
   </div>
 </template>
 
 <script>
 export default {
-  name: "AboutView"
+  name: "AboutView",
+  data(){
+
+  },
 }
 </script>
 

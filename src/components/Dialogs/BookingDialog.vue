@@ -1,6 +1,5 @@
 <template>
   <base-dialog :value="value" @close="$emit('close')" max-width="700">
-
     <div v-if="bookingData && timetable">
       <div class="fs-18">
         Специалист: <span class="font-title font-weight-bold">{{ bookingData.name }} {{ bookingData.surname }}</span>
@@ -79,6 +78,7 @@
                   :ripple="false"
                   class="mb-4"
                   v-for="_time in timetable"
+                  :key="_time"
                   :label="(_time < 10 ? `0${_time}` : _time) + ':00'"
                   :value="_time"
                   color="blue lighten-4"
@@ -107,15 +107,14 @@
 
 
 <script>
-import SelectInput from "@/components/Inputs/SelectInput";
+import SelectInput from "@/components/UI/Inputs/SelectInput";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
-import UiCloseButton from "@/components/UI/Buttons/UiCloseButton";
 import BaseDialog from "@/components/Dialogs/BaseDialog";
 
 export default {
   name: "BookingDialog",
-  components: {UiDefaultButton, BaseDialog, UiCloseButton, UiConfirmButton, SelectInput},
+  components: {UiDefaultButton, BaseDialog, UiConfirmButton, SelectInput},
   data() {
     return {
       date: this.$moment().format().substring(0, 10),
@@ -130,7 +129,6 @@ export default {
     },
     specId: { // wrapper over content for prevent mounted loading
       type: String,
-      default: '634d7e3bd6689065d4dee330'
     },
 
   },
@@ -155,11 +153,13 @@ export default {
     }
   },
   watch: {
-    specId() {
-      this.timetable = []
-      this.bookingData = null
-      this.getBookingData()
-      this.getBookingTimetable(new Date(this.date).getTime())
+    value(val) {
+      if (val) {
+        this.timetable = []
+        this.bookingData = null
+        this.getBookingData()
+        this.getBookingTimetable(new Date(this.date).getTime())
+      }
     },
   },
 }

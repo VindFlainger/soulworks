@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-4" elevation="0" v-if="timetable">
-    <ui-full-width-banner :img="require('@/assets/images/profile/timetable.png')">
+    <ui-full-width-banner :img="require('@/assets/images/account/timetable.png')">
       <div class="fill-height d-flex align-center justify-center">
         <div class="font-title pa-5 rounded"
              style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px">

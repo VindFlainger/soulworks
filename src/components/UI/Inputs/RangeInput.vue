@@ -9,6 +9,8 @@
                       @change="inputMin = $event"
                       hide-details
                       type="number"
+                      style="border-radius: 14px"
+                      color="black"
         >
 
         </v-text-field>
@@ -21,6 +23,8 @@
                       @change="inputMax = $event"
                       hide-details
                       type="number"
+                      style="border-radius: 14px"
+                      color="black"
         >
 
         </v-text-field>

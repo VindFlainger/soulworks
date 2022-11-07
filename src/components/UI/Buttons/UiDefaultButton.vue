@@ -1,12 +1,18 @@
 <template>
-  <v-btn class="button" outlined color="black" v-on="$listeners" v-bind="$attrs">
+  <v-btn class="button" outlined :color="color" v-on="$listeners" v-bind="$attrs">
     <slot>Отмена</slot>
   </v-btn>
 </template>
 
 <script>
 export default {
-  name: "UiDefaultButton"
+  name: "UiDefaultButton",
+  props: {
+    color: {
+      type: String,
+      default: 'black'
+    }
+  }
 }
 </script>
 

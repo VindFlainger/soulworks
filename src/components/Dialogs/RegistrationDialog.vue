@@ -19,11 +19,9 @@
 
 
       <v-stepper-content step="1" class="pb-16">
-        <v-btn absolute right bottom min-width="100" elevation="0" outlined color="blue lighten-3" :disabled="!role"
-               @click="step = 2">
-          Далее
-          <v-icon>mdi-chevron-double-right</v-icon>
-        </v-btn>
+        <ui-next-button absolute right bottom min-width="100" :disabled="!role"
+                        @click="step = 2">
+        </ui-next-button>
         <v-row justify="space-around">
           <v-card width="300" height="400" outlined class="pa-2">
             <v-img :src="require('@/assets/images/spec.png')" height="330" contain>
@@ -61,16 +59,14 @@
       </v-stepper-content>
 
       <v-stepper-content step="2" class="pb-16">
-        <v-btn absolute left bottom min-width="100" elevation="0" outlined color="red lighten-3" @click="step = 1">
-          <v-icon>mdi-chevron-double-left</v-icon>
-          Назад
-        </v-btn>
-        <v-btn absolute right bottom min-width="100" elevation="0" outlined color="blue lighten-3"
-               :disabled="!data_form"
-               @click="step = $refs['data-form'].validate()?3:2;">
-          Далее
-          <v-icon>mdi-chevron-double-right</v-icon>
-        </v-btn>
+        <ui-back-button absolute left bottom min-width="100" @click="step = 1">
+
+        </ui-back-button>
+        <ui-next-button absolute right bottom min-width="100"
+                        :disabled="!data_form"
+                        @click="step = $refs['data-form'].validate()?3:2;">
+        </ui-next-button>
+        >
 
 
         <v-form ref="data-form" lazy-validation v-model="data_form">
@@ -182,19 +178,12 @@
       </v-stepper-content>
 
       <v-stepper-content step="3" class="pb-16">
-        <v-btn absolute left bottom min-width="100" elevation="0" outlined color="red lighten-3" @click="step = 2">
-          <v-icon>mdi-chevron-double-left</v-icon>
-          Назад
-        </v-btn>
-        <v-btn absolute right bottom min-width="100" elevation="0" outlined color="blue lighten-3"
-               :disabled="!auth_form || !confirm"
-               @click="registerSpec"
-               :loading="localLoading"
-
-        >
-          Завершить
-          <v-icon>mdi-chevron-double-right</v-icon>
-        </v-btn>
+        <ui-back-button absolute left bottom min-width="100" @click="step = 2"></ui-back-button>
+        <ui-next-button absolute right bottom min-width="100"
+                        :disabled="!auth_form || !confirm"
+                        @click="registerSpec"
+                        :loading="localLoading"
+        ></ui-next-button>
 
         <v-form ref="auth-form" lazy-validation v-model="auth_form">
           <v-row align="center">
@@ -252,17 +241,23 @@
 
 <script>
 
-import NameInput from "@/components/Inputs/NameInput";
-import PhoneInput from "@/components/Inputs/PhoneInput";
-import EmailInput from "@/components/Inputs/EmailInput";
-import SelectInput from "@/components/Inputs/SelectInput";
-import PasswordInput from "@/components/Inputs/PasswordInput";
-import RepeatPasswordInput from "@/components/Inputs/RepeatPasswordInput";
-import RangeInput from "@/components/Inputs/RangeInput";
+import NameInput from "@/components/UI/Inputs/NameInput";
+import PhoneInput from "@/components/UI/Inputs/PhoneInput";
+import EmailInput from "@/components/UI/Inputs/EmailInput";
+import SelectInput from "@/components/UI/Inputs/SelectInput";
+import PasswordInput from "@/components/UI/Inputs/PasswordInput";
+import RepeatPasswordInput from "@/components/UI/Inputs/RepeatPasswordInput";
+import RangeInput from "@/components/UI/Inputs/RangeInput";
+import UiNextButton from "@/components/UI/Buttons/UiNextButton";
+import UiBackButton from "@/components/UI/Buttons/UiBackButton";
 
 export default {
   name: "RegistrationDialog",
-  components: {RangeInput, RepeatPasswordInput, PasswordInput, SelectInput, EmailInput, PhoneInput, NameInput},
+  components: {
+    UiBackButton,
+    UiNextButton,
+    RangeInput, RepeatPasswordInput, PasswordInput, SelectInput, EmailInput, PhoneInput, NameInput
+  },
   data() {
     return {
       data_form: true,

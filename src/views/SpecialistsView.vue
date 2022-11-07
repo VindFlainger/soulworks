@@ -40,7 +40,7 @@
 
         <v-card elevation="0" outlined style="border-radius: 15px">
           <v-card-actions>
-            <v-select :items="[
+            <select-input :items="[
                       {
                       text: 'По количеству обращений',
                       value: 1
@@ -69,7 +69,7 @@
                       label="Сортировка"
                       style="max-width: 300px"
             >
-            </v-select>
+            </select-input>
             <v-spacer></v-spacer>
             <v-btn icon :color="expandedLimit?'red lighten-2':''"
                    @click="
@@ -143,6 +143,7 @@ import SpecialistList from "@/components/SpecialistList";
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
 import SpecialistsFilters from "@/components/SpecialistsFilters";
 import UiPagination from "@/components/UI/UiPagination";
+import SelectInput from "@/components/UI/Inputs/SelectInput";
 
 
 export default {
@@ -240,7 +241,7 @@ export default {
     this.getSpecialists(to.query)
     next()
   },
-  components: {UiPagination, SpecialistsFilters, UiContentWrapper, SpecialistList}
+  components: {SelectInput, UiPagination, SpecialistsFilters, UiContentWrapper, SpecialistList}
 }
 </script>
 

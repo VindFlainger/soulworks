@@ -1,4 +1,3 @@
-
 export default [
     {
         name: 'capitalize',
@@ -12,10 +11,14 @@ export default [
         }
     },
     {
-      name: 'price',
-      filter: (v, s) => {
-          return `${v} ${s || 'BYN'}`
-      }
+        name: 'price',
+        filter: (v, s) => {
+            return `${v} ${s || 'BYN'}`
+        }
+    },
+    {
+        name: 'phone',
+        filter: v => v?.length === 12 ? `+ ${v.substring(0, 3)} (${v.substring(3, 5)}) ${v.substring(5, 8)}-${v.substring(8, 10)}-${v.substring(10, 12)}` : v
     },
     {
         name: 'experience',
@@ -49,7 +52,8 @@ export default [
                     return 'сегодня'
                 case 1:
                     return 'вчера'
-                default: return `${offset} дней назад`
+                default:
+                    return `${offset} дней назад`
             }
         }
     }

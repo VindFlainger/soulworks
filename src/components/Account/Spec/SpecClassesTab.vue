@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-4" elevation="0">
-    <ui-full-width-banner :img="require('@/assets/images/profile/classes.png')">
+    <ui-full-width-banner :img="require('@/assets/images/account/classes.png')">
       <div class="fill-height d-flex align-center justify-center">
         <div class="font-title pa-5 rounded"
              style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px">
@@ -37,8 +37,12 @@
                 </v-img>
               </v-avatar>
               <div class="ml-4 pa-0">
-                <div class="fs-18" style="font-weight: 600"> {{ _class.participant.name }}
-                  {{ _class.participant.surname }}
+                <div class="fs-18" style="font-weight: 600">
+                  <router-link
+                      class="text-decoration-none black--text"
+                      :to="{name: 'profile', params: {id: _class.participant._id}}">
+                    {{ _class.participant.surname }} {{ _class.participant.name }}
+                  </router-link>
                 </div>
                 <div class="fs-12 grey--text text--darken-2"> {{ _class.participant.email }}</div>
               </div>
@@ -60,6 +64,11 @@
 
 
           </div>
+          <div v-if="classes.length === 0" class="d-flex flex-column align-center mt-4">
+          <v-img :src="require('@/assets/images/sad.png')" max-width="50" height="50"></v-img>
+          <div class="text-center fs-14" style="font-weight: 600; max-width: 200px">На выбранную дату нету засписей
+          </div>
+        </div>
         </div>
       </v-col>
     </v-row>

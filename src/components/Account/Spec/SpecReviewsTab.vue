@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-4" elevation="0">
 
-    <ui-full-width-banner :img="require('@/assets/images/profile/reviews.png')">
+    <ui-full-width-banner :img="require('@/assets/images/account/reviews.png')">
       <div class="fill-height d-flex align-center justify-center">
         <div class="font-title pa-5 rounded"
              style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px">
@@ -25,7 +25,11 @@
         </v-avatar>
         <v-col class="pa-0 ml-5">
           <div class="font-title fs-18 font-weight-bold">
-            {{ review.reviewer.surname }} {{ review.reviewer.name }}
+            <router-link
+                class="text-decoration-none black--text"
+                :to="{name: 'profile', params: {id: review.reviewer._id}}">
+              {{ review.reviewer.surname }} {{ review.reviewer.name }}
+            </router-link>
           </div>
           <div class="fs-16">
             {{ new Date(review.date).toLocaleDateString() }}
@@ -49,6 +53,7 @@
 
 <script>
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
+
 export default {
   name: "SpecReviewsTab",
   components: {UiFullWidthBanner},

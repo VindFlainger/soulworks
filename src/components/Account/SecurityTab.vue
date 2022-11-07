@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-4" elevation="0">
 
-    <ui-full-width-banner :img="require('@/assets/images/profile/security.png')">
+    <ui-full-width-banner :img="require('@/assets/images/account/security.png')">
       <div class="fill-height d-flex align-center justify-center">
         <div class="font-title pa-5 rounded"
              style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px">
@@ -23,9 +23,9 @@
           </div>
           <v-form v-model="valid" lazy-validation ref="form">
             <div class="mt-3">
-              <password-input label="Ваш старый пароль" max-width="100%" v-model="password"></password-input>
-              <password-input max-width="100%" v-model="newPassword"></password-input>
-              <repeat-password-input max-width="100%" :value="newPassword"></repeat-password-input>
+              <password-input label="Ваш старый пароль" v-model="password" class="password-input"></password-input>
+              <password-input max-width="100%" v-model="newPassword" class="password-input"></password-input>
+              <repeat-password-input max-width="100%" :value="newPassword" class="password-input"></repeat-password-input>
             </div>
             <v-row>
               <v-btn color="red lighten-3" outlined>
@@ -94,8 +94,8 @@
 
 <script>
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
-import PasswordInput from "@/components/Inputs/PasswordInput";
-import RepeatPasswordInput from "@/components/Inputs/RepeatPasswordInput";
+import PasswordInput from "@/components/UI/Inputs/PasswordInput";
+import RepeatPasswordInput from "@/components/UI/Inputs/RepeatPasswordInput";
 import UiAgentVisualizer from "@/components/UI/UiAgentVisualizer";
 
 export default {
@@ -180,5 +180,7 @@ export default {
 </script>
 
 <style scoped>
-
+.password-input >>> .v-input{
+  max-width: 600px;
+}
 </style>

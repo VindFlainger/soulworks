@@ -23,13 +23,13 @@
         </default-input>
 
         <v-row style="width: 300px" class="mt-3">
-          <v-btn elevation="0" color="red lighten-3" outlined width="40%" @click="$root.$emit('close-login');">Закрыть
-          </v-btn>
+          <ui-default-button  width="40%" @click="$root.$emit('close-login');" color="red">Закрыть
+          </ui-default-button>
           <v-spacer></v-spacer>
-          <v-btn elevation="0" color="green lighten-3" outlined width="40%" :disabled="!loginFormValid || !password"
+          <ui-default-button  width="40%" :disabled="!loginFormValid || !password"
                  :loading="localLoading"
                  @click="login">Вход
-          </v-btn>
+          </ui-default-button>
         </v-row>
       </v-form>
       <v-row style="width: 300px" class="mt-2">
@@ -65,12 +65,13 @@
 </template>
 
 <script>
-import DefaultInput from "@/components/Inputs/DefaultInput";
-import EmailInput from "@/components/Inputs/EmailInput";
+import DefaultInput from "@/components/UI/Inputs/DefaultInput";
+import EmailInput from "@/components/UI/Inputs/EmailInput";
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 
 export default {
   name: "LoginDialog",
-  components: {EmailInput, DefaultInput},
+  components: {UiDefaultButton,  EmailInput, DefaultInput},
   data() {
     return {
       loginFormValid: true,

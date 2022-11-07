@@ -24,62 +24,53 @@
     >
     </v-range-slider>
 
-    <v-select :items="opportunitiesParams"
-              :value="opportunities"
-              @input="$emit('update:opportunities', $event)"
-              outlined
-              dense
-              prepend-icon="mdi-ruler-square-compass"
-              item-color="green lighten-2"
-              color="green lighten-2"
-              label="Условия"
-              multiple
-              chips
-              small-chips
-              deletable-chips
+    <select-input :items="opportunitiesParams"
+                  :value="opportunities"
+                  @input="$emit('update:opportunities', $event)"
+                  :required="false"
+                  prepend-icon="mdi-ruler-square-compass"
+                  label="Условия"
+                  multiple
+                  small-chips
+                  deletable-chips
+                  item-color="green lighten-2"
     >
-    </v-select>
+    </select-input>
 
 
-    <v-select :items="methodsParams"
-              :value="methods"
-              @input="$emit('update:methods', $event)"
-              outlined
-              dense
-              prepend-icon="mdi-handball"
-              item-color="green lighten-2"
-              color="green lighten-2"
-              label="Методы"
-              multiple
-              chips
-              small-chips
+    <select-input :items="methodsParams"
+                  :value="methods"
+                  @input="$emit('update:methods', $event)"
+                  :required="false"
+                  prepend-icon="mdi-handball"
+                  label="Методы"
+                  multiple
+                  small-chips
+                  item-color="green lighten-2"
     >
-    </v-select>
+    </select-input>
 
-    <v-select :items="specializationsParams"
-              :value="specializations"
-              @input="$emit('update:specializations', $event)"
-              outlined
-              dense
-              prepend-icon="mdi-account-hard-hat-outline"
-              item-color="green lighten-2"
-              color="green lighten-2"
-              label="Специализация"
-              multiple
-              chips
-              small-chips
+    <select-input :items="specializationsParams"
+                  :value="specializations"
+                  @input="$emit('update:specializations', $event)"
+                  :required="false"
+                  prepend-icon="mdi-account-hard-hat-outline"
+                  label="Специализация"
+                  multiple
+                  small-chips
+                  item-color="green lighten-2"
     >
-    </v-select>
+    </select-input>
 
 
     <v-card-actions class="pa-0">
-      <v-btn elevation="0" color="red lighten-2" outlined>
+      <ui-default-button color="red" large>
         Сбросить
-      </v-btn>
+      </ui-default-button>
       <v-spacer></v-spacer>
-      <v-btn elevation="0" color="green lighten-2" outlined @click="$emit('find')">
+      <ui-default-button color="green" large @click="$emit('find')">
         Применить
-      </v-btn>
+      </ui-default-button>
     </v-card-actions>
 
   </v-card>
@@ -87,10 +78,12 @@
 
 <script>
 import UiSwitchPicker from "@/components/UI/UiSwitchPicker";
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
+import SelectInput from "@/components/UI/Inputs/SelectInput";
 
 export default {
   name: "SpecialistsFilters",
-  components: {UiSwitchPicker},
+  components: {SelectInput, UiDefaultButton, UiSwitchPicker},
 
   data() {
     return {}

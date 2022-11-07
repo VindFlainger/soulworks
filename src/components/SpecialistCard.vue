@@ -12,8 +12,11 @@
       </v-badge>
 
       <v-col>
-        <v-card-title class="pa-0 mb-3 font-title fs-20 font-weight-bold">
-          {{ specialist.name }} {{ specialist.surname }}
+        <v-card-title class="pa-0 mb-3">
+          <router-link :to="{name: 'profile', params: {id: specialist._id }}"
+                       class="font-title fs-20 font-weight-bold black--text text-decoration-none">{{ specialist.name }}
+            {{ specialist.surname }}
+          </router-link>
         </v-card-title>
         <v-card-subtitle class="text-left pa-0">
           <span v-if="specialist.degree.approve">
@@ -127,7 +130,7 @@
               @click="$emit('open-contacts', {...specialist.contacts, name: specialist.name, surname: specialist.surname})">
             Контакты
           </ui-default-button>
-          <ui-default-button width="100%" @click="booking" v-if="this.$store.state.role !== 'spec'">
+          <ui-default-button width="100%" @click="booking" v-if="$store.state.role !== 'spec'">
             Запись
           </ui-default-button>
         </div>
@@ -139,12 +142,11 @@
 
 <script>
 import UiOrderBar from "@/components/UI/UiOrderBar";
-import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 
 export default {
   name: "SpecialistCard",
-  components: {UiDefaultButton, UiConfirmButton, UiOrderBar},
+  components: {UiDefaultButton, UiOrderBar},
   props: {
     specialist: Object
   },

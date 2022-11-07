@@ -8,7 +8,12 @@
       </v-avatar>
       <v-col class="ml-11">
         <div class="font-title fs-24">
-          {{ accountData.surname }} {{ accountData.name }}
+          <router-link
+              class="text-decoration-none black--text"
+              :to="{name: 'profile', params: {id: accountData._id}}">
+            {{ accountData.surname }} {{ accountData.name }}
+          </router-link>
+
         </div>
         <div class="ml-n2">
           <v-rating length="5" readonly :value="accountData.rating.avgStars" half-increments class="d-inline"

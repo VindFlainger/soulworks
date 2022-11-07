@@ -81,7 +81,7 @@ const routes = [
     },
     {
         path: '/profile/:id',
-        name: 'spec',
+        name: 'profile',
         component: ProfileView
     },
     {
