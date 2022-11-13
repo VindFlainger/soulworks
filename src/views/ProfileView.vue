@@ -96,11 +96,15 @@ export default {
   },
   methods: {
     getProfileInfo() {
-      this.getData(`http://localhost:3000/data/about?user_id=${this.$route.params.id}`)
+      this.getData(`http://localhost:3000/data/about?userId=${this.$route.params.id}`)
           .then(resp => {
             this.profileInfo = resp.data
           })
-          .catch()
+          .catch(err => {
+            if(err.response.data.code === 3 || err.response.data.code === 1){
+              this.$router.push({name: 'notfound'})
+            }
+          })
     },
     booking() {
       if (!this.$store.getters.isLogin) {

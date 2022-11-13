@@ -13,6 +13,7 @@ import ConfirmDialog from "@/components/Dialogs/ConfirmDialog";
 import RegistrationDialog from "@/components/Dialogs/RegistrationDialog";
 import InfoDialog from "@/components/Dialogs/InfoDialog";
 import LoginDialog from "@/components/Dialogs/LoginDialog";
+import FindUserDialog from "@/components/Dialogs/FindUserDialog";
 
 Vue.mixin(mixin)
 textFilters.forEach(tf => {
@@ -28,6 +29,7 @@ Vue.component('ConfirmDialog', ConfirmDialog)
 Vue.component('RegistrationDialog', RegistrationDialog)
 Vue.component('InfoDialog', InfoDialog)
 Vue.component('LoginDialog', LoginDialog)
+Vue.component('FindUserDialog', FindUserDialog)
 
 
 new Vue({

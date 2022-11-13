@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="true" @click:outside="$root.$emit('close-confirm')" max-width="400">
+  <base-dialog :value="true" @close="$root.$emit('close-confirm')" max-width="400">
     <v-card class="pa-3 confirm__main" elevation="0" color="white" outlined style="border-color: black">
 
       <div class="fs-22 font-title font-weight-bold text-center pt-4 pl-4 pr-4" style="letter-spacing: 2px">
@@ -9,31 +9,34 @@
         {{text}}
       </div>
       <v-card-actions class="pa-0">
-        <v-btn
+        <ui-default-button
             @click="$root.$emit('close-confirm', false)"
             outlined
-            color="red lighten-3"
+            color="red "
             width="150">
-          отмена
-        </v-btn>
+          Отмена
+        </ui-default-button>
         <v-spacer></v-spacer>
-        <v-btn
+        <ui-default-button
             @click="$root.$emit('close-confirm', true)"
             outlined
-            color="green lighten-3"
+            color="green "
             width="150"
         >
-          подтвердить
-        </v-btn>
+          Подтвердить
+        </ui-default-button>
       </v-card-actions>
 
     </v-card>
-  </v-dialog>
+  </base-dialog>
 </template>
 
 <script>
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
+import BaseDialog from "@/components/Dialogs/BaseDialog";
 export default {
   name: "ConfirmDialog",
+  components: {BaseDialog, UiDefaultButton},
   props: {
     text: String
   }

@@ -15,6 +15,7 @@
         <component :is="infoDialog?'info-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
         <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
         <component :is="loginDialog?'login-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="findUserDialog?'find-user-dialog':''" v-bind="dynProps"></component>
       </div>
 
     </v-main>
@@ -38,6 +39,7 @@ export default {
       infoDialog: false,
       registrationDialog: false,
       loginDialog: false,
+      findUserDialog: false,
       dynProps: {},
     }
   },
@@ -76,10 +78,14 @@ export default {
     })
     this.$root.$on('close-login', () => {
       this.loginDialog = false
+    }),
+    this.$root.$on('show-find-user', (props = {}) => {
+      this.dynProps = props
+      this.findUserDialog = true
     })
-
-
-
+    this.$root.$on('close-find-user', () => {
+      this.findUserDialog = false
+    })
   },
 }
 </script>

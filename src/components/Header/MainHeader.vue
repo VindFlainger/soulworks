@@ -28,7 +28,7 @@
           <div class="d-flex">
 
             <v-btn icon class="mr-6">
-              <v-icon class="fs-32 black--text header__icon">mdi-bell-outline</v-icon>
+              <v-icon class="fs-28 black--text header__icon">mdi-message-outline</v-icon>
             </v-btn>
 
             <header-user-menu>

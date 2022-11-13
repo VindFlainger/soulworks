@@ -9,7 +9,7 @@ import SecurityTab from "@/components/Account/SecurityTab";
 import SpecReviewsTab from "@/components/Account/Spec/SpecReviewsTab";
 import SpecConfirmationTab from "@/components/Account/Spec/SpecConfirmationTab";
 import SpecClassesTab from "@/components/Account/Spec/SpecClassesTab";
-import SpecMaterials from "@/components/Account/Spec/SpecMaterialsTab";
+import SpecMaterialsTab from "@/components/Account/Spec/MaterialsTab/SpecMaterialsTab";
 import SpecAccountView from "@/views/SpecAccountView";
 import UserAccountView from "@/views/UserAccountView";
 import ProfileView from "@/views/ProfileView";
@@ -67,7 +67,7 @@ const routes = [
             {
                 path: 'materials',
                 name: 'specMaterials',
-                component: SpecMaterials,
+                component: SpecMaterialsTab,
             },
         ]
     },
@@ -111,6 +111,7 @@ const routes = [
     },
     {
         path: '*',
+        name: 'notfound',
         component: NotFoundView
     }
 ]

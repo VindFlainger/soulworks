@@ -8,7 +8,7 @@
         :style="$attrs.style"
         filled
         background-color="white"
-        class="input ma-1"
+        class="input"
         dense
         outlined
         color="grey darken-2"
