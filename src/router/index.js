@@ -18,6 +18,7 @@ import RulesView from "@/views/RulesView";
 import PublicationsView from "@/views/PublicationsView";
 import AboutView from "@/views/AboutView";
 import SupportView from "@/views/SupportView";
+import SpecAccountEditTab from "@/components/Account/Spec/SpecAccountEditTab";
 
 Vue.use(VueRouter)
 
@@ -38,6 +39,11 @@ const routes = [
                 path: 'account',
                 name: 'specAccount',
                 component: SpecAccountTab,
+            },
+            {
+                path: 'edit',
+                name: 'specEdit',
+                component: SpecAccountEditTab,
             },
             {
                 path: 'timetable',

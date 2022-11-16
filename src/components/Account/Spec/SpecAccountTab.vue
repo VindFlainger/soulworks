@@ -1,7 +1,10 @@
 <template>
   <v-card v-if="accountData" class="pa-8 fill-height">
     <span style="position:absolute; right: 30px; top: 20px; cursor: pointer"
-          class="fs-16 blue--text text--lighten-3 text-decoration-underline">Редактировать</span>
+          @click="$router.push({name: 'specEdit'})"
+          class="fs-16 blue--text text--lighten-3 text-decoration-underline">
+      Редактировать
+    </span>
     <v-row>
       <v-avatar size="200">
         <v-img :src="accountData.avatar"></v-img>
@@ -77,9 +80,9 @@
           <!-- TODO: Implement prefixes to links-->
           <a v-for="link in accountData.contacts.links" :key="link.name" :href="link.link" style="max-height: 32px;">
             <v-img
-                   :src="require(`@/assets/images/networks/${link.name}.png`)"
-                   max-width="28" height="28"
-                   class="d-inline-block ma-1">
+                :src="require(`@/assets/images/networks/${link.name}.png`)"
+                max-width="28" height="28"
+                class="d-inline-block ma-1">
             </v-img>
           </a>
 
@@ -219,6 +222,13 @@ export default {
   },
   mounted() {
     this.getAccountData()
+  },
+  watch: {
+    '$route'(to, from){
+      if (from.name === 'specEdit'){
+        this.getAccountData()
+      }
+    }
   }
 }
 </script>

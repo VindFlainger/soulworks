@@ -1,7 +1,10 @@
 <template>
   <default-input
+      v-bind="$attrs"
+      v-on="$listeners"
       v-mask="'+375 (##) ###-##-##'"
-      :label="focused?'Телефон':lazyValue?.length?'Телефон':'+375 (__) ___-__-__'"
+      type="tel"
+      :label="focused?label:lazyValue?.length?label:'+375 (__) ___-__-__'"
       @focus="paste(); focused = true"
       @blur="focused = false"
       @input="$emit('input', $event); lazyValue = $event"
@@ -10,6 +13,7 @@
           v => v && v.replace(/[\+ \()-]/g, '').length === 12 || 'Некорректный номер телефона',
           v => v && codes.some(code => v.replace(/[\+ \()-]/g, '').substring(3,5) === code) || 'Некорректный код'
       ]"
+      ref="phoneInput"
   >
   </default-input>
 </template>
@@ -25,13 +29,17 @@ export default {
   data() {
     return {
       focused: false,
-      lazyValue: ''
+      lazyValue: '',
     }
   },
   props: {
     codes: {
       type: Array,
       default: () => ['33', '29', '44']
+    },
+    label: {
+      type: String,
+      default: 'Телефон'
     },
     value: String
   },
@@ -44,7 +52,9 @@ export default {
   },
   watch: {
     value(val){
-      this.lazyValue = val
+      setTimeout(()=>{
+        this.lazyValue = val
+      },0)
     }
   },
   mixins: [inputs],

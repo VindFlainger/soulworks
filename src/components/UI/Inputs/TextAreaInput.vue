@@ -6,7 +6,7 @@
                 v-bind="$attrs"
                 v-on="$listeners"
                 outlined color="black"
-                auto-grow
+                :auto-grow="autoGrow"
                 :rules="[
                   v => (!!v || !required) || 'Это обязательное поле',
                   ...rules]"
@@ -28,6 +28,10 @@ export default {
     rules: {
       type: Array,
       default: () => []
+    },
+    autoGrow: {
+      type: Boolean,
+      default: true
     },
     value: String,
   }

@@ -7,7 +7,7 @@
       :required="required"
       :show-required-badge="showRequiredBadge"
       @focusout="checkEmail"
-      label="Почта"
+      :label="label"
       @input="lazyValue = $event; $emit('input', $event)"
       :value="value"
       :error-messages="emailExists || emailNotExists?emailExists?'Данная почта уже используется':'Указанная почта не зарегистрирована':''"
@@ -34,6 +34,10 @@ export default {
     check: {
       type: [Boolean, String],
       default: false
+    },
+    label: {
+      type: String,
+      default: 'Почта'
     }
   },
   methods: {

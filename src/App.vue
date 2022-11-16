@@ -18,6 +18,8 @@
         <component :is="findUserDialog?'find-user-dialog':''" v-bind="dynProps"></component>
       </div>
 
+      <message-box></message-box>
+
     </v-main>
     <main-footer>
 
@@ -30,9 +32,10 @@ import MainHeader from "@/components/Header/MainHeader";
 import MainFooter from "@/components/MainFooter";
 import AlertsBox from "@/components/AlertsBox";
 import MainLoader from "@/components/MainLoader";
+import MessageBox from "@/components/MessageBox";
 
 export default {
-  components: {MainLoader, AlertsBox, MainFooter, MainHeader},
+  components: {MessageBox, MainLoader, AlertsBox, MainFooter, MainHeader},
   data() {
     return {
       confirmDialog: false,

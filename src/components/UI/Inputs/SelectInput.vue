@@ -18,6 +18,7 @@
         :menu-props="{bottom: true, offsetY: true, rounded: 'b-xl t-xl', 'nudge-top': -3}"
         validate-on-blur
         v-bind="$attrs"
+        v-on="$listeners"
 
     >
       <template v-slot:append>

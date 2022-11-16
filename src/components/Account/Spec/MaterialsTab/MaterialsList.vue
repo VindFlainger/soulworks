@@ -52,7 +52,12 @@ export default {
       this.$root.$emit('show-find-user')
       this.$root.$once('close-find-user', user => {
         if (user) {
-          this.putData(`http://localhost:3000/spec/materials/reader?materialId=${materialId}&readerId=${user._id}`)
+          this.putData(`http://localhost:3000/spec/materials/reader`,
+              {
+                materialId,
+                readerId: user._id
+              }
+          )
               .then(resp => {
                 if (resp.data.code !== 3) {
                   this.materials.find(material => material._id === materialId).readers.push(user)
