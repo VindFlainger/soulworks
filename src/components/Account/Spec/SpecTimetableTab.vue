@@ -66,8 +66,6 @@
             вам на консультацию, а за ее отмену или пропуск Вам будут начислены штрафные баллы.
           </div>
         </div>
-
-
       </v-col>
     </v-row>
   </v-card>
@@ -75,6 +73,7 @@
 
 <script>
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
+import requests from "@/mixins/requests";
 
 export default {
   name: "SpecTimetableTab",
@@ -90,18 +89,17 @@ export default {
   },
   methods: {
     getTimetable() {
-      this.getData('http://localhost:3000/spec/timetable', {handleError: true, handleErrorResponse: true})
+      this.getData('http://localhost:3000/spec/timetable')
           .then(resp => {
             this.timetable = resp.data
           })
           .catch()
     },
     addTime(time) {
-      this.putData('http://localhost:3000/spec/timetable', {
-        time
-      })
+      this.putData('http://localhost:3000/spec/timetable', {time})
           .then(() => {
             this.timetable.push(time)
+            this.$root.$emit('push-message', {text: 'Расписание успешно обновлено', type: 'success'})
           })
           .catch()
     },
@@ -109,6 +107,7 @@ export default {
       this.delData(`http://localhost:3000/spec/timetable?time=${time}`)
           .then(() => {
             this.timetable = this.timetable.filter(el => el !== time)
+            this.$root.$emit('push-message', {text: 'Расписание успешно обновлено', type: 'success'})
           })
           .catch()
     },
@@ -116,7 +115,8 @@ export default {
 
   mounted() {
     this.getTimetable()
-  }
+  },
+  mixins: [requests]
 }
 </script>
 

@@ -7,8 +7,8 @@
              style="position:absolute;"
              max-width="250"
              height="100%"
-             position="top center">
-      </v-img>
+             position="top center"
+      ></v-img>
     </div>
 
     <v-col class="ml-3">
@@ -32,8 +32,8 @@
     <ui-cross-button @click="$emit('delete-material')"
                      class="ml-4"
                      absolute
-                     style="top: 50%; right: 10px; transform: translate(0,-50%)">
-    </ui-cross-button>
+                     style="top: 50%; right: 10px; transform: translate(0,-50%)"
+    ></ui-cross-button>
 
   </v-row>
 </template>
@@ -45,7 +45,7 @@ import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import UiCrossButton from "@/components/UI/Buttons/UiCrossButton";
 
 export default {
-  name: "MaterialsCard",
+  name: "SpecMaterialCard",
   components: {UiCrossButton, UiDefaultButton, UiSignedAvatars, UiConfirmButton},
   props: {
     id: String,

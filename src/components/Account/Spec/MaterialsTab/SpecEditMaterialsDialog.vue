@@ -48,14 +48,16 @@
 <script>
 import BaseDialog from "@/components/Dialogs/BaseDialog";
 import UiDocumentPreview from "@/components/UI/Document/UiDocumentPreview";
+import requests from "@/mixins/requests";
 
 export default {
-  name: "EditMaterialsDialog",
+  name: "SpecEditMaterialsDialog",
   props: {
     value: Boolean,
     material: Object
   },
   components: {UiDocumentPreview, BaseDialog},
+  mixins: [requests]
 
 }
 </script>

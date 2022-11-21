@@ -20,9 +20,9 @@
 
       <div v-if="this.isLogin && shortInfo" class="menu__content">
         <v-row align="center" class="pa-2">
-          <v-avatar size="55" style="border: 1px solid black">
-            <v-img :src="shortInfo.avatar"></v-img>
-          </v-avatar>
+          <ui-avatar :images="shortInfo.avatar?.images" :img-size="64" :size="55">
+
+          </ui-avatar>
 
           <div class="ml-3">
             <div class="font-title font-weight-bold fs-20" style="line-height: 100%">
@@ -56,7 +56,6 @@
           Выход
         </div>
       </div>
-
     </v-card>
 
 
@@ -67,10 +66,12 @@
 <script>
 import {mapGetters} from "vuex";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
+import requests from "@/mixins/requests";
+import UiAvatar from "@/components/UI/UiAvatar";
 
 export default {
   name: "HeaderUserMenu",
-  components: {UiDefaultButton},
+  components: {UiAvatar, UiDefaultButton},
   data() {
     return {
       shortInfo: undefined
@@ -93,7 +94,8 @@ export default {
     ...mapGetters({
       isLogin: 'isLogin',
     }),
-  }
+  },
+  mixins:[requests]
 }
 </script>
 

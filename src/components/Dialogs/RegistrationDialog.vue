@@ -250,6 +250,7 @@ import RepeatPasswordInput from "@/components/UI/Inputs/RepeatPasswordInput";
 import RangeInput from "@/components/UI/Inputs/RangeInput";
 import UiNextButton from "@/components/UI/Buttons/UiNextButton";
 import UiBackButton from "@/components/UI/Buttons/UiBackButton";
+import requests from "@/mixins/requests";
 
 export default {
   name: "RegistrationDialog",
@@ -343,6 +344,7 @@ export default {
       }
     }
   },
+  mixins: [requests]
 }
 </script>
 

@@ -31,6 +31,7 @@ export default new Vuex.Store({
             },
             setToken(state, val) {
                 state.token = val
+                console.log('here')
                 localStorage.setItem('token', val)
             },
             setEmail(state, val) {

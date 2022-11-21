@@ -4,12 +4,8 @@
         v-for="user in users.slice(0,max)"
         :key="user._id" bottom>
       <template v-slot:activator="{on, attrs}">
-        <router-link :to="{name: 'profile', params: {id: user._id}}">
-          <v-avatar v-on="on" v-bind="attrs" class="ma-1" :size="size" color="grey lighten-3">
-            <v-img :src="user.avatar || require('@/assets/images/nophoto.png')">
-
-            </v-img>
-          </v-avatar>
+        <router-link :to="{name: 'profile', params: {id: user._id}}" >
+          <ui-avatar :size="size" :images="user.avatar?.images" :img-size="64" class="ma-1" v-bind="attrs" v-on="on"></ui-avatar>
         </router-link>
       </template>
       {{ user.surname }} {{ user.name }}
@@ -22,8 +18,10 @@
 </template>
 
 <script>
+import UiAvatar from "@/components/UI/UiAvatar";
 export default {
   name: "UiSignedAvatars",
+  components: {UiAvatar},
   props: {
     users: {
       type: Array,

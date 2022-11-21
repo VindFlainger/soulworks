@@ -84,6 +84,7 @@ import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import ProfileSpec from "@/components/Profile/ProfileSpec";
 import UiOrderBar from "@/components/UI/UiOrderBar";
 import BookingDialog from "@/components/Dialogs/BookingDialog";
+import requests from "@/mixins/requests";
 
 export default {
   name: "UserProfileView",
@@ -116,7 +117,8 @@ export default {
   },
   mounted() {
     this.getProfileInfo()
-  }
+  },
+  mixins: [requests]
 }
 </script>
 

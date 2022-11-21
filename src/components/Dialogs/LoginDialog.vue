@@ -68,6 +68,7 @@
 import DefaultInput from "@/components/UI/Inputs/DefaultInput";
 import EmailInput from "@/components/UI/Inputs/EmailInput";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
+import requests from "@/mixins/requests";
 
 export default {
   name: "LoginDialog",
@@ -93,13 +94,14 @@ export default {
         })
             .then(resp => {
               this.$store.commit('setToken', resp.data.token)
-              this.$store.commit('setEmail', this.email)
+              this.$store.commit('setEmail', resp.data.email)
               this.$store.commit('setRole', resp.data.role)
               this.$root.$emit('close-login')
 
               return this.getSessionToken()
             })
             .then(() => {
+              this.$router.go(0)
               if (this.$route.query.redirect) {
                 this.$router.push(this.$route.query.redirect)
               }
@@ -137,7 +139,8 @@ export default {
             })
       }
     }
-  }
+  },
+  mixins: [requests]
 }
 </script>
 

@@ -3,7 +3,7 @@
       maxlength="64"
       v-bind="$attrs"
       v-on="$listeners"
-      :rules="[v => !required || (v && /^\w+@\w+\.\w+/.test(v)) || 'Некорректная почта']"
+      :rules="[v => (!required && !lazyValue) || (v && /^\w+@\w+\.\w+/.test(v)) || 'Некорректная почта']"
       :required="required"
       :show-required-badge="showRequiredBadge"
       @focusout="checkEmail"
@@ -18,6 +18,7 @@
 <script>
 import inputs from "@/mixins/inputs";
 import DefaultInput from "@/components/UI/Inputs/DefaultInput";
+import requests from "@/mixins/requests";
 
 export default {
   name: "EmailInput",
@@ -56,7 +57,7 @@ export default {
       this.lazyValue = val
     }
   },
-  mixins: [inputs],
+  mixins: [inputs, requests],
 }
 </script>
 

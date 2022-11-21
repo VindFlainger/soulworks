@@ -87,7 +87,7 @@
             </div>
           </v-radio-group>
           <div v-else class="d-flex flex-column align-center mt-4">
-            <v-img :src="require('@/assets/images/sad.png')" max-width="50" height="50"></v-img>
+            <v-img :src="require('@/assets/images/content/no-content-1.png')" max-width="50" height="50"></v-img>
             <div class="text-center fs-14" style="font-weight: 600; max-width: 200px">На выбранную дату нет свободный
               мест
             </div>

@@ -7,15 +7,13 @@
     ></cropping-avatar-dialog>
 
     <v-card class="pa-4" elevation="0">
-       <span style="position:absolute; right: 30px; top: 20px; cursor: pointer"
-             @click="$router.push({name: 'specAccount'})"
-             class="fs-16 blue--text text--lighten-3 text-decoration-underline">
+      <span style="position:absolute; right: 30px; top: 20px; cursor: pointer"
+            @click="$router.push({name: 'specAccount'})"
+            class="fs-16 blue--text text--lighten-3 text-decoration-underline">
          Вернуться
        </span>
 
-
       <v-row justify="start">
-
         <v-col style="min-width: 250px; max-width: 250px">
           <v-badge overlap offset-x="54" offset-y="54" bottom color="none">
             <template v-slot:badge>
@@ -24,9 +22,9 @@
                 <v-icon size="25">mdi-plus</v-icon>
               </v-btn>
             </template>
-            <v-avatar size="200">
-              <v-img :src="avatar || require('@/assets/images/nophoto.png')"></v-img>
-            </v-avatar>
+            <ui-avatar size="200" :images="avatar?.images" :img-size="256">
+
+            </ui-avatar>
           </v-badge>
         </v-col>
 
@@ -82,7 +80,7 @@
             <text-area-input
                 :auto-grow="false"
                 :required="false"
-                :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
                 @change="setAbout"
                 v-model="shortAbout"
                 class="mt-1" no-resize counter="400" maxlength="400" placeholder="Визитка">
@@ -90,11 +88,43 @@
             <text-area-input
                 :auto-grow="false"
                 :required="false"
-                :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^*ё()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
                 @change="setAbout"
                 v-model="fullAbout"
                 no-resize height="200" class="mt-1" counter="1000" maxlength="1000" placeholder="Обо мне">
             </text-area-input>
+          </v-form>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col style="max-width: 450px">
+          <div class="fs-18 font-weight-bold mb-2 font-title">Цена онлайн консультации</div>
+          <range-input :max-limit="1000" :min-limit="0" :min.sync="onlinePrices.min"
+                       :max.sync="onlinePrices.max"
+                       @change="setPrices"
+          ></range-input>
+          <div class="fs-18 font-weight-bold mb-2 font-title">Цена очной консультации</div>
+          <range-input :max-limit="1000" :min-limit="0" :min.sync="internalPrices.min"
+                       :max.sync="internalPrices.max"
+                       @change="setPrices"
+
+          ></range-input>
+        </v-col>
+        <v-col>
+          <v-form lazy-validation v-model="connectionValid" ref="connectionForm">
+            <div class="fs-18 font-weight-bold mb-2 font-title">Связь и адрес</div>
+            <default-input v-model="connection" placeholder="Коммуникация"
+                           :required="false"
+                           @change="setConnectionAndAddress"
+                           :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+
+            ></default-input>
+            <default-input v-model="address" placeholder="Адрес"
+                           @change="setConnectionAndAddress"
+                           :required="false"
+                           :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']">
+            </default-input>
           </v-form>
         </v-col>
       </v-row>
@@ -105,8 +135,16 @@
           <div class="fs-18 font-weight-bold font-title mb-2">Контакты</div>
           <v-form lazy-validation ref="contactsForm" v-model="contactsValid">
             <v-row>
-              <phone-input class="phone-input" label="Контактный телефон" v-model="contactPhone"
-                           @change="setContacts"></phone-input>
+              <phone-input class="phone-input"
+                           label="Контактный телефон"
+                           v-model="contactPhone"
+                           @change="setContacts"
+                           :required="false"
+
+              >
+
+
+              </phone-input>
               <div class="fs-12 mt-n1 grey--text text--darken-2 mb-1">Вы можете указать какие социальные сети или
                 мессенджеры доступны по этому номеру.
               </div>
@@ -117,8 +155,13 @@
                   :items="messengersOptions.map(opt => ({value: opt, img: require(`@/assets/images/networks/${opt}.png`)}))">
               </picture-select-input>
             </v-row>
-            <email-input label="Контактная почта" v-model="contactEmail" class="mt-5"
-                         @change="setContacts"></email-input>
+            <email-input label="Контактная почта"
+                         v-model="contactEmail"
+                         class="mt-5"
+                         :required="false"
+                         @change="setContacts">
+
+            </email-input>
           </v-form>
         </v-col>
 
@@ -163,6 +206,9 @@ import TextAreaInput from "@/components/UI/Inputs/TextAreaInput";
 import EmailInput from "@/components/UI/Inputs/EmailInput";
 import PictureSelectInput from "@/components/UI/Inputs/PictureSelectInput";
 import NameInput from "@/components/UI/Inputs/NameInput";
+import RangeInput from "@/components/UI/Inputs/RangeInput";
+import UiAvatar from "@/components/UI/UiAvatar";
+import requests from "@/mixins/requests";
 
 
 export default {
@@ -170,7 +216,6 @@ export default {
   data() {
     return {
       avatar: '',
-
       name: '',
       surname: '',
       email: '',
@@ -184,6 +229,12 @@ export default {
       methods: [],
       specializations: [],
       opportunities: [],
+
+      internalPrices: [],
+      onlinePrices: [],
+
+      connection: '',
+      address: '',
 
       contactPhone: '',
       contactEmail: '',
@@ -220,10 +271,13 @@ export default {
       aboutValid: true,
       contactsValid: true,
       linksValid: true,
-      servicesValid: true
+      servicesValid: true,
+      connectionValid: true
     }
   },
   components: {
+    UiAvatar,
+    RangeInput,
     NameInput,
     PictureSelectInput,
     EmailInput, TextAreaInput, SelectInput, CroppingAvatarDialog, PhoneInput, DefaultInput
@@ -235,8 +289,10 @@ export default {
             this.name = resp.data.name
             this.surname = resp.data.surname
             this.email = resp.data.email
+            this.contactEmail = resp.data.contactEmail
             this.sex = resp.data.sex
             this.phone = resp.data.number
+            this.contactPhone = resp.data.contacts.phone
             this.avatar = resp.data.avatar
             this.role = resp.data.role
             this.specializations = resp.data.specializations.map(spec => spec._id)
@@ -245,9 +301,11 @@ export default {
             this.shortAbout = resp.data.about.short
             this.fullAbout = resp.data.about.full
             this.messengers = resp.data.contacts.messengers
-            this.contactPhone = resp.data.contacts.phone
-            this.contactEmail = resp.data.contactEmail
             this.links = resp.data.contacts.links
+            this.onlinePrices = resp.data.price.online
+            this.internalPrices = resp.data.price.internal
+            this.connection = resp.data.contacts.connection
+            this.address = resp.data.contacts.address
           })
     },
     getSelectOptions() {
@@ -262,7 +320,7 @@ export default {
       this.putData('http://localhost:3000/spec/account/avatar', {avatarId: avatar.id})
           .then(() => {
             this.croppingDialogVisible = false
-            this.avatar = avatar.images[1].url
+            this.avatar = avatar
           })
           .catch()
     },
@@ -270,7 +328,7 @@ export default {
       if (this.$refs.personForm.validate()) {
         this.putData('http://localhost:3000/spec/account/person', {name: this.name, surname: this.surname})
             .then(() => {
-              this.$root.$emit('push-message', {title: 'Успешно', type: 'success', time: 2000})
+              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
             })
             .catch()
       }
@@ -283,7 +341,7 @@ export default {
               fullAbout: this.fullAbout
             })
             .then(() => {
-              this.$root.$emit('push-message', {title: 'Успешно', type: 'success', time: 2000})
+              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
             })
             .catch()
       }
@@ -293,11 +351,11 @@ export default {
         this.putData('http://localhost:3000/spec/account/contacts',
             {
               messengers: this.messengers,
-              email: this.contactEmail,
+              email: this.contactEmail || undefined,
               phone: this.contactPhone.replaceAll(/[-()+ ]/g, '')
             })
             .then(() => {
-              this.$root.$emit('push-message', {title: 'Успешно', type: 'success', time: 2000})
+              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
             })
             .catch()
       }
@@ -313,7 +371,7 @@ export default {
               links: this.links,
             })
             .then(() => {
-              this.$root.$emit('push-message', {title: 'Успешно', type: 'success', time: 2000})
+              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
             })
             .catch()
       }
@@ -327,13 +385,39 @@ export default {
               specializations: this.specializations
             })
             .then(() => {
-              this.$root.$emit('push-message', {title: 'Успешно', type: 'success', time: 2000})
+              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
+            })
+            .catch()
+      }
+    },
+    setPrices() {
+      this.putData('http://localhost:3000/spec/account/price',
+          {
+            minOnline: this.onlinePrices.min,
+            maxOnline: this.onlinePrices.max,
+            minInternal: this.internalPrices.min,
+            maxInternal: this.internalPrices.max
+          })
+          .then(() => {
+            this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
+          })
+          .catch()
+    },
+    setConnectionAndAddress() {
+      this.$refs.connectionForm.validate()
+      {
+        this.putData('http://localhost:3000/spec/account/connection',
+            {
+              address: this.address,
+              connection: this.connection
+            })
+            .then(() => {
+              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
             })
             .catch()
       }
     }
-  }
-  ,
+  },
   filters: {
     sex,
     role
@@ -342,7 +426,8 @@ export default {
   mounted() {
     this.getAccountData()
     this.getSelectOptions()
-  }
+  },
+  mixins: [requests]
 }
 </script>
 

@@ -1,23 +1,23 @@
 <template>
-  <div style="position:fixed; bottom: 5px; right: 15px; z-index: 1000; opacity: 0.7" v-if="$store.state.alerts.length">
+  <div style="position:fixed; bottom: 5px; right: 15px; z-index: 1000" v-if="$store.state.alerts.length">
     <transition-group name="alerts">
       <v-alert v-for="message in messages" :key="message.id" class="pa-2" style="background: rgba(255,0,0,0)">
         <v-card
-            width="300"
+            min-width="300"
+            max-width="700"
             elevation="0"
-            v-if="!!message.title"
             style="outline: 1px solid grey"
-            class="pa-0"
-            color=""
+            class="pa-0 black"
+            color="green lighten-5"
         >
-          <v-row align="center" class="white pa-2 flex-nowrap">
-            <v-icon :color="message.type" class="mr-2" size="37">
+
+          <v-row class="pa-2" v-if="message.text" align="center">
+            <v-icon :color="message.type" class="mr-2" size="35">
               {{ getIcon(message.type) }}
             </v-icon>
-            <div class="font-title font-weight-bold fs-16 black--text">{{ message.title }}</div>
-          </v-row>
+            <span class="fs-16 font-weight-medium">{{ message.text }}</span>
 
-          <div class="pa-2" v-if="message.text">{{ message.text }}</div>
+          </v-row>
         </v-card>
       </v-alert>
     </transition-group>
@@ -29,7 +29,7 @@ export default {
   name: "MessageBox",
   data() {
     return {
-      messages: []
+      messages: [],
     }
   },
   methods: {
@@ -49,7 +49,7 @@ export default {
         this.messages.push({...message, id})
         setTimeout(()=>{
           this.messages = this.messages.filter(message => message.id !== id)
-        }, message.time)
+        }, message.time || 2000)
       })
     }
   },

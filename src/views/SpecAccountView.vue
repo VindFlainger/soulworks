@@ -43,8 +43,8 @@ export default {
           link: {name: 'specReviews'}
         },
         {
-          title: 'подтверждение',
-          link: {name: 'specConfirmation'}
+          title: 'квалификация',
+          link: {name: 'specQualification'}
         },
         {
           title: 'материалы',

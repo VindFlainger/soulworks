@@ -36,7 +36,8 @@
     <v-row>
       <v-range-slider
           label="" max="1000" min="0" :value="[min, max]"
-          @input="$emit('update:min', $event[0]);$emit('update:max', $event[1])"
+          @input="$emit('update:min', $event[0]); $emit('update:max', $event[1])"
+          @change="$emit('change', [min, max])"
           class="mt-1"
           track-fill-color="green lighten-3"
           track-color="grey lighten-2"
@@ -73,6 +74,7 @@ export default {
           this.$refs.min.lazyValue = this.max
         }
         this.$emit('update:min', v > this.max ? this.max : v < 0 ? 0 : v)
+        this.$emit('change', [this.min, this.max])
       }
     },
     inputMax: {
@@ -87,6 +89,7 @@ export default {
           this.$refs.max.lazyValue = this.min
         }
         this.$emit('update:max', v < this.min ? this.min : v > 1000 ? 1000 : v)
+        this.$emit('change', [this.min, this.max])
       }
     },
   },

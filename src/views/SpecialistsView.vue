@@ -144,6 +144,7 @@ import UiContentWrapper from "@/components/UI/UiContentWrapper";
 import SpecialistsFilters from "@/components/SpecialistsFilters";
 import UiPagination from "@/components/UI/UiPagination";
 import SelectInput from "@/components/UI/Inputs/SelectInput";
+import requests from "@/mixins/requests";
 
 
 export default {
@@ -241,7 +242,8 @@ export default {
     this.getSpecialists(to.query)
     next()
   },
-  components: {SelectInput, UiPagination, SpecialistsFilters, UiContentWrapper, SpecialistList}
+  components: {SelectInput, UiPagination, SpecialistsFilters, UiContentWrapper, SpecialistList},
+  mixins: [requests]
 }
 </script>
 

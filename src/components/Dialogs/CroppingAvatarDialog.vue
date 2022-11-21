@@ -33,6 +33,7 @@ import {Cropper} from 'vue-advanced-cropper'
 import 'vue-advanced-cropper/dist/style.css';
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
+import requests from "@/mixins/requests";
 
 export default {
   name: "CroppingAvatarDialog",
@@ -75,6 +76,7 @@ export default {
 
     }
   },
+  mixins: [requests]
 }
 </script>
 

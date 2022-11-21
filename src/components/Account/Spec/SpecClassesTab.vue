@@ -9,17 +9,9 @@
       </div>
     </ui-full-width-banner>
     <v-row class="mt-3">
-      <v-date-picker v-model="date"
-                     :title-date-format="v => $moment(v).format('LL')"
-                     :month-format="v => $moment(v).format('MMMM')"
-                     :weekday-format="v => $moment(v).format('dd')"
-                     :first-day-of-week="1"
-                     :header-date-format="v => $moment(v).format('MMMM')"
-                     class="picker"
-                     @change="getClasses(new Date($event).getTime())"
-                     color="blue lighten-3"
-      >
-      </v-date-picker>
+      <date-input v-model="date"
+                  @change="getClasses(new Date($event).getTime())">
+      </date-input>
       <v-col class="ml-16">
         <div class="font-title fs-22 font-weight-bold">
           {{ $moment(date).format('LL') }}
@@ -31,11 +23,7 @@
                 <span class="fs-20 font-weight-bold">{{ `${_class.time < 10 ? '0' : ''}${_class.time}:00` }}</span>
               </div>
 
-              <v-avatar size="70" class="ml-3">
-                <v-img :src="_class.participant.avatar">
-
-                </v-img>
-              </v-avatar>
+              <ui-avatar size="70" class="ml-3" :img-size="64" :images="_class.participant.avatar?.images"></ui-avatar>
               <div class="ml-4 pa-0">
                 <div class="fs-18" style="font-weight: 600">
                   <router-link
@@ -65,10 +53,10 @@
 
           </div>
           <div v-if="classes.length === 0" class="d-flex flex-column align-center mt-4">
-          <v-img :src="require('@/assets/images/sad.png')" max-width="50" height="50"></v-img>
-          <div class="text-center fs-14" style="font-weight: 600; max-width: 200px">На выбранную дату нету засписей
+            <v-img :src="require('@/assets/images/content/no-content-1.png')" max-width="50" height="50"></v-img>
+            <div class="text-center fs-14" style="font-weight: 600; max-width: 200px">На выбранную дату нету засписей
+            </div>
           </div>
-        </div>
         </div>
       </v-col>
     </v-row>
@@ -80,9 +68,13 @@
 <script>
 
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
+import UiAvatar from "@/components/UI/UiAvatar";
+import requests from "@/mixins/requests";
+import DateInput from "@/components/UI/Inputs/DateInput";
+
 export default {
   name: "SpecClassesTab",
-  components: {UiFullWidthBanner},
+  components: {DateInput, UiAvatar, UiFullWidthBanner},
   data() {
     return {
       date: new Date().toISOString().substring(0, 10),
@@ -91,7 +83,7 @@ export default {
   },
   methods: {
     getClasses(date) {
-      this.getData(`http://localhost:3000/spec/classes?date=${date}&timeOffset=${-new Date().getTimezoneOffset()/60}`)
+      this.getData(`http://localhost:3000/spec/classes?date=${date}&timeOffset=${-new Date().getTimezoneOffset() / 60}`)
           .then(resp => {
             this.classes = resp.data
           })
@@ -106,16 +98,17 @@ export default {
       this.$root.$once('close-confirm', v => {
         if (v) {
           this.delData(`http://localhost:3000/spec/classes?id=${id}`)
-            .then(()=>{
-              this.classes = this.classes.filter(_class => _class._id !== id)
-            })
+              .then(() => {
+                this.classes.find(_class => _class._id === id).state.cancelled = true
+              })
         }
       })
     }
   },
   mounted() {
     this.getClasses(new Date(this.date).getTime())
-  }
+  },
+  mixins: [requests]
 
 }
 </script>

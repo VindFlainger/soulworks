@@ -7,9 +7,7 @@
             <v-btn fab x-small outlined color="green" @click="$root.$emit('close-find-user', user)">
                 <v-icon color="green">mdi-plus</v-icon>
             </v-btn>
-            <v-avatar size="50" class="ml-2">
-              <v-img :src="user.avatar"></v-img>
-            </v-avatar>
+            <ui-avatar :images="user.avatar?.images" :img-size="64" size="50" class="ml-2"></ui-avatar>
             <v-col class="pa-0 ml-3">
                 <div class="fs-20 font-weight-medium">
                   {{user.surname}} {{user.name}}
@@ -30,6 +28,8 @@
 <script>
 import BaseDialog from "@/components/Dialogs/BaseDialog";
 import DefaultInput from "@/components/UI/Inputs/DefaultInput";
+import UiAvatar from "@/components/UI/UiAvatar";
+import requests from "@/mixins/requests";
 
 export default {
   name: "FindUserDialog",
@@ -50,7 +50,8 @@ export default {
   mounted() {
     this.getUsers()
   },
-  components: {DefaultInput, BaseDialog},
+  components: {UiAvatar, DefaultInput, BaseDialog},
+  mixins: [requests]
 }
 </script>
 

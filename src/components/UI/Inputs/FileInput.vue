@@ -18,10 +18,11 @@
         <div class="text-center fs-14">
           или
         </div>
-        <label class="file-input__label">
+        <label class="file-input__label" :class="{'grey lighten-1': uploadingFiles.length + files.length >= maxFiles}">
           <v-icon color="black" size="26">mdi-upload</v-icon>
           <span class="fs-16">Выберите файлы</span>
           <input @input="checkFiles($event.target.files)"
+                 :disabled="uploadingFiles.length + files.length >= maxFiles"
                  :accept="`${accept.length?'.':''}${accept.join(',.')}`"
                  class="d-none" type="file"
           >
@@ -38,6 +39,9 @@
       <div v-if="notAllowedExtensionMessageVisible">
         <span>{{ notAllowedExtensionsMessage }}</span>
         <span>Для загрузки доступны только {{ accept.join(', ') }}  форматы.</span>
+      </div>
+      <div v-if="notAllowedFileCountVisible">
+        <span>Максимальное количество файлов {{ maxFiles }}</span>
       </div>
     </div>
     <v-row class="mt-2">
@@ -77,6 +81,7 @@
 
 <script>
 import UiDocumentPreview from "@/components/UI/Document/UiDocumentPreview";
+import requests from "@/mixins/requests";
 
 export default {
   name: "FileInput",
@@ -88,6 +93,7 @@ export default {
       errorMessages: [],
       notAllowedExtensionMessageVisible: false,
       tooLargeSizeMessageVisible: false,
+      notAllowedFileCountVisible: false,
       draggingOver: false,
       loadingCounter: 0
     }
@@ -102,6 +108,10 @@ export default {
     maxSize: {
       type: Number,
       default: 2000000
+    },
+    maxFiles: {
+      type: Number,
+      default: 9
     },
     accept: {
       type: Array,
@@ -124,6 +134,7 @@ export default {
     checkFiles(files) {
       this.notAllowedExtensionMessageVisible = false
       this.tooLargeSizeMessageVisible = false
+      this.notAllowedFileCountVisible = false
 
       if (![...files].every(file => this.accept.includes(
           file.name.substring(file.name.lastIndexOf('.') + 1)))
@@ -131,6 +142,8 @@ export default {
 
       if (![...files].every(file => file.size <= this.maxSize)
       ) return this.tooLargeSizeMessageVisible = true
+
+      if ((this.uploadingFiles.length + this.files.length) >= this.maxFiles) return this.notAllowedFileCountVisible = true
 
       this.addFiles(files)
     },
@@ -178,7 +191,8 @@ export default {
       if (!val) this.$emit('update:loading', false)
       else this.$emit('update:loading', true)
     }
-  }
+  },
+  mixins: [requests]
 
 }
 </script>

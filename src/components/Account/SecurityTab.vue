@@ -25,16 +25,17 @@
             <div class="mt-3">
               <password-input label="Ваш старый пароль" v-model="password" class="password-input"></password-input>
               <password-input max-width="100%" v-model="newPassword" class="password-input"></password-input>
-              <repeat-password-input max-width="100%" :value="newPassword" class="password-input"></repeat-password-input>
+              <repeat-password-input max-width="100%" :value="newPassword"
+                                     class="password-input"></repeat-password-input>
             </div>
             <v-row>
-              <v-btn color="red lighten-3" outlined>
+              <ui-default-button color="red" outlined @click="password = '';newPassword=''">
                 Очистить
-              </v-btn>
+              </ui-default-button>
               <v-spacer></v-spacer>
-              <v-btn color="blue lighten-3" outlined :disabled="!valid" @click="changePassword">
+              <ui-default-button color="green" outlined :disabled="!valid" @click="changePassword">
                 Сменить
-              </v-btn>
+              </ui-default-button>
             </v-row>
           </v-form>
         </v-card>
@@ -97,6 +98,8 @@ import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import PasswordInput from "@/components/UI/Inputs/PasswordInput";
 import RepeatPasswordInput from "@/components/UI/Inputs/RepeatPasswordInput";
 import UiAgentVisualizer from "@/components/UI/UiAgentVisualizer";
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
+import requests from "@/mixins/requests";
 
 export default {
   name: "SecurityTab",
@@ -175,12 +178,13 @@ export default {
     this.getSessions()
     this.userAgent = window.navigator.userAgent
   },
-  components: {UiAgentVisualizer, RepeatPasswordInput, PasswordInput, UiFullWidthBanner},
+  components: {UiDefaultButton, UiAgentVisualizer, RepeatPasswordInput, PasswordInput, UiFullWidthBanner},
+  mixins: [requests]
 }
 </script>
 
 <style scoped>
-.password-input >>> .v-input{
+.password-input >>> .v-input {
   max-width: 600px;
 }
 </style>

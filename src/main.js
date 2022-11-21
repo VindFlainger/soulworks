@@ -7,7 +7,6 @@ import router from './router'
 import Moment from "@/plugins/moment";
 import Validator from "./plugins/validator";
 
-import mixin from "@/mixins/index.js";
 import textFilters from "@/filters/text.js"
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog";
 import RegistrationDialog from "@/components/Dialogs/RegistrationDialog";
@@ -15,7 +14,6 @@ import InfoDialog from "@/components/Dialogs/InfoDialog";
 import LoginDialog from "@/components/Dialogs/LoginDialog";
 import FindUserDialog from "@/components/Dialogs/FindUserDialog";
 
-Vue.mixin(mixin)
 textFilters.forEach(tf => {
     Vue.filter(tf.name, tf.filter)
 })

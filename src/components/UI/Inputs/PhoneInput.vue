@@ -5,13 +5,14 @@
       v-mask="'+375 (##) ###-##-##'"
       type="tel"
       :label="focused?label:lazyValue?.length?label:'+375 (__) ___-__-__'"
+      :required="required"
       @focus="paste(); focused = true"
       @blur="focused = false"
       @input="$emit('input', $event); lazyValue = $event"
       :value="value"
       :rules="[
-          v => v && v.replace(/[\+ \()-]/g, '').length === 12 || 'Некорректный номер телефона',
-          v => v && codes.some(code => v.replace(/[\+ \()-]/g, '').substring(3,5) === code) || 'Некорректный код'
+          v => (!required && !lazyValue) || (v && v.replace(/[\+ \()-]/g, '').length === 12) || 'Некорректный номер телефона',
+          v => (!required && !lazyValue) || (v && codes.some(code => v.replace(/[\+ \()-]/g, '').substring(3,5) === code)) || 'Некорректный код'
       ]"
       ref="phoneInput"
   >
@@ -35,7 +36,7 @@ export default {
   props: {
     codes: {
       type: Array,
-      default: () => ['33', '29', '44']
+      default: () => ['25','33', '29', '44']
     },
     label: {
       type: String,

@@ -6,8 +6,8 @@ import store from '../store'
 import SpecAccountTab from "@/components/Account/Spec/SpecAccountTab";
 import SpecTimetableTab from "@/components/Account/Spec/SpecTimetableTab";
 import SecurityTab from "@/components/Account/SecurityTab";
-import SpecReviewsTab from "@/components/Account/Spec/SpecReviewsTab";
-import SpecConfirmationTab from "@/components/Account/Spec/SpecConfirmationTab";
+import SpecReviewsTab from "@/components/Account/Spec/ReviewsTab/SpecReviewsTab";
+import SpecQualificationTab from "@/components/Account/Spec/QualificationTab/SpecQualificationTab";
 import SpecClassesTab from "@/components/Account/Spec/SpecClassesTab";
 import SpecMaterialsTab from "@/components/Account/Spec/MaterialsTab/SpecMaterialsTab";
 import SpecAccountView from "@/views/SpecAccountView";
@@ -61,9 +61,9 @@ const routes = [
                 component: SpecReviewsTab,
             },
             {
-                path: 'confirmation',
-                name: 'specConfirmation',
-                component: SpecConfirmationTab,
+                path: 'qualification',
+                name: 'specQualification',
+                component: SpecQualificationTab,
             },
             {
                 path: 'classes',
