@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import content from "@/store/content";
+import params from "@/store/params";
 
 Vue.use(Vuex)
 
@@ -64,6 +65,7 @@ export default new Vuex.Store({
         },
         modules: {
             content: content,
+            params: params
         }
     },
 )

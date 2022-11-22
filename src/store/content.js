@@ -1,9 +1,13 @@
 import rules from './statics/rules'
 import medals from './statics/medals'
+import specAgreement from './statics/specAgreement'
+import userAgreement from './statics/userAgreement'
 
 export default {
    state: {
-       rules: rules,
-       medals: medals
+       rules,
+       medals,
+       specAgreement,
+       userAgreement
    }
 }

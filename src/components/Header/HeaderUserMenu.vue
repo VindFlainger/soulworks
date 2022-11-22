@@ -45,10 +45,11 @@
             <router-link :to="{name: 'specSecurity'}" class="link">Безопасность</router-link>
           </div>
           <div v-if="this.$store.state.role === 'user'">
-            <router-link :to="{name: 'specAccount'}" class="link">Личный кабинет</router-link>
-            <router-link :to="{name: 'specClasses'}" class="link">Консультации</router-link>
-            <router-link :to="{name: 'specTimetable'}" class="link">Расписание</router-link>
-            <router-link :to="{name: 'specReviews'}" class="link">Отзывы</router-link>
+            <router-link :to="{name: 'userAccount'}" class="link">Личный кабинет</router-link>
+            <router-link :to="{name: 'userClasses'}" class="link">Консультации</router-link>
+            <router-link :to="{name: 'userReviews'}" class="link">Отзывы</router-link>
+            <router-link :to="{name: 'userMaterials'}" class="link">Материалы</router-link>
+            <router-link :to="{name: 'userFavourites'}" class="link">Избранное</router-link>
             <router-link :to="{name: 'specSecurity'}" class="link">Безопасность</router-link>
           </div>
         </div>

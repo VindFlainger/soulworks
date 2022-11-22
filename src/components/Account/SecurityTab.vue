@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     getSessions() {
-      this.getData('http://localhost:3000/spec/sessions', {handleError: true, handleErrorResponse: true})
+      this.getData('http://localhost:3000/any/sessions', {handleError: true, handleErrorResponse: true})
           .then(resp => {
             this.sessions = resp.data
           })
@@ -129,7 +129,7 @@ export default {
 
       this.$root.$once('close-confirm', v => {
         if (v) {
-          this.delData(`http://localhost:3000/spec/sessions?device=${device}`,
+          this.delData(`http://localhost:3000/any/sessions?device=${device}`,
               {
                 handleError: true,
                 handleErrorResponse: true

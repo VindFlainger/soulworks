@@ -3,7 +3,7 @@
     <v-select
         filled
         background-color="white"
-        class="ma-1 input"
+        class="input"
         style="max-width: 300px; border-radius: 14px"
         off
         dense
@@ -19,7 +19,6 @@
         validate-on-blur
         v-bind="$attrs"
         v-on="$listeners"
-
     >
       <template v-slot:append>
         <div class="append">

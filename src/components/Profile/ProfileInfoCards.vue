@@ -33,13 +33,13 @@
     <ui-info-card
         title="Активность"
         :img="require('@/assets/images/profile/activity.png')"
-        :text="activityDate"
+        :text="$moment(activityDate).format('lll')"
     >
     </ui-info-card>
     <ui-info-card
         title="Регистрация"
         :img="require('@/assets/images/profile/register.png')"
-        :text="registrationDate"
+        :text="$moment(registrationDate).format('ll')"
     >
     </ui-info-card>
     <ui-info-card
@@ -67,6 +67,7 @@
 <script>
 import UiInfoCard from "@/components/UI/UiInfoCard";
 
+
 export default {
   name: "ProfileInfoCards",
   components: {UiInfoCard},
@@ -92,11 +93,11 @@ export default {
       required: true
     },
     registrationDate: {
-      type: String,
+      type: Number,
       required: true
     },
     activityDate: {
-      type: String,
+      type: Number,
       required: true
     },
     cancelled: {
@@ -111,7 +112,7 @@ export default {
       type: [String, Number],
       required: true
     },
-  }
+  },
 }
 </script>
 

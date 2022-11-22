@@ -50,7 +50,7 @@
       <div class="font-text fs-16 font-weight-regular  ">{{ fullAbout }}</div>
     </div>
 
-    <div class="mt-5"  v-if="(links && links.length) || address || connection || contactPhone">
+    <div class="mt-5" v-if="(links && links.length) || address || connection || contactPhone">
       <div class="font-title font-weight-bold fs-18">
         Контактная информация:
       </div>
@@ -87,49 +87,11 @@
 
     <div class="mt-5">
       <div class="font-title font-weight-bold fs-18">Статистика:</div>
-      <div class="ml-3">
-        <v-row align="center">
-          <div style="min-width: 100px"><kbd class="font-weight-bold font-title fs-14">Занятия</kbd></div>
-          <v-col class="pa-0">
-            <div>
-              Занятий проведено - {{ sessionStats.confirmed }}
-              <v-progress-linear striped height="10" style="max-width: 300px"
-                                 color="green lighten-3"
-                                 rounded
-                                 :value="
-                               sessionStats.confirmed/
-                               (sessionStats.confirmed + sessionStats.cancelled + sessionStats.missed) * 100"
-                                 background-color="grey lighten-2"
-              ></v-progress-linear>
-            </div>
-
-            <div class="mt-2">
-              Занятий отменено - {{ sessionStats.cancelled }}
-              <v-progress-linear striped height="10" style="max-width: 300px"
-                                 color="orange lighten-3"
-                                 rounded
-                                 :value="
-                               sessionStats.cancelled/
-                               (sessionStats.confirmed + sessionStats.cancelled + sessionStats.missed) * 100"
-                                 background-color="grey lighten-2"
-              ></v-progress-linear>
-            </div>
-
-            <div class="mt-2">
-              Занятий пропущено - {{ sessionStats.missed }}
-              <v-progress-linear striped height="10" style="max-width: 300px"
-                                 color="red lighten-3"
-                                 rounded
-                                 :value="
-                               sessionStats.missed/
-                               (sessionStats.confirmed + sessionStats.cancelled + sessionStats.missed) * 100"
-                                 background-color="grey lighten-2"
-              ></v-progress-linear>
-            </div>
-          </v-col>
-        </v-row>
-
-      </div>
+      <any-statistic-sessions class="ml-3"
+                              :missed="sessionStats.missed"
+                              :confirmed="sessionStats.confirmed"
+                              :cancelled="sessionStats.cancelled"
+      ></any-statistic-sessions>
     </div>
 
 
@@ -139,10 +101,10 @@
 <script>
 import UiAvatar from "@/components/UI/UiAvatar";
 import requests from "@/mixins/requests";
+import AnyStatisticSessions from "@/components/Account/Any/Statistic/AnyStatisticSessions";
 
 export default {
   name: "SpecAccountTab",
-  components: {UiAvatar},
   data() {
     return {
       userId: '',
@@ -177,7 +139,7 @@ export default {
 
   methods: {
     getAccountData() {
-      this.getData('http://localhost:3000/spec/account', {handleError: true, handleErrorResponse: true})
+      this.getData('http://localhost:3000/spec/account')
           .then(resp => {
                 this.userId = resp.data.id
                 this.name = resp.data.name
@@ -206,9 +168,6 @@ export default {
           .catch()
     }
   },
-  mounted() {
-    this.getAccountData()
-  },
   watch: {
     '$route'(to, from) {
       if (from.name === 'specEdit') {
@@ -216,7 +175,14 @@ export default {
       }
     }
   },
-  mixins: [requests]
+  components: {
+    AnyStatisticSessions,
+    UiAvatar
+  },
+  mixins: [requests],
+  mounted() {
+    this.getAccountData()
+  },
 }
 </script>
 

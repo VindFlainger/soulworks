@@ -13,7 +13,7 @@
       <div>
         <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
         <component :is="infoDialog?'info-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
-        <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps"></component>
         <component :is="loginDialog?'login-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
         <component :is="findUserDialog?'find-user-dialog':''" v-bind="dynProps"></component>
       </div>

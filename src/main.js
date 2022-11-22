@@ -9,7 +9,7 @@ import Validator from "./plugins/validator";
 
 import textFilters from "@/filters/text.js"
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog";
-import RegistrationDialog from "@/components/Dialogs/RegistrationDialog";
+import RegistrationDialog from "@/components/Dialogs/RegistrationDialog/RegistrationDialog";
 import InfoDialog from "@/components/Dialogs/InfoDialog";
 import LoginDialog from "@/components/Dialogs/LoginDialog";
 import FindUserDialog from "@/components/Dialogs/FindUserDialog";

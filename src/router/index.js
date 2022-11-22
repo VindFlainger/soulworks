@@ -19,6 +19,14 @@ import PublicationsView from "@/views/PublicationsView";
 import AboutView from "@/views/AboutView";
 import SupportView from "@/views/SupportView";
 import SpecAccountEditTab from "@/components/Account/Spec/SpecAccountEditTab";
+import UserAccountTab from "@/components/Account/User/UserAccountTab";
+import UserAccountEditTab from "@/components/Account/User/UserAccountEditTab";
+import UserReviewsTab from "@/components/Account/User/UserReviewsTab";
+import UserClassesTab from "@/components/Account/User/UserClassesTab";
+import UserMaterialsTab from "@/components/Account/User/UserMaterialsTab";
+import UserFavouritesTab from "@/components/Account/User/UserFavouritesTab";
+import ChatsView from "@/views/ChatsView";
+import ChatsArea from "@/components/Chats/ChatsArea";
 
 Vue.use(VueRouter)
 
@@ -83,7 +91,43 @@ const routes = [
         meta: {
             requiredAuth: 'user'
         },
-        children: []
+        children: [
+            {
+                path: 'account',
+                name: 'userAccount',
+                component: UserAccountTab,
+            },
+            {
+                path: 'edit',
+                name: 'userEdit',
+                component: UserAccountEditTab,
+            },
+            {
+                path: 'security',
+                name: 'userSecurity',
+                component: SecurityTab,
+            },
+            {
+                path: 'reviews',
+                name: 'userReviews',
+                component: UserReviewsTab,
+            },
+            {
+                path: 'classes',
+                name: 'userClasses',
+                component: UserClassesTab,
+            },
+            {
+                path: 'materials',
+                name: 'userMaterials',
+                component: UserMaterialsTab,
+            },
+            {
+                path: 'favourites',
+                name: 'userFavourites',
+                component: UserFavouritesTab,
+            },
+        ]
     },
     {
         path: '/profile/:id',
@@ -99,6 +143,18 @@ const routes = [
         path: '/rules',
         name: 'rules',
         component: RulesView
+    },
+    {
+        path: '/chats',
+        name: 'chats',
+        component: ChatsView,
+        children: [
+            {
+                path: ':id',
+                name: 'chat',
+                component: ChatsArea
+            }
+        ]
     },
     {
         path: '/publications',

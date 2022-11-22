@@ -1,79 +1,85 @@
 <template>
   <ui-content-wrapper>
-    <booking-dialog :value="bookingDialogVisible" :spec-id="$route.params.id" @close="bookingDialogVisible = false">
+    <div v-if="loaded">
 
-    </booking-dialog>
+      <booking-dialog :value="bookingDialogVisible"
+                      :spec-id="$route.params.id"
+                      @close="bookingDialogVisible = false"
+      ></booking-dialog>
 
-    <v-card style="border-radius: 15px" color="white" class="fill-height pa-4" elevation="0">
+      <v-card style="border-radius: 15px"
+              color="white"
+              class="fill-height pa-4"
+              elevation="0">
 
-
-      <div>
-        <span class="fs-24 font-weight-light">Профиль пользователя </span>
-        <span class="fs-24 font-weight-bold">{{ profileInfo.name }} {{ profileInfo.surname }}  </span>
-      </div>
-      <v-row class="mt-3">
         <div>
-          <v-avatar size="200" style="border: 1px solid black; box-shadow: 0 0 0 3px white,0 0 0 4px black">
-            <v-img :src="profileInfo.avatar"></v-img>
-          </v-avatar>
-          <div class="mt-4 d-flex flex-column align-center">
-            <ui-confirm-button width="160" class="ma-1">
-              Написать
-            </ui-confirm-button>
-            <ui-confirm-button v-if="profileInfo.role === 'spec' && $store.state.role !== 'spec'"
-                               width="160" class="ma-1"
-                               @click="booking">
-              Записаться
-            </ui-confirm-button>
-          </div>
+          <span class="fs-24 font-weight-light">Профиль пользователя </span>
+          <span class="fs-24 font-weight-bold">{{ name }} {{ surname }}  </span>
         </div>
 
-        <v-col class="pa-0 ml-8">
-          <profile-info-cards
-              :role="profileInfo.role === 'spec'?'Специалист':'Пользователь'"
-              :phone="'+' + profileInfo.number"
-              :email="profileInfo.email"
-              :registration-date="$moment(profileInfo.ragistrationDate).format('ll')"
-              :sex="profileInfo.sex === 'male'?'Мужской':'Женский'"
-              :activity-date="$moment(profileInfo.activityDate).format('lll')"
-              :id="profileInfo._id"
-              :missed="profileInfo.statistic.sessions.missed"
-              :confirmed="profileInfo.statistic.sessions.confirmed"
-              :cancelled="profileInfo.statistic.sessions.cancelled"
-          >
-          </profile-info-cards>
-        </v-col>
-      </v-row>
+        <v-row class="mt-3">
+          <div>
+            <ui-avatar :size="200"
+                       :img-size="256"
+                       :images="avatar?.images"
+            ></ui-avatar>
 
-      <ui-order-bar>
+            <div class="mt-4 d-flex flex-column align-center">
 
-      </ui-order-bar>
+              <ui-confirm-button width="160"
+                                 class="ma-1">
+                Написать
+              </ui-confirm-button>
 
-      <ProfileSpec v-if="profileInfo.role === 'spec'"
-                   :methods="profileInfo.methods"
-                   :specializations="profileInfo.specializations"
-                   :phone="profileInfo.contacts.phone"
-                   :messengers="profileInfo.contacts.messengers"
-                   :links="profileInfo.contacts.links"
-                   :address="profileInfo.contacts.address"
-                   :connection="profileInfo.contacts.connection"
-                   :about-full="profileInfo.about.full"
-                   :category="profileInfo.qualification.category"
-                   :education="profileInfo.qualification.education"
-                   :price="profileInfo.price"
-                   :opportunities="[
-                         profileInfo.opportunities.family?'Семейная консультация':null,
-                         profileInfo.opportunities.teens?'Работа с подростками':null,
-                         profileInfo.opportunities.children?'Работа с детьми':null,
-                         profileInfo.opportunities.intenal?'Очная консультация':null,
+              <ui-confirm-button v-if="role === 'spec' && $store.state.role !== 'spec'"
+                                 width="160" class="ma-1"
+                                 @click="booking">
+                Записаться
+              </ui-confirm-button>
+
+            </div>
+          </div>
+
+          <v-col class="pa-0 ml-8">
+            <profile-info-cards
+                :role="role | role | capitalize"
+                :phone="phone | phone"
+                :email="email"
+                :registration-date="registrationDate"
+                :sex="sex | sex | capitalize"
+                :activity-date="activityDate"
+                :id="id"
+                :missed="sessionStats.missed"
+                :confirmed="sessionStats.confirmed"
+                :cancelled="sessionStats.cancelled"
+            ></profile-info-cards>
+          </v-col>
+        </v-row>
+
+
+        <profile-spec v-if="role === 'spec'"
+                      :methods="methods"
+                      :specializations="specializations"
+                      :phone="contactPhone"
+                      :messengers="messengers"
+                      :links="links"
+                      :address="address"
+                      :connection="connection"
+                      :about-full="aboutFull"
+                      :category="category"
+                      :education="education"
+                      :price="price"
+                      :opportunities="[
+                         opportunities.family?'Семейная консультация':null,
+                         opportunities.teens?'Работа с подростками':null,
+                         opportunities.children?'Работа с детьми':null,
+                         opportunities.intenal?'Очная консультация':null,
                    ].filter(el => el)"
-                   class="mt-3"
-      >
+                      class="mt-3"
+        ></profile-spec>
+      </v-card>
+    </div>
 
-      </ProfileSpec>
-
-
-    </v-card>
   </ui-content-wrapper>
 </template>
 
@@ -82,17 +88,43 @@ import UiContentWrapper from "@/components/UI/UiContentWrapper";
 import ProfileInfoCards from "@/components/Profile/ProfileInfoCards";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import ProfileSpec from "@/components/Profile/ProfileSpec";
-import UiOrderBar from "@/components/UI/UiOrderBar";
 import BookingDialog from "@/components/Dialogs/BookingDialog";
 import requests from "@/mixins/requests";
+import UiAvatar from "@/components/UI/UiAvatar";
+import {role, sex} from "@/filters/logic";
 
 export default {
   name: "UserProfileView",
-  components: {BookingDialog, UiOrderBar, ProfileSpec, UiConfirmButton, ProfileInfoCards, UiContentWrapper},
   data() {
     return {
+      loaded: false,
+
       profileInfo: undefined,
-      bookingDialogVisible: false
+      bookingDialogVisible: false,
+      avatar: '',
+      name: '',
+      surname: '',
+      phone: '',
+      role: '',
+      email: '',
+      registrationDate: '',
+      activityDate: '',
+      id: '',
+      sessionStats: {},
+      sex: '',
+
+      methods: [],
+      specializations: [],
+      contactPhone: '',
+      messengers: [],
+      links: [],
+      address: '',
+      connection: '',
+      aboutFull: '',
+      opportunities: {},
+      category: {},
+      education: [],
+      price: {}
     }
   },
   methods: {
@@ -100,9 +132,37 @@ export default {
       this.getData(`http://localhost:3000/data/about?userId=${this.$route.params.id}`)
           .then(resp => {
             this.profileInfo = resp.data
+            this.avatar = resp.data.avatar
+            this.name = resp.data.name
+            this.surname = resp.data.surname
+            this.phone = resp.data.number
+            this.role = resp.data.role
+            this.email = resp.data.email
+            this.registrationDate = resp.data.registrationDate
+            this.activityDate = resp.data.activityDate
+            this.id = resp.data._id
+            this.sessionStats = resp.data.statistic.sessions
+            this.sex = resp.data.sex
+
+
+            if (resp.data.role === 'spec') {
+              this.methods = resp.data.methods
+              this.specializations = resp.data.specializations
+              this.contactPhone = resp.data.contacts.phone
+              this.messengers = resp.data.contacts.messengers
+              this.links = resp.data.contacts.links
+              this.address = resp.data.contacts.address
+              this.connection = resp.data.contacts.connection
+              this.aboutFull = resp.data.about.full
+              this.category = resp.data.qualification.category
+              this.education = resp.data.qualification.education
+              this.price = resp.data.price
+            }
+
+            this.loaded = true
           })
           .catch(err => {
-            if(err.response.data.code === 3 || err.response.data.code === 1){
+            if (err.response.data.code === 3 || err.response.data.code === 1) {
               this.$router.push({name: 'notfound'})
             }
           })
@@ -115,10 +175,22 @@ export default {
       }
     }
   },
+  components: {
+    UiAvatar,
+    BookingDialog,
+    ProfileSpec,
+    UiConfirmButton,
+    ProfileInfoCards,
+    UiContentWrapper
+  },
   mounted() {
     this.getProfileInfo()
   },
-  mixins: [requests]
+  mixins: [requests],
+  filters: {
+    role,
+    sex
+  }
 }
 </script>
 

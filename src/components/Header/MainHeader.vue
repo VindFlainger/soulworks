@@ -27,7 +27,7 @@
 
           <div class="d-flex">
 
-            <v-btn icon class="mr-6">
+            <v-btn icon class="mr-6" @click="$router.push({name: 'chats'})">
               <v-icon class="fs-28 black--text header__icon">mdi-message-outline</v-icon>
             </v-btn>
 

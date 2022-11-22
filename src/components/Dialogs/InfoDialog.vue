@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="true" @click:outside="$root.$emit('close-info')" max-width="400">
+  <base-dialog :value="true" @close="$root.$emit('close-info')" max-width="400">
     <v-card class="pa-3 confirm__main" elevation="0" color="transparent" >
 
       <div class="pa-4">
@@ -25,12 +25,14 @@
       </v-card-actions>
 
     </v-card>
-  </v-dialog>
+  </base-dialog>
 </template>
 
 <script>
+import BaseDialog from "@/components/Dialogs/BaseDialog";
 export default {
   name: "InfoDialog",
+  components: {BaseDialog},
   props: {
     title: {
       type: String,
