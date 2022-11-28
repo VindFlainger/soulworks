@@ -111,6 +111,7 @@ import SelectInput from "@/components/UI/Inputs/SelectInput";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import BaseDialog from "@/components/Dialogs/BaseDialog";
+import requests from "@/mixins/requests";
 
 export default {
   name: "BookingDialog",
@@ -162,6 +163,7 @@ export default {
       }
     },
   },
+  mixins: [requests]
 }
 </script>
 

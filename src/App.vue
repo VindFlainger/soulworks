@@ -21,7 +21,7 @@
       <message-box></message-box>
 
     </v-main>
-    <main-footer>
+    <main-footer v-if="footerVisible">
 
     </main-footer>
   </v-app>
@@ -44,6 +44,7 @@ export default {
       loginDialog: false,
       findUserDialog: false,
       dynProps: {},
+      footerVisible: true
     }
   },
   mounted() {
@@ -88,6 +89,12 @@ export default {
     })
     this.$root.$on('close-find-user', () => {
       this.findUserDialog = false
+    })
+    this.$root.$on('close-footer', () => {
+      this.footerVisible = false
+    })
+    this.$root.$on('show-footer', () => {
+      this.footerVisible = true
     })
   },
 }

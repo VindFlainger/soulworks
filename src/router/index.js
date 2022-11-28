@@ -26,7 +26,7 @@ import UserClassesTab from "@/components/Account/User/UserClassesTab";
 import UserMaterialsTab from "@/components/Account/User/UserMaterialsTab";
 import UserFavouritesTab from "@/components/Account/User/UserFavouritesTab";
 import ChatsView from "@/views/ChatsView";
-import ChatsArea from "@/components/Chats/ChatsArea";
+import ChatArea from "@/components/Chats/ChatArea";
 
 Vue.use(VueRouter)
 
@@ -152,7 +152,7 @@ const routes = [
             {
                 path: ':id',
                 name: 'chat',
-                component: ChatsArea
+                component: ChatArea
             }
         ]
     },
@@ -177,6 +177,7 @@ const routes = [
         component: NotFoundView
     }
 ]
+
 
 const router = new VueRouter({
     mode: 'history',
