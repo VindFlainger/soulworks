@@ -1,24 +1,24 @@
 <template>
-    <ui-content-wrapper >
-      <v-row class="fill-height">
-        <chats-list :chats="chats"
-                    @pick="$router.push({name: 'chat', params: {id: $event}})"
+  <ui-content-wrapper>
+    <v-row style="height: calc(100vh - 142px); overflow: hidden">
+      <chats-list :chats="chats"
+                  @pick="$router.push({name: 'chat', params: {id: $event}})"
+      ></chats-list>
 
-        ></chats-list>
-        <v-col class="pa-0 ml-2">
-            <keep-alive>
-              <router-view :key="$route.params.id"></router-view>
-            </keep-alive>
-        </v-col>
+      <keep-alive>
+        <router-view :key="$route.params.id" class="flex-grow-1 ml-3" style="height: inherit"></router-view>
+      </keep-alive>
 
-      </v-row>
-    </ui-content-wrapper>
+
+    </v-row>
+  </ui-content-wrapper>
 </template>
 
 <script>
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
 import ChatsList from "@/components/Chats/ChatsList";
 import requests from "@/mixins/requests";
+
 
 export default {
   name: "ChatsView",

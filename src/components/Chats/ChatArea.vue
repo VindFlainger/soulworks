@@ -1,5 +1,5 @@
 <template>
-  <v-card color="white" class="fill-height bordered pr-4 pl-4" outlined v-if="user">
+  <v-card color="white" class="bordered pr-4 pl-4" outlined v-if="user">
 
     <v-row align="center" class="pa-1 mt-2" style="border-radius: 15px; border: 1px solid #616161">
       <ui-avatar :images="user.avatar?.images" :size="45" :img-size="64"></ui-avatar>
@@ -16,12 +16,15 @@
       </v-btn>
     </v-row>
 
-    <chat-area-list :messages="messages"
+    <chat-area-list :history-messages="historyMessages"
+                    :loading-messages="loadingMessages"
+                    :viewed-offset="viewedOffset"
                     :user-id="user._id"
-                    class="pb-10 mt-1"
-                    style="max-height: 560px; overflow-y: auto"
+                    @load:previous="loadPreviousMessages"
+                    @load:next="loadNextMessages"
+                    :loading="loading"
+                    class="mt-1"
     >
-
     </chat-area-list>
     <div class="chats-area__message-input pt-1 pb-1 pr-4 pl-4">
       <v-text-field
@@ -30,9 +33,12 @@
           hide-details
           style="border-radius: 15px"
           color="black"
+          v-model="message"
+          @keydown.enter="sendMessage"
       >
         <template v-slot:append>
-          <v-btn icon class="ma-0">
+          <v-btn icon class="ma-0"
+                 @click="sendMessage">
             <v-icon color="black">mdi-send</v-icon>
           </v-btn>
         </template>
@@ -55,26 +61,60 @@ export default {
       messages: [],
       offset: 0,
       totalOffset: 0,
-      user: {}
+      user: {},
+      message: '',
+      loading: true
     }
   },
   methods: {
-    getMessages() {
-      this.getData(`http://localhost:3000/any/chats/messages?userId=${this.$route.params.id}`)
-          .then(resp => {
-            this.messages.push(...resp.data)
-          })
-    },
     getUser() {
       this.getData(`http://localhost:3000/data/short?userId=${this.$route.params.id}`)
           .then(resp => {
             this.user = resp.data
           })
-    }
+    },
+    loadPreviousMessages() {
+      this.loading = true
+      this.$store.dispatch('loadPreviousHistoryMessages', this.$route.params.id)
+          .then(() => this.loading = false)
+    },
+    loadNextMessages() {
+      this.loading = true
+      this.$store.dispatch('loadNextHistoryMessages', this.$route.params.id)
+          .then(() => this.loading = false)
+    },
+    sendMessage() {
+      const tmpMessage = {
+        text: this.message,
+        to: this.$route.params.id,
+        tmpId: Date.now()
+      }
+
+      this.$store.dispatch('addLoadingMessage', tmpMessage)
+
+      this.$socket.emit('message:add', this.$route.params.id, this.message, (message) => {
+        this.$store.dispatch('delLoadingMessage', tmpMessage)
+        this.$store.dispatch('addNewMessage', message)
+      })
+      this.message = ''
+    },
+
   },
   mounted() {
     this.getUser()
-    this.getMessages()
+    this.$store.dispatch('loadHistory', this.$route.params.id)
+        .then(() => this.loading = false)
+  },
+  computed: {
+    historyMessages() {
+      return this.$store.state.chat.chats[this.$route.params.id]?.historyMessages || []
+    },
+    loadingMessages() {
+      return this.$store.state.chat.chats[this.$route.params.id]?.loadingMessages || []
+    },
+    viewedOffset(){
+      return this.$store.state.chat.chats[this.$route.params.id]?.viewedOffset || 0
+    }
   },
   mixins: [requests]
 }

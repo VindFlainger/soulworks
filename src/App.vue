@@ -54,6 +54,9 @@ export default {
   },
   created() {
     this.$store.dispatch('setAuthData')
+      .then(()=>{
+        this.$store.dispatch('getAuthedContent')
+      })
 
     this.$root.$on('show-confirm', (props = {}) => {
       this.dynProps = props
@@ -96,7 +99,7 @@ export default {
     this.$root.$on('show-footer', () => {
       this.footerVisible = true
     })
-  },
+  }
 }
 </script>
 

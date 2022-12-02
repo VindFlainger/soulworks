@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import content from "@/store/content";
 import params from "@/store/params";
+import chat from "@/store/chat";
 
 Vue.use(Vuex)
 
@@ -13,6 +14,7 @@ export default new Vuex.Store({
             token: null,
             email: null,
             role: null,
+            id: null,
             sessionEnd: 0
         },
         getters: {
@@ -42,6 +44,10 @@ export default new Vuex.Store({
             setRole(state, val) {
                 state.role = val
                 localStorage.setItem('role', val)
+            },
+            setId(state, val) {
+                state.id = val
+                localStorage.setItem('id', val)
             }
         },
         actions: {
@@ -57,15 +63,17 @@ export default new Vuex.Store({
                 const email = localStorage.getItem('email')
                 const token = localStorage.getItem('token')
                 const role = localStorage.getItem('role')
-
+                const id = localStorage.getItem('id')
                 state.email = email
                 state.token = token
                 state.role = role
-            }
+                state.id = id
+            },
         },
         modules: {
-            content: content,
-            params: params
+            content,
+            params,
+            chat,
         }
     },
 )

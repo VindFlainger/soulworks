@@ -96,6 +96,7 @@ export default {
               this.$store.commit('setToken', resp.data.token)
               this.$store.commit('setEmail', resp.data.email)
               this.$store.commit('setRole', resp.data.role)
+              this.$store.commit('setId', resp.data.id)
               this.$root.$emit('close-login')
 
               return this.getSessionToken()

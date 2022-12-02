@@ -26,10 +26,22 @@
           </div>
 
           <div class="d-flex">
+            <v-badge v-if="$store.getters.isLogin"
+                     class="mr-6"
+                     overlap
+                     color="green lighten-3"
 
-            <v-btn icon class="mr-6" @click="$router.push({name: 'chats'})">
-              <v-icon class="fs-28 black--text header__icon">mdi-message-outline</v-icon>
-            </v-btn>
+            >
+              <v-btn @click="$router.push({name: 'chats'})"
+                     icon
+              >
+                <v-icon class="fs-28 black--text header__icon">mdi-message-outline</v-icon>
+              </v-btn>
+              <template v-slot:badge>
+                {{ $store.state.chat.newMessagesCount }}
+              </template>
+            </v-badge>
+
 
             <header-user-menu>
               <v-badge :value="$store.getters.isLogin" overlap color="green lighten-3" dot offset-x="14" offset-y="14">
