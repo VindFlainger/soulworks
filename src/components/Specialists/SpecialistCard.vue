@@ -6,9 +6,7 @@
         <template v-slot:badge>
           <v-icon size="22">mdi-star</v-icon>
         </template>
-        <v-avatar size="150">
-          <v-img :src="specialist.avatar"></v-img>
-        </v-avatar>
+        <ui-avatar :img-size="256" :size="150" :images="specialist.avatar?.images"></ui-avatar>
       </v-badge>
 
       <v-col>
@@ -28,7 +26,7 @@
           </span>
 
           <span>
-            был(а) {{ specialist.active | activity }}
+           {{ specialist.active | online(specialist.sex) }}
           </span>
         </v-card-subtitle>
 
@@ -143,10 +141,12 @@
 <script>
 import UiOrderBar from "@/components/UI/UiOrderBar";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
+import UiAvatar from "@/components/UI/UiAvatar";
+import {online} from "@/filters/logic";
 
 export default {
   name: "SpecialistCard",
-  components: {UiDefaultButton, UiOrderBar},
+  components: {UiAvatar, UiDefaultButton, UiOrderBar},
   props: {
     specialist: Object
   },
@@ -158,6 +158,9 @@ export default {
         this.$emit('open-booking', this.specialist._id)
       }
     }
+  },
+  filters: {
+    online
   }
 
 }

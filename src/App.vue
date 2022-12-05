@@ -6,6 +6,10 @@
     <v-main style="min-height: 100vh">
       <router-view></router-view>
 
+      <keep-alive>
+        <router-view name="chat" :key="$route.params.id"></router-view>
+      </keep-alive>
+
       <alerts-box></alerts-box>
 
       <main-loader></main-loader>

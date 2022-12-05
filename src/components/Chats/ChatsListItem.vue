@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" style="width: 320px; cursor: pointer" class="white pa-1 bordered" v-on="$listeners">
+  <v-row align="center" style="cursor: pointer" class="white pa-1 bordered" v-on="$listeners">
     <v-badge overlap dot bottom offset-x="10" offset-y="12">
       <ui-avatar :images="avatar?.images"
                  :img-size="64"

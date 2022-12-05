@@ -34,6 +34,23 @@ export const date = v => {
         return moment(v).format('HH:mm')
     }
     if (diffD < 7) return moment(v).format('dd')
-    return moment(v).format('l')
+    return moment(v).format('DD.MM.YYYY')
+}
+
+export const online = (v, sex) => {
+    const prefix = (()=>{
+        switch (sex){
+            case 'male': return 'был'
+            case 'female': return 'была'
+            default: return 'был(а)'
+        }
+    })()
+    const diffD = moment().diff(v, 'days')
+    if (!diffD) {
+        if (moment().day() !== moment(v).day() ) return `${prefix} вчера}`
+        return `${prefix} сегодня в ${moment(v).format('HH:mm')}`
+    }
+    if (diffD < 7) return `${prefix} в ${moment(v).format('dd')}`
+    return `${prefix} ${moment(v).format('DD.MM.YYYY')}`
 }
 

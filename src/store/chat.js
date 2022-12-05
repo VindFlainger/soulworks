@@ -20,6 +20,7 @@ export default {
                     firstHistoryMessagesOffset: null,
                     lastHistoryMessagesOffset: null,
                     viewedOffset: null, // for marking MY messages read by SMB (used for performance to prevent getting read flags)
+                    startLastOffset: null,
                     newMessages: [],    // storage for new messages received by sockets
                     firstNewOffset: null, // first  received by sockets message offset
                     loadingMessages: [], // temporary storage for sent by not confirmed messages
@@ -65,6 +66,9 @@ export default {
         },
         setViewedOffset(state, [userId, viewedOffset]) {
             state.chats[userId].viewedOffset = viewedOffset
+        },
+        setStartLastOffset(state, [userId, lastOffset]) {
+            state.chats[userId].startLastOffset = lastOffset
         },
         appendLoadingMessage(state, [userId, message]) {
             state.chats[userId].loadingMessages.push(message)
@@ -179,6 +183,8 @@ export default {
                         const newOffset = state.chats[userId].firstNewOffset
                         const readOffset = resp.data.readOffset
                         commit('setViewedOffset', [userId, resp.data.viewedOffset])
+                        commit('setStartLastOffset', [userId, resp.data.lastOffset])
+
                         if (newOffset && newOffset - readOffset <= state.limit) {
                             axios.get(`http://localhost:3000/any/chats/messages`, {
                                 params: {

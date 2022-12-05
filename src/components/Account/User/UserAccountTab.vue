@@ -56,8 +56,6 @@ export default {
       sex: '',
       role: '',
       phone: '',
-
-
       sessionStats: ''
     }
   },

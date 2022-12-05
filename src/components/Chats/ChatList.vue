@@ -1,8 +1,11 @@
 <template>
   <div ref="container" class="chat-area-list__wrapper">
-    <div class="chat-area-list__top-observer" v-observer="loadPrevious"></div>
 
-    <div v-for="(message, index) in historyMessages" :key="message._id" class="fs-14">
+    <div class="chat-area-list__top-observer"
+         v-observer:top="loadPrevious">
+    </div>
+
+    <div v-for="(message, index) in historyMessages" :key="message._id" class="fs-14" :offset="message.offset">
       <div v-if="!$moment(message.createdAt).isSame(historyMessages[index - 1]?.createdAt, 'day')"
            class="text-center pa-2"
       >
@@ -28,11 +31,15 @@
       </v-row>
     </div>
 
-    <div v-show="historyMessages.length && !loading" class="chat-area-list__bottom-observer"
-         v-observer="loadPrevious"></div>
+    <div
+        v-if="historyMessages[historyMessages.length-1]?.offset < lastOffset"
+        v-show="historyMessages.length && !loading"
+        class="chat-area-list__bottom-observer"
+        v-observer:bottom="loadNext">
+    </div>
 
 
-    <div v-for="message in loadingMessages" :key="message.tmpId" class="fs-14">
+    <div  v-for="message in loadingMessages" :key="message.tmpId" class="fs-14">
       <v-row class="message mb-2">
         <v-spacer></v-spacer>
         <div class="pa-2 pr-15 blue lighten-4 rounded d-inline-block" style="max-width: 70%; position:relative;">
@@ -50,12 +57,13 @@
 import observer from "@/directives/observer";
 
 export default {
-  name: "ChatAreaList",
+  name: "ChatList",
   data() {
     return {
       savedScrollHeight: 0,
       savedScrollPosition: 0,
-      lazyLoading: false
+      lazyLoading: false,
+      scrollBehavior: 'next'
     }
   },
   props: {
@@ -63,7 +71,8 @@ export default {
     historyMessages: Array,
     userId: String,
     loading: Boolean,
-    viewedOffset: Number
+    viewedOffset: Number,
+    lastOffset: Number
   },
   methods: {
     scrollDown() {
@@ -71,13 +80,18 @@ export default {
     },
     loadPrevious() {
       if (!this.lazyLoading) {
+        this.scrollBehavior = 'previous'
         this.lazyLoading = true
         this.$emit('load:previous')
       }
     },
     loadNext() {
-      this.$emit('load:next')
-    }
+      if (!this.lazyLoading) {
+        this.scrollBehavior = 'next'
+        this.lazyLoading = true
+        this.$emit('load:next')
+      }
+    },
 
   },
   watch: {
@@ -85,11 +99,20 @@ export default {
       this.scrollDown()
     },
     historyMessages() {
-      this.savedScrollHeight = this.$refs.container.scrollHeight
-      this.savedScrollPosition = this.$refs.container.scrollTop
-      this.$nextTick(() => {
-        this.$refs.container.scrollTo({top: this.$refs.container.scrollHeight - this.savedScrollHeight + this.savedScrollPosition})
-      })
+      if (this.scrollBehavior === 'previous'){
+        this.savedScrollHeight = this.$refs.container.scrollHeight
+        this.savedScrollPosition = this.$refs.container.scrollTop
+        this.$nextTick(() => {
+          this.$refs.container.scrollTo({top: this.$refs.container.scrollHeight - this.savedScrollHeight + this.savedScrollPosition})
+        })
+      }
+
+      if (this.scrollBehavior === 'next'){
+        this.savedScrollPosition = this.$refs.container.scrollTop
+        this.$nextTick(() => {
+          this.$refs.container.scrollTo({top:  this.savedScrollPosition})
+        })
+      }
     },
     loadingMessages() {
       this.$nextTick(() => {
@@ -128,14 +151,10 @@ export default {
 }
 
 .chat-area-list__top-observer {
-  position: absolute;
-  left: 0;
-  right: 0;
+  height: 1px;
 }
 
 .chat-area-list__bottom-observer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
+  height: 1px;
 }
 </style>

@@ -1,16 +1,17 @@
 <template>
   <ui-content-wrapper>
-    <v-row style="height: calc(100vh - 142px); overflow: hidden">
-      <chats-list :chats="chats"
-                  @pick="$router.push({name: 'chat', params: {id: $event}})"
-      ></chats-list>
-
-      <keep-alive>
-        <router-view :key="$route.params.id" class="flex-grow-1 ml-3" style="height: inherit"></router-view>
-      </keep-alive>
-
-
-    </v-row>
+    <div class="chats-wrapper">
+      <v-row>
+        <div class="col-3">
+          <!--TODO: add bookmarks-->
+          Bookmarks
+        </div>
+        <chats-list :chats="chats"
+                    class="col-6"
+                    @pick="$router.push({name: 'chat', params: {id: $event}})"
+        ></chats-list>
+      </v-row>
+    </div>
   </ui-content-wrapper>
 </template>
 
@@ -49,5 +50,9 @@ export default {
 </script>
 
 <style scoped>
-
+.chats-wrapper {
+  height: calc(100vh - 142px);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
 </style>

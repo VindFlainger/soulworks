@@ -1,7 +1,7 @@
 <template>
   <v-row align="center">
-    <!-- TODO: Implement prefixes to links-->
-    <a v-for="link in links" :key="link.name" :href="link.link">
+    <a v-for="link in links" :key="link.name"
+       :href="linkPrefixes.find(lp => lp.network === link.name).link + link.link">
       <v-img
           :src="require(`@/assets/images/networks/${link.name}.png`)"
           :max-width="size" :height="size"
@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
   name: "UiSocialLinks",
   props: {
@@ -20,6 +22,11 @@ export default {
       type: [Number, String],
       default: 25
     }
+  },
+  computed: {
+    ...mapState('params', {
+      linkPrefixes: state => state.linkPrefixes
+    })
   }
 }
 </script>

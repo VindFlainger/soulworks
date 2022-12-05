@@ -1,4 +1,5 @@
 export default {
+    namespaced: true,
     state: {
         opportunities: [
             {
@@ -41,7 +42,32 @@ export default {
                 value: 'none',
                 text: 'не указан'
             },
-
+        ],
+        linkPrefixes: [
+            {
+                network: 'vk',
+                link: 'https://vk.com/'
+            },
+            {
+                network: 'facebook',
+                link: 'https://www.facebook.com/profile.php?id='
+            },
+            {
+                network: 'telegram',
+                link: 'https://t.me/'
+            },
+            {
+                network: 'whatsapp',
+                link: 'https://wa.me/'
+            },
+            {
+                network: 'instagram',
+                link: 'https://www.instagram.com/'
+            },
+            {
+                network: 'viber',
+                link: ''
+            },
         ]
     }
 }
