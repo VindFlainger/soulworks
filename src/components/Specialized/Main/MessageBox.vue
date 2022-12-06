@@ -1,5 +1,5 @@
 <template>
-  <div style="position:fixed; bottom: 5px; right: 15px; z-index: 1000" v-if="$store.state.alerts.length">
+  <div style="position:fixed; bottom: 5px; right: 15px; z-index: 1000">
     <transition-group name="alerts">
       <v-alert v-for="message in messages" :key="message.id" class="pa-2" style="background: rgba(255,0,0,0)">
         <v-card

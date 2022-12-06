@@ -1,220 +1,265 @@
 const axios = require('axios').default
 axios.defaults.withCredentials = true
 import Vue from 'vue'
-import socket from "../sockets/index";
+import socket from '../sockets/index'
+
 
 export default {
     state: {
-        chats: {}, newMessagesCount: 0, limit: 30 // only even variables!!!
-    }, mutations: {
-        incNewMessagesCount(state, val) {
-            state.newMessagesCount += val ?? 1
-        },
-        decNewMessagesCount(state, val) {
-            state.newMessagesCount -= val ?? 1
+        chats: {},
+        limit: 30,
+        newMessagesCount: 0
+
+    },
+    mutations: {
+        setNewMessagesCount(state, count) {
+            state.newMessagesCount = count
         },
         createChatIfNotExists(state, userId) {
             if (!state.chats[userId]) {
                 Vue.set(state.chats, userId, {
-                    historyMessages: [],
-                    firstHistoryMessagesOffset: null,
-                    lastHistoryMessagesOffset: null,
-                    viewedOffset: null, // for marking MY messages read by SMB (used for performance to prevent getting read flags)
-                    startLastOffset: null,
-                    newMessages: [],    // storage for new messages received by sockets
-                    firstNewOffset: null, // first  received by sockets message offset
-                    loadingMessages: [], // temporary storage for sent by not confirmed messages
-                    newMessagesCount: 0,
+                    isInit: false,
+                    finalOffset: null,
+                    viewedOffset: null,
+                    readOffset: null,
+
+                    messages: [],
+                    firstOffset: null,
+                    lastOffset: null,
+
+                    newMessages: [],
+                    newFirstOffset: null,
+
+                    loadingMessages: []
                 })
             }
         },
-        addUserNewMessage(state, [userId, message]) {
-            if (state.chats[userId].firstNewOffset === null) {
-                state.chats[userId].firstNewOffset = message.offset
-            }
-            state.chats[userId].newMessages.push(message)
-            state.chats[userId].newMessagesCount++
-        },
-        addMyNewMessage(state, [userId, message]) {
-            if (state.chats[userId].firstNewOffset === null) {
-                state.chats[userId].firstNewOffset = message.offset
-            }
-            state.chats[userId].newMessages.push(message)
-        },
-        prependHistoryMessages(state, [userId, messages]) {
-            if (messages.length) {
-                state.chats[userId].firstHistoryMessagesOffset = messages[0].offset
-                state.chats[userId].historyMessages.unshift(...messages)
+        setFinalOffset(state, [userId, offset]) {
+            if (state.chats[userId]) {
+                state.chats[userId].finalOffset = offset
             }
         },
-        appendHistoryMessages(state, [userId, messages, resetRO]) {
-            if (messages.length) {
-                state.chats[userId].lastHistoryMessagesOffset = messages[messages.length - 1].offset
-                state.chats[userId].historyMessages.push(...messages)
-
-                if (resetRO) {
-                    socket.emit('message:read', userId, state.chats[userId].lastHistoryMessagesOffset)
-                }
+        setViewedOffset(state, [userId, offset]) {
+            if (state.chats[userId]) {
+                state.chats[userId].viewedOffset = offset
             }
         },
-        addHistoryMessages(state, [userId, messages]) {
-            if (messages.length) {
-                state.chats[userId].firstHistoryMessagesOffset = messages[0].offset
-                state.chats[userId].lastHistoryMessagesOffset = messages[messages.length - 1].offset
-                state.chats[userId].historyMessages.push(...messages)
+        setReadOffset(state, [userId, offset]) {
+            if (state.chats[userId]) {
+                state.chats[userId].readOffset = offset
             }
         },
-        setViewedOffset(state, [userId, viewedOffset]) {
-            state.chats[userId].viewedOffset = viewedOffset
+        setInitState(state, userId) {
+            if (state.chats[userId]) {
+                state.chats[userId].isInit = true
+            }
         },
-        setStartLastOffset(state, [userId, lastOffset]) {
-            state.chats[userId].startLastOffset = lastOffset
+        initMessages(state, [userId, messages]) {
+            if (state.chats[userId]) {
+                state.chats[userId].messages.push(...messages)
+                state.chats[userId].firstOffset = messages[0]?.offset ?? 0
+                state.chats[userId].lastOffset = messages[messages.length - 1]?.offset ?? 0
+            }
         },
-        appendLoadingMessage(state, [userId, message]) {
-            state.chats[userId].loadingMessages.push(message)
+        dropMessages(state, userId) {
+            if (state.chats[userId]) {
+                state.chats[userId].messages = []
+                state.chats[userId].firstOffset = 0
+                state.chats[userId].lastOffset = 0
+            }
         },
-        delLoadingMessage(state, [userId, tmpId]) {
-            state.chats[userId].loadingMessages = state.chats[userId].loadingMessages.filter(msg => msg.tmpId !== tmpId)
-        }
+        prependMessages(state, [userId, messages]) {
+            if (state.chats[userId]?.isInit && messages.length) {
+                state.chats[userId].messages.unshift(...messages)
+                state.chats[userId].firstOffset = messages[0].offset ?? 0
+            }
+        },
+        appendMessages(state, [userId, messages]) {
+            if (state.chats[userId]?.isInit && messages.length) {
+                state.chats[userId].messages.push(...messages)
+                state.chats[userId].lastOffset = messages[messages.length - 1].offset ?? 0
+            }
+        },
+        appendNewMessage(state, [userId, message]) {
+            if (state.chats[userId]) {
+                state.chats[userId].newMessages.push(message)
+            }
+        },
+        setNewFirstOffset(state, [userId, offset]) {
+            if (state.chats[userId]) {
+                state.chats[userId].newFirstOffset = offset
+            }
+        },
+        addLoadingMessage(state, [userId, message]) {
+            if (state.chats[userId]) {
+                state.chats[userId].loadingMessages.push(message)
+            }
+        },
+        delLoadingMessage(state, [userId, id]) {
+            if (state.chats[userId]) {
+                state.chats[userId].loadingMessages = state.chats[userId].loadingMessages.filter(msg => msg._id !== id)
+            }
+        },
     },
     actions: {
         getAuthedContent({commit}) {
             axios.get('http://localhost:3000/any/chats/allNewMessagesCount')
                 .then(resp => {
-                    commit('incNewMessagesCount', resp.data)
+                    commit('setNewMessagesCount', resp.data)
                 })
         },
-        addNewMessage({state, commit, rootState}, message) {
-            const userId = message.to === rootState.id ? message.from : message.to
-            const isMy = rootState.id === message.from
-            commit('createChatIfNotExists', userId)
-
-            if (!isMy) {
-                commit('incNewMessagesCount')
-                commit('addUserNewMessage', [message.from, message])
-            } else {
-                commit('addMyNewMessage', [message.to, message])
-            }
-
-            if (state.chats[userId].lastHistoryMessagesOffset < message.offset) {
-                commit('appendHistoryMessages', [userId, [message], !isMy])
-            }
-        },
-        addLoadingMessage({commit}, message) {
-            const userId = message.to
-            commit('createChatIfNotExists', userId)
-            commit('appendLoadingMessage', [userId, message])
-        },
-        delLoadingMessage({commit}, message) {
-            const userId = message.to
-            commit('delLoadingMessage', [userId, message.tmpId])
-        },
-        // must be called only after loadHistory (init function)
-        loadPreviousHistoryMessages({state, commit}, userId) {
+        initChat({state, commit}, userId) {
             return new Promise((resolve, reject) => {
-                if (!state.chats[userId].historyMessages.length) return resolve()
+                commit('createChatIfNotExists', userId)
 
-                const historyOffset = state.chats[userId].firstHistoryMessagesOffset
-                const limit = historyOffset - state.limit < 0 ? historyOffset : state.limit
-                const offset = historyOffset - state.limit < 0 ? 0 : historyOffset - state.limit
-                if (limit)
-                    axios.get(`http://localhost:3000/any/chats/messages`, {
-                        params: {
-                            userId,
-                            offset,
-                            limit
-                        }
-                    })
-                        .then(resp => {
-                            commit('prependHistoryMessages', [userId, resp.data])
-                            resolve()
-                        })
-                        .catch(err => reject(err))
-                else resolve()
-            })
-        },
-        // must be called only after loadHistory (init function)
-        loadNextHistoryMessages({state, commit}, userId) {
-            return new Promise((resolve, reject) => {
-                const newOffset = state.chats[userId].firstNewOffset
-                const historyOffset = state.chats[userId].lastHistoryMessagesOffset
+                axios.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`)
+                    .then(resp => {
+                        const readOffset = resp.data.readOffset
+                        const viewedOffset = resp.data.viewedOffset
+                        const finalOffset = resp.data.finalOffset
 
-                if (newOffset && newOffset - historyOffset <= state.limit) {
-                    if (newOffset > historyOffset + 1) {
+                        commit('setReadOffset', [userId, readOffset])
+                        commit('setViewedOffset', [userId, viewedOffset])
+                        commit('setFinalOffset', [userId, finalOffset])
+
                         axios.get(`http://localhost:3000/any/chats/messages`, {
                             params: {
                                 userId,
-                                offset: historyOffset + 1,
-                                limit: newOffset - historyOffset - 1
+                                offset: (readOffset - state.limit / 2 + 1) < 0?0:readOffset - state.limit / 2 + 1,
+                                limit: state.limit / 2
                             }
                         })
                             .then(resp => {
-                                commit('appendHistoryMessages', [userId, [...resp.data, ...state.chats[userId].newMessages]])
+                                commit('initMessages', [userId, resp.data])
+                                commit('setInitState', userId)
                                 resolve()
                             })
                             .catch(err => reject(err))
-                    } else {
-                        commit('appendHistoryMessages', [userId, [...state.chats[userId].newMessages]])
-                        resolve()
-                    }
+                    })
+            })
+        },
+        loadChatLatestMessages({state, commit}, userId) {
+            return new Promise((resolve, reject) => {
+                axios.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`)
+                    .then(resp => {
+                        const viewedOffset = resp.data.viewedOffset
+                        const finalOffset = resp.data.finalOffset
 
-                } else {
+                        commit('setReadOffset', [userId, finalOffset])
+                        commit('setViewedOffset', [userId, viewedOffset])
+                        commit('setFinalOffset', [userId, finalOffset])
+
+                        axios.get(`http://localhost:3000/any/chats/messages`, {
+                            params: {
+                                userId,
+                                offset: finalOffset >= state.limit ? finalOffset - state.limit + 1 : 0,
+                                limit: state.limit
+                            }
+                        })
+                            .then(resp => {
+                                commit('dropMessages')
+                                commit('initMessages', [userId, resp.data])
+                                resolve()
+                            })
+                            .catch(err => reject(err))
+                    })
+            })
+        },
+        loadChatPreviousMessages({state, commit}, userId) {
+            return new Promise((resolve, reject) => {
                     axios.get(`http://localhost:3000/any/chats/messages`, {
                         params: {
                             userId,
-                            offset: historyOffset + 1,
+                            offset: state.chats[userId].firstOffset - state.limit,
                             limit: state.limit
                         }
                     })
                         .then(resp => {
-                            commit('appendHistoryMessages', [userId, resp.data])
+                            commit('prependMessages', [userId, resp.data])
+                            resolve()
+                        })
+                        .catch(err => reject(err))
+                }
+            )
+        },
+        loadChatNextMessages({state, commit}, userId) {
+            return new Promise((resolve, reject) => {
+                if (state.chats[userId].newFirstOffset && state.chats[userId].lastOffset >= state.chats[userId].newFirstOffset) {
+                    commit('appendMessages', [userId, state.chats[userId].newMessages.filter(msg => msg.offset > state.chats[userId].lastOffset)])
+                    resolve()
+                } else {
+                    axios.get(`http://localhost:3000/any/chats/messages`, {
+                        params: {
+                            userId,
+                            offset: state.chats[userId].lastOffset + 1,
+                            limit: state.limit
+                        }
+                    })
+                        .then(resp => {
+                            commit('appendMessages', [userId, resp.data])
                             resolve()
                         })
                         .catch(err => reject(err))
                 }
             })
         },
-        // init function
-        loadHistory({state, commit}, userId) {
-            return new Promise((resolve, reject) => {
-                commit('createChatIfNotExists', userId)
-                axios.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`)
-                    .then(resp => {
-                        const newOffset = state.chats[userId].firstNewOffset
-                        const readOffset = resp.data.readOffset
-                        commit('setViewedOffset', [userId, resp.data.viewedOffset])
-                        commit('setStartLastOffset', [userId, resp.data.lastOffset])
+        // Socket.io only! Method base on sequential receipt of events.
+        saveNewMessage({state, commit}, [userId, message]) {
+            if (message.from === userId) commit('setNewMessagesCount', state.newMessagesCount + 1)
+            commit('createChatIfNotExists', userId)
+            commit('appendNewMessage', [userId, message])
+            commit('setFinalOffset', [userId, message.offset])
 
-                        if (newOffset && newOffset - readOffset <= state.limit) {
-                            axios.get(`http://localhost:3000/any/chats/messages`, {
-                                params: {
-                                    userId,
-                                    offset: readOffset - state.limit / 2,
-                                    limit: newOffset - readOffset + state.limit / 2
-                                }
+            if (!state.chats[userId].newFirstOffset) {
+                commit('setNewFirstOffset', [userId, message.offset])
+            }
+
+            if (state.chats[userId].isInit && state.chats[userId].newFirstOffset - 1 <= state.chats[userId].lastOffset) {
+                commit('appendMessages', [userId, [message]])
+            }
+        },
+        sendMessage({state, commit, dispatch}, [userId, message]) {
+            return new Promise((resolve, reject) => {
+                if (state.chats[userId].lastOffset >= state.chats[userId].finalOffset) {
+                    resolve()
+                }
+
+                const tmpId = Date.now()
+                const loadingMessage = {
+                    text: message,
+                    to: userId,
+                    _id: tmpId
+                }
+
+                commit('addLoadingMessage', [userId, loadingMessage])
+
+                socket.emit('message:add', userId, message, (message) => {
+                    if (state.chats[userId].lastOffset >= state.chats[userId].finalOffset) {
+                        commit('delLoadingMessage', [userId, tmpId])
+                        dispatch('saveNewMessage', [userId, message])
+                    } else {
+                        dispatch('loadChatLatestMessages', userId)
+                            .then(() => {
+                                commit('delLoadingMessage', [userId, tmpId])
+                                resolve()
                             })
-                                .then(resp => {
-                                    commit('addHistoryMessages', [userId, [...resp.data, state.chats[userId].newMessages]
-                                        .slice(0, readOffset - newOffset + state.limit / 2)])
-                                    resolve()
-                                })
-                                .catch(err => reject(err))
-                        } else {
-                            axios.get(`http://localhost:3000/any/chats/messages`, {
-                                params: {
-                                    userId,
-                                    offset: readOffset - state.limit / 2,
-                                    limit: state.limit
-                                }
-                            })
-                                .then(resp => {
-                                    commit('addHistoryMessages', [userId, resp.data])
-                                    resolve()
-                                })
-                                .catch(err => reject(err))
-                        }
-                    })
+                            .catch(err => reject(err))
+                    }
+                })
             })
+        },
+        changeReadOffset({commit}, [userId, offset]) {
+            socket.emit('message:read', userId, offset)
+            commit('setReadOffset', [userId, offset])
+        },
+        changeViewedOffset({commit}, [userId, offset]) {
+            commit('setViewedOffset', [userId, offset])
+        },
+        getNewMessagesCount({commit}) {
+            return axios.get('http://localhost:3000/any/chats/allNewMessagesCount')
+                .then(resp => {
+                    commit('setNewMessagesCount', resp.data)
+                })
         }
     }
 }

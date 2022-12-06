@@ -61,8 +61,8 @@ import UiPagination from "@/components/UI/UiPagination";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import requests from "@/mixins/requests";
 import UiFullscreenNoContentBanner from "@/components/UI/UiFullscreenNoContentBanner";
-import SpecMaterialsList from "@/components/Account/Spec/MaterialsTab/SpecMaterialsList";
-import SpecAddMaterialsDialog from "@/components/Account/Spec/MaterialsTab/SpecAddMaterialsDialog";
+import SpecMaterialsList from "@/components/Specialized/Account/Spec/MaterialsTab/SpecMaterialsList";
+import SpecAddMaterialsDialog from "@/components/Specialized/Account/Spec/MaterialsTab/SpecAddMaterialsDialog";
 
 export default {
   name: "SpecMaterialsTab",

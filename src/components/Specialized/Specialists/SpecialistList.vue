@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import SpecialistCard from "@/components/Specialists/SpecialistCard";
+import SpecialistCard from "@/components/Specialized/Specialists/SpecialistCard";
 import ContactsDialog from "@/components/Dialogs/ContactsDialog";
 import BookingDialog from "@/components/Dialogs/BookingDialog";
 

@@ -38,7 +38,7 @@ export default {
   components: {UiInputBadge},
 
   props: {
-    value: [String, Array],
+    value: [String, Array, Number],
   },
   mixins: [inputs]
 }

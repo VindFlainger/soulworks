@@ -27,8 +27,8 @@
 
 <script>
 import requests from "@/mixins/requests";
-import SpecMaterialCard from "@/components/Account/Spec/MaterialsTab/SpecMaterialCard";
-import SpecEditMaterialsDialog from "@/components/Account/Spec/MaterialsTab/SpecEditMaterialsDialog";
+import SpecMaterialCard from "@/components/Specialized/Account/Spec/MaterialsTab/SpecMaterialCard";
+import SpecEditMaterialsDialog from "@/components/Specialized/Account/Spec/MaterialsTab/SpecEditMaterialsDialog";
 
 export default {
   name: "SpecMaterialsList",

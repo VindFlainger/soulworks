@@ -139,9 +139,9 @@
 </template>
 
 <script>
-import SpecialistList from "@/components/Specialists/SpecialistList";
+import SpecialistList from "@/components/Specialized/Specialists/SpecialistList";
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
-import SpecialistsFilters from "@/components/Specialists/SpecialistsFilters";
+import SpecialistsFilters from "@/components/Specialized/Specialists/SpecialistsFilters";
 import UiPagination from "@/components/UI/UiPagination";
 import SelectInput from "@/components/UI/Inputs/SelectInput";
 import requests from "@/mixins/requests";

@@ -85,9 +85,9 @@
 
 <script>
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
-import ProfileInfoCards from "@/components/Profile/ProfileInfoCards";
+import ProfileInfoCards from "@/components/Specialized/Profile/ProfileInfoCards";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
-import ProfileSpec from "@/components/Profile/ProfileSpec";
+import ProfileSpec from "@/components/Specialized/Profile/ProfileSpec";
 import BookingDialog from "@/components/Dialogs/BookingDialog";
 import requests from "@/mixins/requests";
 import UiAvatar from "@/components/UI/UiAvatar";

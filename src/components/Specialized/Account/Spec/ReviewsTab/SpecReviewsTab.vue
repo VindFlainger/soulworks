@@ -49,7 +49,7 @@
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import requests from "@/mixins/requests";
 import UiFullscreenNoContentBanner from "@/components/UI/UiFullscreenNoContentBanner";
-import ReviewCard from "@/components/Account/Spec/ReviewsTab/SpecReviewCard";
+import ReviewCard from "@/components/Specialized/Account/Spec/ReviewsTab/SpecReviewCard";
 
 export default {
   name: "SpecReviewsTab",

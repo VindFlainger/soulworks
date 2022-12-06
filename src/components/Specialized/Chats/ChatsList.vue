@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import ChatsListItem from "@/components/Chats/ChatsListItem";
+import ChatsListItem from "@/components/Specialized/Chats/ChatsListItem";
 export default {
   name: "ChatsList",
   components: {ChatsListItem},

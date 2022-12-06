@@ -1,5 +1,5 @@
 <template>
-  <v-footer>
+  <v-footer v-show="show">
     <v-container fluid class="d-flex justify-center">
       <v-responsive  width="100%" max-width="1450" class="pr-16 pl-16" style="border-top: 1px solid">
         <v-row >
@@ -64,7 +64,17 @@
 
 <script>
 export default {
-  name: "MainFooter"
+  name: "MainFooter",
+  data() {
+    return {
+      hideRouteNames: ['chat', 'chats']
+    }
+  },
+  computed: {
+    show(){
+      return this.hideRouteNames.every(name => name !== this.$route.name)
+    }
+  }
 }
 </script>
 

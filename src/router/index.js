@@ -3,13 +3,13 @@ import VueRouter from 'vue-router'
 import MainView from "@/views/MainView";
 import SpecialistsView from "@/views/SpecialistsView";
 import store from '../store'
-import SpecAccountTab from "@/components/Account/Spec/SpecAccountTab";
-import SpecTimetableTab from "@/components/Account/Spec/SpecTimetableTab";
-import SecurityTab from "@/components/Account/SecurityTab";
-import SpecReviewsTab from "@/components/Account/Spec/ReviewsTab/SpecReviewsTab";
-import SpecQualificationTab from "@/components/Account/Spec/QualificationTab/SpecQualificationTab";
-import SpecClassesTab from "@/components/Account/Spec/SpecClassesTab";
-import SpecMaterialsTab from "@/components/Account/Spec/MaterialsTab/SpecMaterialsTab";
+import SpecAccountTab from "@/components/Specialized/Account/Spec/SpecAccountTab";
+import SpecTimetableTab from "@/components/Specialized/Account/Spec/SpecTimetableTab";
+import SecurityTab from "@/components/Specialized/Account/SecurityTab";
+import SpecReviewsTab from "@/components/Specialized/Account/Spec/ReviewsTab/SpecReviewsTab";
+import SpecQualificationTab from "@/components/Specialized/Account/Spec/QualificationTab/SpecQualificationTab";
+import SpecClassesTab from "@/components/Specialized/Account/Spec/SpecClassesTab";
+import SpecMaterialsTab from "@/components/Specialized/Account/Spec/MaterialsTab/SpecMaterialsTab";
 import SpecAccountView from "@/views/SpecAccountView";
 import UserAccountView from "@/views/UserAccountView";
 import ProfileView from "@/views/ProfileView";
@@ -18,13 +18,13 @@ import RulesView from "@/views/RulesView";
 import PublicationsView from "@/views/PublicationsView";
 import AboutView from "@/views/AboutView";
 import SupportView from "@/views/SupportView";
-import SpecAccountEditTab from "@/components/Account/Spec/SpecAccountEditTab";
-import UserAccountTab from "@/components/Account/User/UserAccountTab";
-import UserAccountEditTab from "@/components/Account/User/UserAccountEditTab";
-import UserReviewsTab from "@/components/Account/User/UserReviewsTab";
-import UserClassesTab from "@/components/Account/User/UserClassesTab";
-import UserMaterialsTab from "@/components/Account/User/UserMaterialsTab";
-import UserFavouritesTab from "@/components/Account/User/UserFavouritesTab";
+import SpecAccountEditTab from "@/components/Specialized/Account/Spec/SpecAccountEditTab";
+import UserAccountTab from "@/components/Specialized/Account/User/UserAccountTab";
+import UserAccountEditTab from "@/components/Specialized/Account/User/UserAccountEditTab";
+import UserReviewsTab from "@/components/Specialized/Account/User/UserReviewsTab";
+import UserClassesTab from "@/components/Specialized/Account/User/UserClassesTab";
+import UserMaterialsTab from "@/components/Specialized/Account/User/UserMaterialsTab";
+import UserFavouritesTab from "@/components/Specialized/Account/User/UserFavouritesTab";
 import ChatsView from "@/views/ChatsView";
 import ChatView from "@/views/ChatView";
 
@@ -185,6 +185,7 @@ const router = new VueRouter({
     base: process.env.BASE_URL,
     routes
 })
+
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(el => el.meta.requiredAuth)) {

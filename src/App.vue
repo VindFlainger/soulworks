@@ -10,8 +10,6 @@
         <router-view name="chat" :key="$route.params.id"></router-view>
       </keep-alive>
 
-      <alerts-box></alerts-box>
-
       <main-loader></main-loader>
 
       <div>
@@ -25,21 +23,20 @@
       <message-box></message-box>
 
     </v-main>
-    <main-footer v-if="footerVisible">
+    <main-footer>
 
     </main-footer>
   </v-app>
 </template>
 
 <script>
-import MainHeader from "@/components/Header/MainHeader";
-import MainFooter from "@/components/MainFooter";
-import AlertsBox from "@/components/AlertsBox";
-import MainLoader from "@/components/MainLoader";
-import MessageBox from "@/components/MessageBox";
+import MainHeader from "@/components/Specialized/Header/MainHeader";
+import MainFooter from "@/components/Specialized/Main/MainFooter";
+import MainLoader from "@/components/Specialized/Main/MainLoader";
+import MessageBox from "@/components/Specialized/Main/MessageBox";
 
 export default {
-  components: {MessageBox, MainLoader, AlertsBox, MainFooter, MainHeader},
+  components: {MessageBox, MainLoader, MainFooter, MainHeader},
   data() {
     return {
       confirmDialog: false,
@@ -96,12 +93,6 @@ export default {
     })
     this.$root.$on('close-find-user', () => {
       this.findUserDialog = false
-    })
-    this.$root.$on('close-footer', () => {
-      this.footerVisible = false
-    })
-    this.$root.$on('show-footer', () => {
-      this.footerVisible = true
     })
   }
 }

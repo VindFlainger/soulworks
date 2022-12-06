@@ -9,14 +9,13 @@ const socket = io("ws://localhost:3000", {
 });
 
 socket.on('message:new', message => {
-    store.dispatch('addNewMessage', message)
+    store.dispatch('saveNewMessage', [message.from, message])
 })
 
 socket.on('message:viewed', (userId, viewedOffset) => {
     store.commit('createChatIfNotExists', userId)
-    store.commit('setViewedOffset', [userId, viewedOffset])
+    store.dispatch('changeViewedOffset', [userId, viewedOffset])
 })
-
 
 
 export default socket

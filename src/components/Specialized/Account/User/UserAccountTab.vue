@@ -42,7 +42,7 @@
 <script>
 import UiAvatar from "@/components/UI/UiAvatar";
 import requests from "@/mixins/requests";
-import AnyStatisticSessions from "@/components/Account/Any/Statistic/AnyStatisticSessions";
+import AnyStatisticSessions from "@/components/Specialized/Account/Any/Statistic/AnyStatisticSessions";
 
 export default {
   name: "SpecAccountTab",

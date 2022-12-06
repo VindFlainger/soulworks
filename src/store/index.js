@@ -10,7 +10,6 @@ export default new Vuex.Store({
         state: {
             loading: 0,
             width: 0,
-            alerts: [{title: '', text: '', type: '', id: -1}], // don't even think about deleting this
             token: null,
             email: null,
             role: null,
@@ -51,14 +50,6 @@ export default new Vuex.Store({
             }
         },
         actions: {
-            addAlert({state}, val) {
-                val.id = Date.now() // Not increasing by length (:v-for transition)
-                state.alerts = [...state.alerts, val]
-
-                setTimeout(() => {
-                    state.alerts = state.alerts.filter(alert => alert.id !== val.id)
-                }, val.time)
-            },
             setAuthData({state}) {
                 const email = localStorage.getItem('email')
                 const token = localStorage.getItem('token')

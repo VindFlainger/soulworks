@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import ProfileTabs from "@/components/Account/AccountTabs";
+import ProfileTabs from "@/components/Specialized/Account/AccountTabs";
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
 export default {
   name: "SpecAccountView",

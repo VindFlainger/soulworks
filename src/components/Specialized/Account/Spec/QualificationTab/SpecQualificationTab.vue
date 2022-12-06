@@ -86,10 +86,10 @@
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import requests from "@/mixins/requests";
-import SpecAddEducationDialog from "@/components/Account/Spec/QualificationTab/SpecAddEducationDialog";
-import SpecAddCategoryDialog from "@/components/Account/Spec/QualificationTab/SpecAddCategoryDialog";
-import SpecEducationCard from "@/components/Account/Spec/QualificationTab/SpecEducationCard";
-import SpecCategoryCard from "@/components/Account/Spec/QualificationTab/SpecCategoryCard";
+import SpecAddEducationDialog from "@/components/Specialized/Account/Spec/QualificationTab/SpecAddEducationDialog";
+import SpecAddCategoryDialog from "@/components/Specialized/Account/Spec/QualificationTab/SpecAddCategoryDialog";
+import SpecEducationCard from "@/components/Specialized/Account/Spec/QualificationTab/SpecEducationCard";
+import SpecCategoryCard from "@/components/Specialized/Account/Spec/QualificationTab/SpecCategoryCard";
 
 export default {
   name: "SpecQualificationTab",

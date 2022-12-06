@@ -25,8 +25,8 @@ export default {
         removeLoadingProcess() {
             this.$store.commit('setLoading', -1)
         },
-        showAlert(type, title, time = 3000, text = '') {
-            this.$store.dispatch('addAlert', {type: type, title: title, text: text, time: time})
+        showAlert(type, time = 3000, text = '') {
+            this.$root.emit('push-message', {type, time, text})
         },
 
         /**
@@ -36,7 +36,6 @@ export default {
          *      {
          *        handleError: Boolean?,
          *        handleErrorResponse: Boolean?,
-         *        alertErrorTitle: String?,
          *        alertErrorResponseTitle: String?,
          *        needAuth: Boolean
          *      }
@@ -149,12 +148,11 @@ export default {
 
 
         async authInterceptor(active) {
-            if (active && this.$store.state.sessionEnd < Date.now()){
+            if (active && this.$store.state.sessionEnd < Date.now()) {
                 return this.getSessionToken()
             }
             return
         },
-
 
 
         /**
@@ -164,14 +162,13 @@ export default {
          * @return {Promise<requestResponse> || Promise<Error> }
          */
         getFormatResponse(req, options) {
-            if (!options) options = {}
+            if (!options) options = {} // TODO: Check this on necessity (be careful, this is too stupid implementation)
             return req
                 .then(resp => {
                     if (resp.data.error && options.handleErrorResponse) {
                         this.showAlert(
                             'error',
-                            options.alertErrorResponseTitle || 'Something went wrong',
-                            3000,
+                            2000,
                             resp.data.code ? `Error code ${resp.data.code}` : resp.data.error
                         )
                     }
@@ -182,14 +179,13 @@ export default {
                     }
                 })
                 .catch(err => {
-                        if (err?.response?.data?.error && options.handleErrorResponse) {
+                        if (err?.response?.data?.code && options.handleErrorResponse) {
                             this.showAlert(
                                 'error',
-                                options.alertErrorResponseTitle || 'Произошла ошибка',
-                                3000,
-                                err.response.data.code ? `Код ошибки ${err.response.data.code}` : err.response.data.message
+                                2000,
+                                `Произошла ошибка, код ошибки ${err.response.data.code}`
                             )
-                        } else if (options.handleError) this.showAlert('error', options.alertErrorTitle || 'Ошибка выполнения запроса', 2000)
+                        }
                         throw err
                     }
                 )
@@ -202,8 +198,8 @@ export default {
                 .then(() => {
                     this.$store.state.sessionEnd = Date.now() + 1000 * 60 * (5 * 0.8) // 80% percents from 5 min
                 })
-                .catch(err=>{
-                    if (err.response.data.code === 104){
+                .catch(err => {
+                    if (err.response.data.code === 104) {
                         this.logOut()
                     }
                 })

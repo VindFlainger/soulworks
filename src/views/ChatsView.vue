@@ -17,7 +17,7 @@
 
 <script>
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
-import ChatsList from "@/components/Chats/ChatsList";
+import ChatsList from "@/components/Specialized/Chats/ChatsList";
 import requests from "@/mixins/requests";
 
 
@@ -40,10 +40,15 @@ export default {
   mixins: [requests],
   mounted() {
     this.getChats()
-    this.$root.$emit('close-footer')
   },
-  destroyed() {
-    this.$root.$emit('show-footer')
+  beforeRouteLeave(to, from, next) {
+    if (to.name !== 'chat') {
+      this.$store.dispatch('getNewMessagesCount')
+          .catch()
+          .finally(() => next())
+    } else {
+      next()
+    }
   }
 
 }

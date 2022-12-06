@@ -26,7 +26,7 @@
           </div>
 
           <div class="d-flex">
-            <v-badge v-if="$store.getters.isLogin"
+            <v-badge v-if="$store.getters.isLogin && $route.name !== 'chat' && $route.name !== 'chats'"
                      class="mr-6"
                      overlap
                      color="green lighten-3"
@@ -61,11 +61,11 @@
 </template>
 
 <script>
-import HeaderUserMenu from "@/components/Header/HeaderUserMenu";
+import HeaderUserMenu from "@/components/Specialized/Header/HeaderUserMenu";
 
 export default {
   name: "MainHeader",
-  components: {HeaderUserMenu}
+  components: {HeaderUserMenu},
 }
 </script>
 
