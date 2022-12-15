@@ -1,9 +1,14 @@
 <template>
+  <!-- TODO: refactor this with style classes  -->
   <div>
-    <div class="mt-5" v-if="aboutFull">
+    <div
+        class="mt-5"
+        v-if="aboutFull"
+    >
       <div class="category__title">
         О себе
       </div>
+
       <div class="category__card">
         {{ aboutFull }}
       </div>
@@ -18,7 +23,11 @@
           <v-row align="center">
             <div class="services__title">Специализация</div>
             <v-col>
-              <div v-for="specialization in specializations" :key="specialization._id" class="services__card ma-1">
+              <div
+                  class="services__card ma-1"
+                  v-for="specialization in specializations"
+                  :key="specialization._id"
+              >
                 {{ specialization.text }}
               </div>
             </v-col>
@@ -27,7 +36,11 @@
           <v-row align="center">
             <div class="services__title">Методы</div>
             <v-col>
-              <div v-for="method in methods" :key="method._id" class="services__card ma-1">
+              <div
+                  class="services__card ma-1"
+                  v-for="method in methods"
+                  :key="method._id"
+              >
                 {{ method.text }}
               </div>
             </v-col>
@@ -36,7 +49,11 @@
           <v-row align="center">
             <div class="services__title">Возможности</div>
             <v-col>
-              <div v-for="opportunity in opportunities" :key="opportunity" class="services__card ma-1">
+              <div
+                  class="services__card ma-1"
+                  v-for="opportunity in opportunities"
+                  :key="opportunity"
+              >
                 {{ opportunity }}
               </div>
             </v-col>
@@ -52,15 +69,17 @@
         </div>
         <div class="category__card">
           <div class="fs-18">
+
             <div>
               Онлайн консультация: <span
                 class="font-weight-bold fs-16">{{ price.online.min | price }} - {{ price.online.max | price }}</span>
             </div>
+
             <div>
               Очная консультация: <span
-                class="font-weight-bold fs-16">{{ price.internal.min | price }} - {{
-                price.internal.max | price
-              }}</span>
+                class="font-weight-bold fs-16">{{
+                price.internal.min | price
+              }} - {{ price.internal.max | price }}</span>
             </div>
 
             <div class="fs-12 grey--text text--darken-2 mt-2">
@@ -83,10 +102,13 @@
           <div class="fs-18">
             <div class="d-flex align-end">
               Номер:<span class="mr-3 ml-1" style="font-weight: 600">{{ phone | phone }}</span>
-              <v-img v-for="messenger in messengers" :key="messenger"
-                     :src="require(`@/assets/images/networks/${messenger}.png`)" max-width="25" height="25"
-                     class="d-inline-block ma-1">
-              </v-img>
+              <v-img
+                  class="d-inline-block ma-1"
+                  v-for="messenger in messengers"
+                  :key="messenger"
+                  :src="require(`@/assets/images/networks/${messenger}.png`)"
+                  max-width="25" height="25"
+              ></v-img>
             </div>
             <div v-if="connection">
               Контакты:<span class="mr-3 ml-1" style="font-weight: 600">{{ connection }}</span>
@@ -94,7 +116,11 @@
             <div v-if="address">
               Адрес:<span class="mr-3 ml-1" style="font-weight: 600">{{ address }}</span>
             </div>
-            <ui-social-links :links="links" :size="40" class="mt-3"></ui-social-links>
+            <ui-social-links
+                class="mt-3"
+                :links="links"
+                :size="40"
+            ></ui-social-links>
           </div>
         </div>
       </v-col>
@@ -108,15 +134,19 @@
         <div class="category__card">
           <div>
 
-              <div v-for="educ in education" :key="educ.graduation" class="pa-1 mb-3"
-                   style="border-left: 3px solid grey">
-                <div>Учреждение образования: <span style="font-weight: 600">{{ educ.institution }}</span></div>
-                <div>Дата выпуска: <span style="font-weight: 600">{{ $moment(educ.date).format('ll') }}</span></div>
-                <div>Статус (наличие подтверждающих документов): <span style="font-weight: 600">{{
-                    educ.approve ? 'Подтверждено' : 'Не подтверждено'
-                  }}</span>
-                </div>
+            <div
+                class="pa-1 mb-3"
+                style="border-left: 3px solid grey"
+                v-for="educ in education"
+                :key="educ.graduation"
+            >
+              <div>Учреждение образования: <span style="font-weight: 600">{{ educ.institution }}</span></div>
+              <div>Дата выпуска: <span style="font-weight: 600">{{ $moment(educ.date).format('ll') }}</span></div>
+              <div>Статус (наличие подтверждающих документов): <span style="font-weight: 600">{{
+                  educ.approve ? 'Подтверждено' : 'Не подтверждено'
+                }}</span>
               </div>
+            </div>
 
             <div class="fs-12 grey--text text--darken-2 mt-2">
               Статус информации об образовании сведетельствует о предоставлении специалистом подтверждающих документов,
@@ -132,11 +162,12 @@
         <div class="category__title">
           Опыт
         </div>
-        <div class="category__card" >
+        <div class="category__card">
           <div class="pa-1"
                style="border-left: 3px solid grey">
             <div>Категория: <span style="font-weight: 600">{{ category.name }}</span></div>
-            <div>Статус (наличие подтверждающих документов): <span style="font-weight: 600">{{category.approve? 'Подтверждено' : 'Не подтверждено'
+            <div>Статус (наличие подтверждающих документов): <span style="font-weight: 600">{{
+                category.approve ? 'Подтверждено' : 'Не подтверждено'
               }}</span>
             </div>
           </div>

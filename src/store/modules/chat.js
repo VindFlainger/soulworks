@@ -1,15 +1,13 @@
 const axios = require('axios').default
 axios.defaults.withCredentials = true
 import Vue from 'vue'
-import socket from '../sockets/index'
-
+import socket from '../../sockets'
 
 export default {
     state: {
         chats: {},
         limit: 30,
         newMessagesCount: 0
-
     },
     mutations: {
         setNewMessagesCount(state, count) {

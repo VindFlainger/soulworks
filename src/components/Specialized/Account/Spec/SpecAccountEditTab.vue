@@ -6,93 +6,173 @@
         @change="setAvatar"
     ></cropping-avatar-dialog>
 
-    <v-card class="pa-4" elevation="0">
-      <span style="position:absolute; right: 30px; top: 20px; cursor: pointer"
-            @click="$router.push({name: 'specAccount'})"
-            class="fs-16 blue--text text--lighten-3 text-decoration-underline">
+    <v-card
+        class="pa-4"
+        elevation="0"
+    >
+      <span
+          class="fs-16 blue--text text--lighten-3 text-decoration-underline"
+          style="position:absolute; right: 30px; top: 20px; cursor: pointer"
+          @click="$router.push({name: 'specAccount'})"
+      >
          Вернуться
        </span>
 
       <v-row justify="start">
         <v-col style="min-width: 250px; max-width: 250px">
-          <v-badge overlap offset-x="54" offset-y="54" bottom color="none">
+          <v-badge
+              offset-x="54"
+              offset-y="54"
+              color="none"
+              bottom
+              overlap
+          >
             <template v-slot:badge>
-              <v-btn @click="croppingDialogVisible = true" fab small elevation="0" color="white"
-                     style="outline: 1px solid black">
+              <v-btn
+                  style="outline: 1px solid black"
+                  @click="croppingDialogVisible = true"
+                  elevation="0"
+                  color="white"
+                  fab
+                  small
+              >
                 <v-icon size="25">mdi-plus</v-icon>
               </v-btn>
             </template>
-            <ui-avatar size="200" :images="avatar?.images" :img-size="256">
 
-            </ui-avatar>
+            <ui-avatar
+                size="200"
+                :images="avatar?.images"
+                :img-size="256"
+            ></ui-avatar>
           </v-badge>
         </v-col>
 
         <v-col class="col-4">
           <div class="fs-18 font-weight-bold mb-2 font-title">Личная информация</div>
-          <v-form lazy-validation v-model="personValid" ref="personForm">
-            <name-input label="Имя" v-model="name" @change="setPerson"></name-input>
-            <name-input label="Фамилия" v-model="surname" @change="setPerson"></name-input>
-            <default-input label="Пол" :value="sex | sex | capitalize" disabled=""></default-input>
+          <v-form
+              ref="personForm"
+              v-model="personValid"
+              lazy-validation
+          >
+            <name-input
+                v-model="name"
+                label="Имя"
+                @change="setPerson"
+            ></name-input>
+
+            <name-input
+                v-model="surname"
+                label="Фамилия"
+                @change="setPerson"
+            ></name-input>
+
+            <default-input
+                label="Пол"
+                :value="sex | sex | capitalize"
+                disabled=""
+            ></default-input>
           </v-form>
         </v-col>
 
         <v-col class="col-4">
           <div class="fs-18 font-weight-bold mb-2 font-title">Бизнес информация</div>
-          <phone-input v-model="phone" disabled></phone-input>
-          <default-input label="Почта" v-model="email" disabled></default-input>
-          <default-input label="Роль" :value="role | role | capitalize" disabled=""></default-input>
+
+          <phone-input
+              v-model="phone"
+              disabled
+          ></phone-input>
+
+          <default-input
+              v-model="email"
+              label="Почта"
+              disabled
+          ></default-input>
+
+          <default-input
+              label="Роль"
+              :value="role | role | capitalize"
+              disabled=""
+          ></default-input>
         </v-col>
       </v-row>
 
       <v-row>
         <v-col style="max-width: 350px">
           <div class="fs-18 font-weight-bold mb-2 font-title">Услуги</div>
-          <v-form lazy-validation v-model="servicesValid" ref="servicesForm">
+
+          <v-form
+              ref="servicesForm"
+              v-model="servicesValid"
+              lazy-validation
+          >
             <select-input
-                multiple small-chips
                 v-model="methods"
-                @blur="setServices"
+                multiple
+                small-chips
                 :items="methodsSelectOptions.map(opt => ({...opt, value: opt._id}))"
-                label="Методы">
-            </select-input>
+                label="Методы"
+                @blur="setServices"
+            ></select-input>
+
             <select-input
-                multiple small-chips
                 v-model="specializations"
-                @blur="setServices"
                 :items="specializationSelectOptions.map(opt => ({...opt, value: opt._id}))"
-                label="Специализации">
-            </select-input>
-            <select-input
-                multiple small-chips
-                :required="false"
-                v-model="opportunities"
+                label="Специализации"
+                small-chips
+                multiple
                 @blur="setServices"
+            ></select-input>
+
+            <select-input
+                v-model="opportunities"
+                :required="false"
                 :items="opportunitiesSelectOption"
-                label="Возможности">
-            </select-input>
+                label="Возможности"
+                multiple
+                small-chips
+                @blur="setServices"
+            ></select-input>
+
           </v-form>
         </v-col>
 
         <v-col>
           <div class="fs-18 font-weight-bold mb-2 font-title">Презентация</div>
-          <v-form lazy-validation ref="aboutForm" v-model="aboutValid">
+
+          <v-form
+              ref="aboutForm"
+              v-model="aboutValid"
+              lazy-validation
+          >
+
             <text-area-input
+                class="mt-1"
+                v-model="shortAbout"
                 :auto-grow="false"
                 :required="false"
                 :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                placeholder="Визитка"
+                counter="400"
+                maxlength="400"
+                no-resize
                 @change="setAbout"
-                v-model="shortAbout"
-                class="mt-1" no-resize counter="400" maxlength="400" placeholder="Визитка">
-            </text-area-input>
+            ></text-area-input>
+
             <text-area-input
+                class="mt-1"
+                v-model="fullAbout"
                 :auto-grow="false"
                 :required="false"
                 :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^*ё()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                height="200"
+                counter="1000"
+                maxlength="1000"
+                placeholder="Обо мне"
+                no-resize
                 @change="setAbout"
-                v-model="fullAbout"
-                no-resize height="200" class="mt-1" counter="1000" maxlength="1000" placeholder="Обо мне">
-            </text-area-input>
+            ></text-area-input>
+
           </v-form>
         </v-col>
       </v-row>
@@ -100,31 +180,51 @@
       <v-row>
         <v-col style="max-width: 450px">
           <div class="fs-18 font-weight-bold mb-2 font-title">Цена онлайн консультации</div>
-          <range-input :max-limit="1000" :min-limit="0" :min.sync="onlinePrices.min"
-                       :max.sync="onlinePrices.max"
-                       @change="setPrices"
-          ></range-input>
-          <div class="fs-18 font-weight-bold mb-2 font-title">Цена очной консультации</div>
-          <range-input :max-limit="1000" :min-limit="0" :min.sync="internalPrices.min"
-                       :max.sync="internalPrices.max"
-                       @change="setPrices"
 
+          <range-input
+              :min.sync="onlinePrices.min"
+              :max.sync="onlinePrices.max"
+              :max-limit="1000"
+              :min-limit="0"
+              @change="setPrices"
+          ></range-input>
+
+          <div class="fs-18 font-weight-bold mb-2 font-title">Цена очной консультации</div>
+
+          <range-input
+              :min.sync="internalPrices.min"
+              :max.sync="internalPrices.max"
+              :max-limit="1000"
+              :min-limit="0"
+              @change="setPrices"
           ></range-input>
         </v-col>
-        <v-col>
-          <v-form lazy-validation v-model="connectionValid" ref="connectionForm">
-            <div class="fs-18 font-weight-bold mb-2 font-title">Связь и адрес</div>
-            <default-input v-model="connection" placeholder="Коммуникация"
-                           :required="false"
-                           @change="setConnectionAndAddress"
-                           :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
 
+        <v-col>
+          <v-form
+              ref="connectionForm"
+              v-model="connectionValid"
+              lazy-validation
+          >
+
+            <div class="fs-18 font-weight-bold mb-2 font-title">Связь и адрес</div>
+
+            <default-input
+                v-model="connection"
+                placeholder="Коммуникация"
+                :required="false"
+                :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                @change="setConnectionAndAddress"
             ></default-input>
-            <default-input v-model="address" placeholder="Адрес"
-                           @change="setConnectionAndAddress"
-                           :required="false"
-                           :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']">
-            </default-input>
+
+            <default-input
+                v-model="address"
+                placeholder="Адрес"
+                :required="false"
+                :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                @change="setConnectionAndAddress"
+            ></default-input>
+
           </v-form>
         </v-col>
       </v-row>
@@ -133,63 +233,80 @@
       <v-row>
         <v-col style="max-width: 350px">
           <div class="fs-18 font-weight-bold font-title mb-2">Контакты</div>
+
           <v-form lazy-validation ref="contactsForm" v-model="contactsValid">
+
             <v-row>
-              <phone-input class="phone-input"
-                           label="Контактный телефон"
-                           v-model="contactPhone"
-                           @change="setContacts"
-                           :required="false"
+              <phone-input
+                  class="phone-input"
+                  v-model="contactPhone"
+                  label="Контактный телефон"
+                  :required="false"
+                  @change="setContacts"
+              ></phone-input>
 
-              >
-
-
-              </phone-input>
               <div class="fs-12 mt-n1 grey--text text--darken-2 mb-1">Вы можете указать какие социальные сети или
                 мессенджеры доступны по этому номеру.
               </div>
+
               <picture-select-input
                   class="mt-n1"
                   v-model="messengers"
+                  :items="messengersOptions.map(opt => ({value: opt, img: require(`@/assets/images/networks/${opt}.png`)}))"
                   @input="setContacts"
-                  :items="messengersOptions.map(opt => ({value: opt, img: require(`@/assets/images/networks/${opt}.png`)}))">
-              </picture-select-input>
+              ></picture-select-input>
             </v-row>
-            <email-input label="Контактная почта"
-                         v-model="contactEmail"
-                         class="mt-5"
-                         :required="false"
-                         @change="setContacts">
 
-            </email-input>
+            <email-input
+                class="mt-5"
+                v-model="contactEmail"
+                label="Контактная почта"
+                :required="false"
+                @change="setContacts"
+            ></email-input>
+
           </v-form>
         </v-col>
 
         <v-col>
           <div class="fs-18 font-weight-bold font-title">Социальные сети</div>
+
           <div class="fs-12 mt-n1 grey--text text--darken-2 mb-2">Вы можете указать идентификаторы ваших социальных
             сетей для перехода к ним по клику. Идентификатор - простая строка без спецсимволов.
           </div>
-          <v-form lazy-validation v-model="linksValid" ref="linksForm">
-            <v-list v-for="messenger in messengersOptions" :key="messenger" class="ma-0 pa-0">
+
+          <v-form
+              ref="linksForm"
+              v-model="linksValid"
+              lazy-validation
+          >
+            <v-list
+                class="ma-0 pa-0"
+                v-for="messenger in messengersOptions"
+                :key="messenger"
+            >
               <v-list-item>
-                <v-img :max-width="32" :src="require(`@/assets/images/networks/${messenger}.png`)"
-                       class="d-inline-block"
-                       style="position:relative; top: 2px;"></v-img>
+                <v-img
+                    class="d-inline-block"
+                    style="position:relative; top: 2px"
+                    :max-width="32"
+                    :src="require(`@/assets/images/networks/${messenger}.png`)"
+                ></v-img>
+
                 <default-input
+                    class="d-inline-block ml-3"
                     :value="links.find(link => link.name === messenger)?.link"
                     @change="setLinks($event, messenger)"
-                    class="d-inline-block ml-3"
                     hide-details
                     prefix="/"
                     :rules="[v => !v || (!!v && $validator.isAlphanumeric(v))]"
-                    :required="false"></default-input>
+                    :required="false"
+                ></default-input>
               </v-list-item>
             </v-list>
           </v-form>
         </v-col>
       </v-row>
-
 
     </v-card>
 
@@ -213,6 +330,23 @@ import requests from "@/mixins/requests";
 
 export default {
   name: "SpecAccountEditTab",
+  components: {
+    UiAvatar,
+    RangeInput,
+    NameInput,
+    PictureSelectInput,
+    EmailInput,
+    TextAreaInput,
+    SelectInput,
+    CroppingAvatarDialog,
+    PhoneInput,
+    DefaultInput
+  },
+  filters: {
+    sex,
+    role
+  },
+  mixins: [requests],
   data() {
     return {
       avatar: '',
@@ -274,13 +408,6 @@ export default {
       servicesValid: true,
       connectionValid: true
     }
-  },
-  components: {
-    UiAvatar,
-    RangeInput,
-    NameInput,
-    PictureSelectInput,
-    EmailInput, TextAreaInput, SelectInput, CroppingAvatarDialog, PhoneInput, DefaultInput
   },
   methods: {
     getAccountData() {
@@ -418,16 +545,13 @@ export default {
       }
     }
   },
-  filters: {
-    sex,
-    role
-  }
-  ,
   mounted() {
     this.getAccountData()
     this.getSelectOptions()
   },
-  mixins: [requests]
+  metaInfo: {
+    title: 'Редактировать профиль'
+  }
 }
 </script>
 

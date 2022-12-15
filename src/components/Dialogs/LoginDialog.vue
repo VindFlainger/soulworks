@@ -1,16 +1,34 @@
 <template>
-  <v-dialog :value="true" max-width="450" content-class="white" @click:outside="$root.$emit('close-registration')">
+  <v-dialog
+      :value="true"
+      max-width="450"
+      content-class="white"
+      @click:outside="$root.$emit('close-registration')"
+  >
 
-    <div class="d-flex flex-column align-center pa-10" v-if="!recoverDialog">
-      <v-form v-model="loginFormValid" lazy-validation ref="loginForm">
+    <div
+        class="d-flex flex-column align-center pa-10"
+        v-if="!recoverDialog"
+    >
+
+      <v-form
+          ref="loginForm"
+          v-model="loginFormValid"
+          lazy-validation
+      >
         <div class="text-center font-title fs-24 mb-3">Войти в систему</div>
-        <email-input style="width: 300px" :required-indicator="false" v-model="email"></email-input>
+
+        <email-input
+            style="width: 300px"
+            v-model="email"
+            :required-indicator="false"
+        ></email-input>
 
         <default-input
             class="password-input"
             style="width: 300px"
-            label="Пароль"
             v-model="password"
+            label="Пароль"
             type="password"
             :hide-details="correct"
             messages="Неверный пароль"
@@ -18,40 +36,93 @@
             @focusin="correct = true"
         >
           <template v-slot:message>
-            <a class="font-weight-light fs-14" @click="recoverDialog = true;">Забыли пароль?</a>
+            <a
+                class="font-weight-light fs-14"
+                @click="recoverDialog = true;"
+            >
+              Забыли пароль?
+            </a>
           </template>
         </default-input>
 
-        <v-row style="width: 300px" class="mt-3">
-          <ui-default-button  width="40%" @click="$root.$emit('close-login');" color="red">Закрыть
+        <v-row
+            class="mt-3"
+            style="width: 300px"
+        >
+
+          <ui-default-button
+              width="40%"
+              color="red"
+              @click="$root.$emit('close-login')"
+          >
+            Закрыть
           </ui-default-button>
+
           <v-spacer></v-spacer>
-          <ui-default-button  width="40%" :disabled="!loginFormValid || !password"
-                 :loading="localLoading"
-                 @click="login">Вход
+
+          <ui-default-button
+              :disabled="!loginFormValid || !password"
+              width="40%"
+              :loading="localLoading"
+              @click="login"
+          >
+            Вход
           </ui-default-button>
         </v-row>
       </v-form>
-      <v-row style="width: 300px" class="mt-2">
+      <v-row
+          class="mt-2"
+          style="width: 300px"
+      >
         <div class="font-weight-light fs-14">
-          Новый пользователь? <a @click="$root.$emit('close-login'); $root.$emit('show-registration');" class="fs-14">Зарегистрируйтесь</a>
+          Новый пользователь?
+          <a
+              class="fs-14"
+              @click="$root.$emit('close-login'); $root.$emit('show-registration')"
+          >
+            Зарегистрируйтесь
+          </a>
         </div>
       </v-row>
     </div>
 
     <div v-if="recoverDialog">
+
       <div class="d-flex flex-column align-center pa-10">
+
         <div class="text-center font-title fs-24 mb-3">Восстановление пароля</div>
-        <div class="text-center fs-12 mb-3">На указанную вами почту будет выслано письмо с шагами для восстановления
-          вашего пароля!
+
+        <div class="text-center fs-12 mb-3">
+          На указанную вами почту будет выслано письмо с шагами для восстановления вашего пароля!
         </div>
-        <v-form v-model="recoverFormValid" ref="recoverForm">
-          <email-input style="width: 300px" :required-indicator="false" v-model="email" check="exists"></email-input>
-          <v-row style="width: 300px" class="mt-3">
+
+        <v-form
+            ref="recoverForm"
+            v-model="recoverFormValid"
+        >
+
+          <email-input
+              style="width: 300px"
+              v-model="email"
+              :required-indicator="false"
+              check="exists"
+          ></email-input>
+
+          <v-row
+              class="mt-3"
+              style="width: 300px"
+          >
             <v-spacer></v-spacer>
-            <v-btn elevation="0" color="green lighten-3" outlined width="40%" :disabled="!recoverFormValid"
-                   :loading="localLoading"
-                   @click="recover">Отправить
+            <v-btn
+                :disabled="!recoverFormValid"
+                elevation="0"
+                color="green lighten-3"
+                width="40%"
+                :loading="localLoading"
+                outlined
+                @click="recover"
+            >
+              Отправить
             </v-btn>
             <v-spacer></v-spacer>
           </v-row>
@@ -72,7 +143,8 @@ import requests from "@/mixins/requests";
 
 export default {
   name: "LoginDialog",
-  components: {UiDefaultButton,  EmailInput, DefaultInput},
+  components: {UiDefaultButton, EmailInput, DefaultInput},
+  mixins: [requests],
   data() {
     return {
       loginFormValid: true,
@@ -132,16 +204,13 @@ export default {
                     subtitle: 'На вашу электронную почту отправлено письмо для восстановления пароля'
                   })
             })
-            .catch(() => {
-              //TODO: Add recovering error handler
-            })
+            .catch()
             .finally(() => {
               this.localLoading = false
             })
       }
     }
-  },
-  mixins: [requests]
+  }
 }
 </script>
 

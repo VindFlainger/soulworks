@@ -1,29 +1,52 @@
 <template>
-  <base-dialog :value="value" @close="$emit('close')" max-width="600" class="pa-0" easy-container>
-    <label class="file-input d-block" v-if="!img">
-      <v-row align="center" class="flex-nowrap" justify="center">
-        <v-img :src="require('@/assets/images/pick-img.png')" max-width="130"></v-img>
+  <base-dialog
+      :value="value"
+      max-width="600"
+      class="pa-0"
+      easy-container
+      @close="$emit('close')"
+  >
+    <label
+        class="file-input d-block"
+        v-if="!img"
+    >
+      <v-row
+          class="flex-nowrap"
+          align="center"
+          justify="center"
+      >
+        <v-img
+            :src="require('@/assets/images/pick-img.png')"
+            max-width="130"
+        ></v-img>
+
         <span class="fs-18 font-weight-bold font-title">Выбрать изображение</span>
       </v-row>
-      <input class="d-none" type="file"
-             @change="fileParser($event.srcElement.files[0])"
-             accept=".png,.jpg,.bmp"
+
+      <input
+          class="d-none"
+          type="file"
+          accept=".png,.jpg,.bmp"
+          @change="fileParser($event.srcElement.files[0])"
       >
     </label>
 
-    <cropper :src="img"
-             v-if="img"
-             @change="croppedImg = $event"
-             :stencil-props="{
+    <cropper
+        class="cropper"
+        v-if="img"
+        :src="img"
+        :stencil-props="{
                   aspectRatio: 1/1
                 }"
-             class="cropper">
-    </cropper>
+        @change="croppedImg = $event"
+    ></cropper>
+
     <v-row class="mt-3">
       <ui-default-button @click="$emit('close')"></ui-default-button>
       <v-spacer></v-spacer>
       <ui-confirm-button @click="uploadImage">Сохранить</ui-confirm-button>
     </v-row>
+
   </base-dialog>
 </template>
 
@@ -38,17 +61,17 @@ import requests from "@/mixins/requests";
 export default {
   name: "CroppingAvatarDialog",
   components: {UiConfirmButton, UiDefaultButton, BaseDialog, Cropper},
+  props: {
+    value: Boolean
+  },
   data() {
     return {
       img: undefined,
       croppedImg: undefined
     }
   },
-  props: {
-    value: Boolean
-  },
   methods: {
-    fileParser(image){
+    fileParser(image) {
       const reader = new FileReader()
       reader.readAsDataURL(image)
       reader.onload = () => {
@@ -58,7 +81,6 @@ export default {
     uploadImage() {
       this.croppedImg.canvas.toBlob((blob => {
         const file = new File([blob], 'avatar.png')
-        console.log(file)
         const fd = new FormData()
         fd.set('image', file, file.name)
         this.postData('http://localhost:3000/upload/avatar', fd)
@@ -67,13 +89,8 @@ export default {
               this.croppedImg = undefined
               this.$emit('change', resp.data)
             })
-            .catch(() => {
-
-            })
+            .catch()
       }))
-
-
-
     }
   },
   mixins: [requests]
@@ -82,7 +99,7 @@ export default {
 
 <style scoped>
 
-.file-input{
+.file-input {
   cursor: pointer;
   display: inline-block;
 

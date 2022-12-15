@@ -19,6 +19,7 @@
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
 import ChatsList from "@/components/Specialized/Chats/ChatsList";
 import requests from "@/mixins/requests";
+import loader from "@/mixins/loader";
 
 
 export default {
@@ -32,12 +33,14 @@ export default {
   components: {ChatsList, UiContentWrapper},
   methods: {
     getChats() {
+      this.addGlobalLoadingProcess()
       this.getData('http://localhost:3000/any/chats')
           .then(resp => this.chats = resp.data)
           .catch()
+          .finally(this.removeGlobalLoadingProcess)
     }
   },
-  mixins: [requests],
+  mixins: [requests, loader],
   mounted() {
     this.getChats()
   },
@@ -45,18 +48,22 @@ export default {
     if (to.name !== 'chat') {
       this.$store.dispatch('getNewMessagesCount')
           .catch()
-          .finally(() => next())
+          .finally(() => next(true))
     } else {
-      next()
+      next(true)
+    }
+  },
+  metaInfo() {
+    return {
+      title: !this.isGlobalLoading ? 'Чаты' : null
     }
   }
-
 }
 </script>
 
 <style scoped>
 .chats-wrapper {
-  height: calc(100vh - 142px);
+  height: calc(100vh - 110px);
   overflow-x: hidden;
   overflow-y: auto;
 }

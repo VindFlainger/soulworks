@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import requests from "@/mixins/requests";
+
 export default {
   name: "EasyPhotoInput",
   data() {
@@ -35,7 +37,8 @@ export default {
             })
       }
     }
-  }
+  },
+  mixins: [requests]
 }
 </script>
 

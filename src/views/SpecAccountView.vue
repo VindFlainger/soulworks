@@ -63,7 +63,7 @@ export default {
   },
   mounted() {
     this.tab = this.$route.name
-  }
+  },
 }
 </script>
 

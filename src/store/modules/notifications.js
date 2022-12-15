@@ -1,0 +1,97 @@
+import {default as axios} from "axios";
+
+export default {
+    namespaced: true,
+    state: {
+        notifications: [],
+        newNotificationCount: 0,
+        limit: 4,
+        loading: false,
+        lastLoaded: false
+    },
+    getters: {
+        getNotifications(state) {
+            return state.notifications
+        },
+        getLimit(state) {
+            return state.limit
+        },
+        getNotificationsCount(state) {
+            return state.notifications.length
+        },
+        getNewNotificationsCount(state) {
+            return state.newNotificationCount
+        },
+        isLoading(state) {
+            return state.loading
+        },
+        isLastLoaded(state) {
+            return state.lastLoaded
+        }
+    },
+    mutations: {
+        APPEND_NOTIFICATIONS(state, notifications) {
+            // protection from sequence failure connected with socket notifications
+
+            const unic = notifications.filter(ntf => state.notifications.every($ntf => $ntf._id !== ntf._id))
+            state.notifications.push(...unic)
+            if (notifications.length < state.limit) state.lastLoaded = true
+        },
+        PREPEND_NOTIFICATIONS(state, notifications) {
+            state.notifications.unshift(...notifications)
+            state.newNotificationCount += notifications.length
+        },
+        SET_NEW_COUNT(state, count) {
+            state.newNotificationCount = count
+        },
+        SET_LOADING(state, v) {
+            state.loading = v
+        },
+        SET_NOTIFICATION_READ(state, notificationId) {
+            const ntf = state.notifications.find(ntf => ntf._id === notificationId)
+            if (ntf) {
+                state.newNotificationCount--
+                ntf.read = true
+            }
+        }
+    },
+    actions: {
+        getAuthedContent: {
+            root: true,
+            handler({commit, dispatch}) {
+                axios.get('http://localhost:3000/any/notifications/getNewCount')
+                    .then(resp => {
+                        commit('SET_NEW_COUNT', resp.data)
+                    })
+                    .catch()
+                dispatch('loadNotifications')
+            },
+        },
+        loadNotifications({commit, getters}) {
+            return new Promise((resolve, reject) => {
+                if (getters.isLoading) return reject(false)
+
+                commit('SET_LOADING', true)
+
+                axios.get('http://localhost:3000/any/notifications/getAll', {
+                    params: {
+                        limit: getters.getLimit,
+                        offset: getters.getNotificationsCount
+                    }
+                })
+                    .then(resp => {
+                        commit('APPEND_NOTIFICATIONS', resp.data)
+                        resolve()
+                    })
+                    .catch(err => reject(err))
+                    .finally(commit('SET_LOADING', false))
+            })
+        },
+        setNotificationRead({commit}, notificationId) {
+            return axios.post('http://localhost:3000/any/notifications/setReadState', {
+                notificationId
+            })
+                .then(commit('SET_NOTIFICATION_READ', notificationId))
+        }
+    }
+}

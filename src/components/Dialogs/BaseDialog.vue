@@ -4,7 +4,7 @@
             @click:outside="$emit('close')"
             content-class="rounded-xl"
   >
-    <v-card class="pa-4">
+    <v-card v-if="!empty" class="pa-4">
       <slot name="close-button" v-if="!easyContainer">
         <ui-close-button absolute style="right: 5px; top: 5px; z-index: 1" @click="$emit('close')"></ui-close-button>
       </slot>
@@ -19,6 +19,10 @@ export default {
   name: "BaseDialog",
   props: {
     easyContainer: {
+      type: Boolean,
+      default: false
+    },
+    empty: {
       type: Boolean,
       default: false
     }

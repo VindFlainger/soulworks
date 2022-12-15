@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-top: -128px; padding-top: 128px; height: 100vh">
+    <div style="margin-top: -96px; padding-top: 96px; height: 100vh">
       <ui-content-wrapper >
 
         <v-row align="center" class="fill-height" justify="space-between">
@@ -112,6 +112,9 @@ export default {
     if (this.$route.query.redirect){
       this.$root.$emit('show-login')
     }
+  },
+  metaInfo: {
+    title: 'Главная'
   }
 }
 </script>
@@ -127,7 +130,7 @@ export default {
   object-fit: cover;
   top: 0;
   left: 0;
-  margin-top: -128px;
+  margin-top: -96px;
 }
 
 .background__over{

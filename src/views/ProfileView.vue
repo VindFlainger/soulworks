@@ -27,7 +27,10 @@
             <div class="mt-4 d-flex flex-column align-center">
 
               <ui-confirm-button width="160"
-                                 class="ma-1">
+                                 class="ma-1"
+                                 @click="$router.push({name: 'chat', params: {id: $route.params.id}})"
+                                 v-if="$route.params.id !== $store.state.id"
+              >
                 Написать
               </ui-confirm-button>
 
@@ -99,7 +102,6 @@ export default {
     return {
       loaded: false,
 
-      profileInfo: undefined,
       bookingDialogVisible: false,
       avatar: '',
       name: '',
@@ -131,7 +133,7 @@ export default {
     getProfileInfo() {
       this.getData(`http://localhost:3000/data/about?userId=${this.$route.params.id}`)
           .then(resp => {
-            this.profileInfo = resp.data
+
             this.avatar = resp.data.avatar
             this.name = resp.data.name
             this.surname = resp.data.surname
@@ -160,6 +162,8 @@ export default {
             }
 
             this.loaded = true
+
+            this.$meta().refresh()
           })
           .catch(err => {
             if (err.response.data.code === 3 || err.response.data.code === 1) {
@@ -190,6 +194,11 @@ export default {
   filters: {
     role,
     sex
+  },
+  metaInfo() {
+    return {
+      title: this.name ? `Профиль ${this.name}` : null
+    }
   }
 }
 </script>

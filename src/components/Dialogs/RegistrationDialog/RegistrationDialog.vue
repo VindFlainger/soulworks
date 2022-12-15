@@ -1,76 +1,147 @@
 <template>
-  <base-dialog easy-container
-               :value="true"
-               max-width="1200"
-               content-class="white"
-               @close="$root.$emit('close-registration')"
+  <base-dialog
+      :value="true"
+      max-width="1200"
+      content-class="white"
+      easy-container
+      @close="$root.$emit('close-registration')"
   >
-    <v-stepper v-model="step" elevation="0" flat class="stepper">
+
+    <v-stepper
+        class="stepper"
+        v-model="step"
+        elevation="0"
+        flat
+    >
+
       <v-stepper-header>
+
         <v-divider></v-divider>
-        <v-stepper-step step="1" :complete="step > 1" color="green lighten-3">
+
+        <v-stepper-step
+            step="1"
+            :complete="step > 1"
+            color="green lighten-3"
+        >
           <span class="fs-16 font-title">Выбор профиля</span>
         </v-stepper-step>
+
         <v-divider></v-divider>
-        <v-stepper-step step="2" :complete="step > 2">
+
+        <v-stepper-step
+            step="2"
+            :complete="step > 2"
+        >
           <span class="fs-16 font-title">Личная/рабочая информация</span>
         </v-stepper-step>
+
         <v-divider></v-divider>
-        <v-stepper-step step="3" :complete="step > 3">
+
+        <v-stepper-step
+            step="3"
+            :complete="step > 3"
+        >
           <span class="fs-16 font-title">Аутенцификация</span>
         </v-stepper-step>
+
         <v-divider></v-divider>
+
       </v-stepper-header>
 
-      <v-stepper-content step="1" class="pb-16">
-        <ui-next-button absolute right bottom min-width="100" :disabled="!role"
-                        @click="step = 2">
-        </ui-next-button>
+      <v-stepper-content
+          step="1"
+          class="pb-16"
+      >
+        <ui-next-button
+            min-width="100"
+            :disabled="!role"
+            absolute
+            right
+            bottom
+            @click="step = 2"
+        ></ui-next-button>
+
         <v-row justify="space-around">
-          <v-card width="300" height="400" outlined class="pa-2">
-            <v-img :src="require('@/assets/images/spec.png')"
-                   height="330"
-                   contain>
-            </v-img>
+
+          <v-card
+              class="pa-2"
+              width="300"
+              height="400"
+              outlined
+          >
+            <v-img
+                :src="require('@/assets/images/spec.png')"
+                height="330"
+                contain
+            ></v-img>
+
             <v-divider></v-divider>
+
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn fab small elevation="0" @click="role='spec'" :ripple="false">
-                <v-avatar :color="role==='spec'?'blue lighten-4':''" size="28"
-                          style="outline: solid #BBDEFB 1px"></v-avatar>
+              <v-btn
+                  elevation="0"
+                  :ripple="false"
+                  fab
+                  small
+                  @click="role='spec'"
+              >
+                <v-avatar
+                    style="outline: solid #BBDEFB 1px"
+                    :color="role==='spec'?'blue lighten-4':''"
+                    size="28"
+                ></v-avatar>
               </v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
+
           </v-card>
 
-          <v-card width="300" height="400" outlined class="pa-2">
-            <v-img :src="require('@/assets/images/user.png')" height="330" contain>
+          <v-card
+              class="pa-2"
+              width="300"
+              height="400"
+              outlined
+          >
+            <v-img
+                :src="require('@/assets/images/user.png')"
+                height="330"
+                contain
+            ></v-img>
 
-            </v-img>
             <v-divider></v-divider>
+
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn fab small elevation="0" @click="role='user'" :ripple="false">
-                <v-avatar :color="role==='user'?'blue lighten-4':''" size="28"
-                          style="outline: solid #BBDEFB 1px"></v-avatar>
-
+              <v-btn
+                  elevation="0"
+                  @click="role='user'"
+                  :ripple="false"
+                  fab
+                  small
+              >
+                <v-avatar
+                    style="outline: solid #BBDEFB 1px"
+                    :color="role==='user'?'blue lighten-4':''"
+                    size="28"
+                ></v-avatar>
               </v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
+
           </v-card>
         </v-row>
       </v-stepper-content>
 
+      <registration-user
+          v-if="role === 'user'"
+          v-model="step"
+      ></registration-user>
 
-      <registration-user v-if="role === 'user'" v-model="step">
-
-      </registration-user>
-
-
-      <registration-spec v-if="role === 'spec'" v-model="step">
-
-      </registration-spec>
-
+      <registration-spec
+          v-if="role === 'spec'"
+          v-model="step"
+      ></registration-spec>
 
     </v-stepper>
   </base-dialog>
@@ -85,18 +156,17 @@ import UiNextButton from "@/components/UI/Buttons/UiNextButton";
 
 export default {
   name: "RegistrationDialog",
-
-  data() {
-    return {
-      step: 1,
-      role: 'spec',
-    }
-  },
   components: {
     UiNextButton,
     BaseDialog,
     RegistrationSpec,
     RegistrationUser,
+  },
+  data() {
+    return {
+      step: 1,
+      role: 'spec',
+    }
   },
 }
 </script>

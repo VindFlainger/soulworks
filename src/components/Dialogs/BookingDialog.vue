@@ -1,55 +1,43 @@
 <template>
-  <base-dialog :value="value" @close="$emit('close')" max-width="700">
-    <div v-if="bookingData && timetable">
+  <base-dialog :value="value" @close="$emit('close')" max-width="700" :empty="this.isLoading">
+    <div v-if="!this.isLoading">
       <div class="fs-18">
-        Специалист: <span class="font-title font-weight-bold">{{ bookingData.name }} {{ bookingData.surname }}</span>
+        Специалист: <span class="font-title font-weight-bold">{{ name }} {{ surname }}</span>
       </div>
 
-      <v-row v-if="value && bookingData" class="mt-2">
-        <v-col class="pa-0">
-          <select-input
-              label="Методология"
-              small-chips
-              :items="bookingData.methods.map(method => {return {text: method.text, value: method._id}})"
-          >
-          </select-input>
+      <v-form ref="form">
+        <v-row class="mt-2">
+          <v-col class="pa-0">
+            <select-input
+                label="Методология"
+                small-chips
+                v-model="method"
+                :items="methods.map(method => {return {text: method.text, value: method._id}})"
+            >
+            </select-input>
 
-          <select-input
-              small-chips
-              label="Специализация"
-              :items="bookingData.specializations.map(specialization => {return {text: specialization.text, value: specialization._id}})"
-          >
-          </select-input>
-        </v-col>
+            <select-input
+                small-chips
+                label="Специализация"
+                v-model="specialization"
+                :items="specializations.map(specialization => {return {text: specialization.text, value: specialization._id}})"
+            >
+            </select-input>
+          </v-col>
 
-        <v-col class="pa-0">
-          <select-input
-              small-chips
-              multiple
-              :required="false"
-              label="Условия"
-              :items="[
-              {
-              text: 'Очная консультация',
-              value: 'internal'
-              },
-              {
-              text: 'Работа с детьми',
-              value: 'children'
-              },
-              {
-              text: 'Работа с подростками',
-              value: 'teens'
-              },
-              {
-              text: 'Семейный психолог',
-              value: 'family'
-              }
-            ]"
-          >
-          </select-input>
-        </v-col>
-      </v-row>
+          <v-col class="pa-0">
+            <select-input
+                small-chips
+                multiple
+                :required="false"
+                label="Условия"
+                v-model="opportunities"
+                :items="$store.state.params.opportunities"
+            >
+            </select-input>
+          </v-col>
+        </v-row>
+      </v-form>
 
       <v-row style="min-height: 380px">
         <v-col class="pa-0">
@@ -97,7 +85,8 @@
 
       <div class="d-flex justify-space-between mt-3">
         <ui-default-button large @click="$emit('close')"></ui-default-button>
-        <ui-confirm-button large>Записаться</ui-confirm-button>
+        <ui-confirm-button large :disabled="time<=0 || this.internalLoading" @click="booking">Записаться
+        </ui-confirm-button>
       </div>
     </div>
 
@@ -118,10 +107,16 @@ export default {
   components: {UiDefaultButton, BaseDialog, UiConfirmButton, SelectInput},
   data() {
     return {
+      name: '',
+      surname: '',
       date: this.$moment().format().substring(0, 10),
       timetable: [],
-      bookingData: null,
-      time: -1
+      methods: [],
+      specializations: [],
+      time: -1,
+      specialization: null,
+      method: null,
+      opportunities: []
     }
   },
   props: {
@@ -135,29 +130,69 @@ export default {
   },
   methods: {
     getBookingTimetable(date) {
+      this.addInternalLoading()
       this.time = -1
-      this.getData(`http://localhost:3000/user/classes/bookingTimetable?specId=${this.specId}&date=${date}`)
+      this.getData(`http://localhost:3000/user/classes/bookingTimetable`, null,
+          {
+            params: {
+              specId: this.specId,
+              date,
+              timeOffset: -new Date().getTimezoneOffset() / 60
+            }
+          })
           .then(resp => {
                 this.timetable = resp.data || []
                 this.time = resp.data[0] ?? -1
               }
           )
           .catch()
+          .finally(this.removeInternalLoading)
     },
     getBookingData() {
+      this.addLoadingProcess()
       this.getData(`http://localhost:3000/user/classes/bookingData?specId=${this.specId}`)
           .then(resp => {
-                this.bookingData = resp.data
-              }
-          )
-          .catch()
+            this.specializations = resp.data.specializations
+            this.methods = resp.data.methods
+            this.name = resp.data.name
+            this.surname = resp.data.surname
+          })
+          .catch(() => this.$emit('close'))
+          .finally(this.removeLoadingProcess)
+    },
+    booking() {
+      if (this.$refs.form.validate()) {
+        this.postData('http://localhost:3000/user/classes/booking', {
+          specId: this.specId,
+          date: new Date(this.date).setUTCHours(0, 0, 0, 0),
+          method: this.method,
+          specialization: this.specialization,
+          opportunities: this.opportunities,
+          time: this.time,
+          timeOffset: this.$store.state.timeZoneOffset
+        })
+            .then(() => {
+              this.$emit('close')
+              this.$root.$emit('push-message', {
+                time: 2000,
+                type: 'success',
+                text: 'Вы успешно записались на консультацию'
+              })
+            })
+            .catch()
+
+      }
     }
   },
   watch: {
     value(val) {
       if (val) {
         this.timetable = []
-        this.bookingData = null
+        this.method = null
+        this.specialization = null
+        this.opportunities = []
+        this.time = -1
+        this.date = this.$moment().format().substring(0, 10)
         this.getBookingData()
         this.getBookingTimetable(new Date(this.date).getTime())
       }

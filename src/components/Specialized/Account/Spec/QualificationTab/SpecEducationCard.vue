@@ -28,10 +28,11 @@
     </div>
 
     <v-row>
-      <ui-document-preview v-for="document in documents"
-                           :key="document.file"
-                           :name="document.name"
-                           :url="document.url"
+      <ui-document-preview
+          v-for="document in documents"
+          :key="document.id"
+          :name="document.name"
+          :url="document.url"
       ></ui-document-preview>
     </v-row>
 
@@ -46,6 +47,10 @@ import UiCrossButton from "@/components/UI/Buttons/UiCrossButton";
 
 export default {
   name: "SpecEducationCard",
+  components: {
+    UiCrossButton,
+    UiDocumentPreview
+  },
   props: {
     id: {
       type: String,
@@ -71,8 +76,7 @@ export default {
       type: Array,
       required: true
     }
-  },
-  components: {UiCrossButton, UiDocumentPreview}
+  }
 }
 </script>
 

@@ -1,26 +1,35 @@
 <template>
-  <base-dialog :value="value" @close="$emit('close')" max-width="500">
+  <base-dialog
+      :value="value"
+      max-width="500"
+      @close="$emit('close')"
+  >
     <div v-if="value">
-      <v-form lazy-validation ref="form" v-model="valid">
+      <v-form
+          ref="form"
+          v-model="valid"
+          lazy-validation
+      >
 
         <v-row>
-
-          <default-input v-model="name"
-                         label="Название"
-                         maxlength="30"
+          <default-input
+              v-model="name"
+              label="Название"
+              maxlength="30"
           ></default-input>
 
-          <easy-photo-input v-model="previewImage"
-                            class="ml-3"
+          <easy-photo-input
+              v-model="previewImage"
+              class="ml-3"
           ></easy-photo-input>
-
         </v-row>
 
-        <text-area-input v-model="description"
-                         :required="false"
-                         counter="250"
-                         maxlength="250"
-                         label="Описание"
+        <text-area-input
+            v-model="description"
+            :required="false"
+            counter="250"
+            maxlength="250"
+            label="Описание"
         ></text-area-input>
 
         <file-input
@@ -31,19 +40,16 @@
         ></file-input>
 
         <v-row class="mt-2">
-
-          <ui-default-button @click="$emit('close')">
-            Отмена
-          </ui-default-button>
+          <ui-default-button @click="$emit('close')">Отмена</ui-default-button>
 
           <v-spacer></v-spacer>
 
           <ui-confirm-button
+              :disabled="!valid || fileLoading || !files.length"
               @click="addMaterial"
-              :disabled="!valid || fileLoading || !files.length">
+          >
             Загрузить
           </ui-confirm-button>
-
         </v-row>
       </v-form>
     </div>
@@ -63,6 +69,19 @@ import requests from "@/mixins/requests";
 
 export default {
   name: "SpecAddMaterialsDialog",
+  components: {
+    EasyPhotoInput,
+    TextAreaInput,
+    FileInput,
+    UiDefaultButton,
+    UiConfirmButton,
+    DefaultInput,
+    BaseDialog
+  },
+  mixins: [requests],
+  props: {
+    value: Boolean,
+  },
   data() {
     return {
       name: '',
@@ -72,9 +91,6 @@ export default {
       fileLoading: false,
       previewImage: undefined
     }
-  },
-  props: {
-    value: Boolean,
   },
   methods: {
     addMaterial() {
@@ -100,8 +116,6 @@ export default {
       }
     }
   },
-  components: {EasyPhotoInput, TextAreaInput, FileInput, UiDefaultButton, UiConfirmButton, DefaultInput, BaseDialog},
-  mixins: [requests]
 }
 </script>
 

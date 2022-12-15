@@ -10,13 +10,16 @@
         <router-view name="chat" :key="$route.params.id"></router-view>
       </keep-alive>
 
-      <main-loader></main-loader>
+      <global-loader :value="isGlobalLoading"></global-loader>
 
       <div>
-        <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
-        <component :is="infoDialog?'info-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps"
+                   style="position:relative; z-index: 10001"></component>
+        <component :is="infoDialog?'info-dialog':''" v-bind="dynProps"
+                   style="position:relative; z-index: 10001"></component>
         <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps"></component>
-        <component :is="loginDialog?'login-dialog':''" v-bind="dynProps" style="position:relative; z-index: 10001"></component>
+        <component :is="loginDialog?'login-dialog':''" v-bind="dynProps"
+                   style="position:relative; z-index: 10001"></component>
         <component :is="findUserDialog?'find-user-dialog':''" v-bind="dynProps"></component>
       </div>
 
@@ -32,11 +35,12 @@
 <script>
 import MainHeader from "@/components/Specialized/Header/MainHeader";
 import MainFooter from "@/components/Specialized/Main/MainFooter";
-import MainLoader from "@/components/Specialized/Main/MainLoader";
 import MessageBox from "@/components/Specialized/Main/MessageBox";
+import {mapState} from "vuex";
+import GlobalLoader from "@/components/Specialized/Main/MainLoader";
 
 export default {
-  components: {MessageBox, MainLoader, MainFooter, MainHeader},
+  components: {GlobalLoader, MessageBox, MainFooter, MainHeader},
   data() {
     return {
       confirmDialog: false,
@@ -45,8 +49,12 @@ export default {
       loginDialog: false,
       findUserDialog: false,
       dynProps: {},
-      footerVisible: true
+      footerVisible: true,
+      isGlobalLoading: false
     }
+  },
+  metaInfo: {
+    titleTemplate: chunk => chunk ? `${chunk} | Soul Works` : 'Soul Works - Ваша психология'
   },
   mounted() {
     const callback = () => this.$store.commit('setWidth', window.innerWidth)
@@ -55,9 +63,9 @@ export default {
   },
   created() {
     this.$store.dispatch('setAuthData')
-      .then(()=>{
-        this.$store.dispatch('getAuthedContent')
-      })
+        .then(() => {
+          this.$store.dispatch('getAuthedContent')
+        })
 
     this.$root.$on('show-confirm', (props = {}) => {
       this.dynProps = props
@@ -86,7 +94,7 @@ export default {
     })
     this.$root.$on('close-login', () => {
       this.loginDialog = false
-    }),
+    })
     this.$root.$on('show-find-user', (props = {}) => {
       this.dynProps = props
       this.findUserDialog = true
@@ -94,7 +102,14 @@ export default {
     this.$root.$on('close-find-user', () => {
       this.findUserDialog = false
     })
-  }
+
+    this.$root.$on('set-global-loading', v => {
+      this.isGlobalLoading = !!v
+    })
+  },
+  computed: {
+    ...mapState(['connected'])
+  },
 }
 </script>
 
@@ -141,11 +156,11 @@ nav {
   margin-top: 4px !important;
 }
 
-.v-application--wrap{
+.v-application--wrap {
   z-index: 1;
 }
 
-.v-menu__content{
+.v-menu__content {
   box-shadow: none !important;
   border: 1px solid black;
   border-radius: 14px;

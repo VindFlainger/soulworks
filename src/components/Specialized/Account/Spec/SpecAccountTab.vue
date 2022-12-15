@@ -1,14 +1,19 @@
 <template>
   <v-card class="pa-8 fill-height">
-    <span style="position:absolute; right: 30px; top: 20px; cursor: pointer"
-          @click="$router.push({name: 'specEdit'})"
-          class="fs-16 blue--text text--lighten-3 text-decoration-underline">
+    <span
+        class="fs-16 blue--text text--lighten-3 text-decoration-underline"
+        style="position:absolute; right: 30px; top: 20px; cursor: pointer"
+        @click="$router.push({name: 'specEdit'})"
+    >
       Редактировать
     </span>
     <v-row>
-      <ui-avatar size="200" :images="avatar?.images" :img-size="512">
+      <ui-avatar
+          size="200"
+          :images="avatar?.images"
+          :img-size="512"
+      ></ui-avatar>
 
-      </ui-avatar>
       <v-col class="ml-11">
         <div class="font-title fs-24">
           <router-link
@@ -16,24 +21,34 @@
               :to="{name: 'profile', params: {id: userId}}">
             {{ surname }} {{ name }}
           </router-link>
-
         </div>
 
         <div>
           {{ email }}
         </div>
       </v-col>
+
     </v-row>
     <div class="mt-3">
       <div class="font-title font-weight-bold fs-18">
         Специализация:
-        <v-chip v-for="specialization in specializations" :key="specialization._id" class="ma-1" small>
+        <v-chip
+            class="ma-1"
+            v-for="specialization in specializations"
+            :key="specialization._id"
+            small
+        >
           {{ specialization.text }}
         </v-chip>
       </div>
       <div class="font-title font-weight-bold fs-18 mt-2">
         Методы:
-        <v-chip v-for="method in methods" :key="method._id" class="ma-1" small>
+        <v-chip
+            class="ma-1"
+            v-for="method in methods"
+            :key="method._id"
+            small
+        >
           {{ method.text }}
         </v-chip>
       </div>
@@ -42,15 +57,18 @@
 
     <div class="mt-5" v-if="shortAbout">
       <div class="font-title font-weight-bold fs-18">Описание:</div>
-      <div class="font-text fs-16 font-weight-regular ">{{ shortAbout }}</div>
+      <div class="font-text fs-16 font-weight-regular">{{ shortAbout }}</div>
     </div>
 
     <div class="mt-5" v-if="fullAbout">
       <div class="font-title font-weight-bold fs-18">Обо мне:</div>
-      <div class="font-text fs-16 font-weight-regular  ">{{ fullAbout }}</div>
+      <div class="font-text fs-16 font-weight-regular">{{ fullAbout }}</div>
     </div>
 
-    <div class="mt-5" v-if="(links && links.length) || address || connection || contactPhone">
+    <div
+        class="mt-5"
+        v-if="(links && links.length) || address || connection || contactPhone"
+    >
       <div class="font-title font-weight-bold fs-18">
         Контактная информация:
       </div>
@@ -64,37 +82,44 @@
 
         <v-row align="center" v-if="contactPhone">
           <span class="font-text fs-16">Телефон:</span><code class="ml-1">+{{ contactPhone }}</code>
-          <v-img v-for="messenger in messengers" :key="messenger"
-                 :src="require(`@/assets/images/networks/${messenger}.png`)" max-width="28" height="28"
-                 class="d-inline-block ma-1"></v-img>
+          <v-img
+              class="d-inline-block ma-1"
+              v-for="messenger in messengers"
+              :key="messenger"
+              :src="require(`@/assets/images/networks/${messenger}.png`)" max-width="28" height="28"
+          ></v-img>
         </v-row>
 
         <v-row align="center" v-if="links && links.length">
           <span class="font-text fs-16">Социальные сети:</span>
-          <!-- TODO: Implement prefixes to links-->
-          <a v-for="link in links" :key="link.name" :href="link.link" style="max-height: 32px;">
+          <!--TODO: check this on special ui component available (refactoring)-->
+          <a
+              v-for="link in links"
+              :key="link.name"
+              :href="link.link"
+              style="max-height: 32px"
+          >
             <v-img
                 :src="require(`@/assets/images/networks/${link.name}.png`)"
-                max-width="28" height="28"
-                class="d-inline-block ma-1">
-            </v-img>
+                max-width="28"
+                height="28"
+                class="d-inline-block ma-1"
+            ></v-img>
           </a>
 
         </v-row>
       </div>
-
     </div>
 
     <div class="mt-5">
       <div class="font-title font-weight-bold fs-18">Статистика:</div>
-      <any-statistic-sessions class="ml-3"
-                              :missed="sessionStats.missed"
-                              :confirmed="sessionStats.confirmed"
-                              :cancelled="sessionStats.cancelled"
+      <any-statistic-sessions
+          class="ml-3"
+          :missed="sessionStats.missed"
+          :confirmed="sessionStats.confirmed"
+          :cancelled="sessionStats.cancelled"
       ></any-statistic-sessions>
     </div>
-
-
   </v-card>
 </template>
 
@@ -105,6 +130,11 @@ import AnyStatisticSessions from "@/components/Specialized/Account/Any/Statistic
 
 export default {
   name: "SpecAccountTab",
+  components: {
+    AnyStatisticSessions,
+    UiAvatar
+  },
+  mixins: [requests],
   data() {
     return {
       userId: '',
@@ -136,7 +166,13 @@ export default {
       sessionStats: ''
     }
   },
-
+  watch: {
+    '$route'(to, from) {
+      if (from.name === 'specEdit') {
+        this.getAccountData()
+      }
+    }
+  },
   methods: {
     getAccountData() {
       this.getData('http://localhost:3000/spec/account')
@@ -168,21 +204,12 @@ export default {
           .catch()
     }
   },
-  watch: {
-    '$route'(to, from) {
-      if (from.name === 'specEdit') {
-        this.getAccountData()
-      }
-    }
-  },
-  components: {
-    AnyStatisticSessions,
-    UiAvatar
-  },
-  mixins: [requests],
   mounted() {
     this.getAccountData()
   },
+  metaInfo: {
+    title: 'Мой профиль'
+  }
 }
 </script>
 

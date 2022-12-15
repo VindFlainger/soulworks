@@ -1,20 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import content from "@/store/content";
-import params from "@/store/params";
-import chat from "@/store/chat";
+import content from "@/store/modules/content";
+import params from "@/store/modules/params";
+import chat from "@/store/modules/chat";
+import notifications from "@/store/modules/notifications";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
         state: {
-            loading: 0,
             width: 0,
             token: null,
             email: null,
             role: null,
             id: null,
-            sessionEnd: 0
+            sessionEnd: 0,
+            connected: false,
+            timeZoneOffset: -new Date().getTimezoneOffset() / 60
         },
         getters: {
             mobile(state) {
@@ -25,15 +27,11 @@ export default new Vuex.Store({
             }
         },
         mutations: {
-            setLoading(state, val) {
-                state.loading += val
-            },
             setWidth(state, val) {
                 state.width = val
             },
             setToken(state, val) {
                 state.token = val
-                console.log('here')
                 localStorage.setItem('token', val)
             },
             setEmail(state, val) {
@@ -47,6 +45,9 @@ export default new Vuex.Store({
             setId(state, val) {
                 state.id = val
                 localStorage.setItem('id', val)
+            },
+            setConnected(state, val) {
+                state.connected = val
             }
         },
         actions: {
@@ -60,11 +61,20 @@ export default new Vuex.Store({
                 state.role = role
                 state.id = id
             },
+            changeConnectionStatus({commit, dispatch}, val) {
+                if (!val) {
+                    dispatch('disconnection')
+                } else {
+                    dispatch('connection')
+                }
+                commit('setConnected', val)
+            }
         },
         modules: {
             content,
             params,
             chat,
+            notifications
         }
     },
 )

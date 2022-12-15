@@ -155,7 +155,10 @@ export default {
   mounted() {
     this.getMaterials(1)
   },
-  mixins: [requests]
+  mixins: [requests],
+  metaInfo: {
+    title: 'Материалы'
+  }
 }
 </script>
 

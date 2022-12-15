@@ -1,6 +1,6 @@
 <template>
   <ui-content-wrapper>
-    <v-row style="height: calc(100vh - 142px)" justify="center">
+    <v-row style="height: calc(100vh - 110px)" justify="center">
       <v-card style="height: inherit" color="white" class="bordered pr-4 pl-4 col-8" outlined v-if="user">
 
         <v-row v-once align="center" class="pa-1 mt-2" style="border-radius: 15px; border: 1px solid #616161">
@@ -147,9 +147,9 @@ export default {
     if (to.name !== 'chats') {
       this.$store.dispatch('getNewMessagesCount')
           .catch()
-          .finally(() => next())
+          .finally(() => next(true))
     } else {
-      next()
+      next(true)
     }
   },
 }

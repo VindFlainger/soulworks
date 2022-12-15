@@ -8,6 +8,19 @@ const socket = io("ws://localhost:3000", {
     }
 });
 
+
+socket.on('connect', () => {
+    store.commit('setConnected', true)
+})
+
+socket.on('disconnect', () => {
+    store.commit('setConnected', false)
+})
+
+socket.on('notification:new', notification => {
+    store.commit('notifications/PREPEND_NOTIFICATIONS', [notification])
+})
+
 socket.on('message:new', message => {
     store.dispatch('saveNewMessage', [message.from, message])
 })

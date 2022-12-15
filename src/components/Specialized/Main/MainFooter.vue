@@ -40,7 +40,7 @@
                 <router-link to="" class="link">Отзывы</router-link>
               </v-list-item>
               <v-list-item  class="pa-0">
-                <router-link to="" class="link">Вопросы и ответы</router-link>
+                <router-link :to="{name: 'qa'}" class="link">Вопросы и ответы</router-link>
               </v-list-item>
             </v-list>
           </v-col>

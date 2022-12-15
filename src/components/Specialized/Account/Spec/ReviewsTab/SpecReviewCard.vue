@@ -1,8 +1,19 @@
 <template>
-  <v-card  :key="reviewerId" outlined class="pa-4 mt-4 bordered">
+  <!--  TODO: key WTF??? (refactoring)-->
+  <v-card
+      class="pa-4 mt-4 bordered"
+      :key="reviewerId"
+      outlined
+  >
     <v-row>
-      <ui-avatar :images="reviewerAvatar?.images" :size="100"></ui-avatar>
+
+      <ui-avatar
+          :images="reviewerAvatar?.images"
+          :size="100"
+      ></ui-avatar>
+
       <v-col class="pa-0 ml-5">
+
         <div class="font-title fs-18 font-weight-bold">
           <router-link
               class="text-decoration-none black--text"
@@ -10,13 +21,19 @@
             {{ reviewerSurname }} {{ reviewerName }}
           </router-link>
         </div>
+
         <div class="fs-16">
-          {{$moment(date).format('lll')}}
+          {{ $moment(date).format('lll') }}
         </div>
-        <v-rating class="ml-n2 mt-n1" readonly color="blue lighten-3"
-                  background-color="grey"
-                  :value="stars"
+
+        <v-rating
+            class="ml-n2 mt-n1"
+            color="blue lighten-3"
+            background-color="grey"
+            :value="stars"
+            readonly
         ></v-rating>
+
       </v-col>
     </v-row>
     <div class="mt-2">
@@ -28,6 +45,7 @@
 
 <script>
 import UiAvatar from "@/components/UI/UiAvatar";
+
 export default {
   name: "ReviewCard",
   components: {UiAvatar},

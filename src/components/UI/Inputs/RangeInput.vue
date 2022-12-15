@@ -1,50 +1,54 @@
 <template>
-  <div class="slider" style="max-width: 400px">
+  <div
+      class="slider"
+      style="max-width: 400px"
+  >
     <v-row>
-      <v-col class="pb-0">
-        <v-text-field :value="inputMin"
-                      outlined
-                      dense
-                      ref="min"
-                      @change="inputMin = $event"
-                      hide-details
-                      type="number"
-                      style="border-radius: 14px"
-                      color="black"
-        >
 
-        </v-text-field>
-      </v-col>
       <v-col class="pb-0">
-        <v-text-field :value="inputMax"
-                      outlined
-                      dense
-                      ref="max"
-                      @change="inputMax = $event"
-                      hide-details
-                      type="number"
-                      style="border-radius: 14px"
-                      color="black"
-        >
-
-        </v-text-field>
+        <v-text-field
+            :value="inputMin"
+            outlined
+            dense
+            ref="min"
+            @change="inputMin = $event"
+            hide-details
+            type="number"
+            style="border-radius: 14px"
+            color="black"
+        ></v-text-field>
       </v-col>
 
-
+      <v-col class="pb-0">
+        <v-text-field
+            :value="inputMax"
+            outlined
+            dense
+            ref="max"
+            @change="inputMax = $event"
+            hide-details
+            type="number"
+            style="border-radius: 14px"
+            color="black"
+        ></v-text-field>
+      </v-col>
     </v-row>
 
     <v-row>
       <v-range-slider
-          label="" max="1000" min="0" :value="[min, max]"
-          @input="$emit('update:min', $event[0]); $emit('update:max', $event[1])"
+          :value="[min, max]"
+          @input="$emit('update:min', $event[0]);
+          $emit('update:max', $event[1])"
           @change="$emit('change', [min, max])"
           class="mt-1"
+          :max="maxLimit"
+          :min="minLimit"
           track-fill-color="green lighten-3"
           track-color="grey lighten-2"
           thumb-color="green lighten-3"
-      >
-      </v-range-slider>
+      ></v-range-slider>
     </v-row>
+
   </div>
 
 </template>

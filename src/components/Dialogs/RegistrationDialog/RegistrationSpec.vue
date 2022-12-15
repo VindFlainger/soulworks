@@ -1,61 +1,66 @@
 <template>
-  <div>
+  <div class="registration-spec">
+
     <v-stepper-content step="2">
+
       <v-form ref="accountForm">
         <v-row>
           <v-avatar size="200">
             <v-img :src="require(`@/assets/images/spec.png`)"></v-img>
           </v-avatar>
 
-          <v-col>
-            <name-input v-model="name" label="Имя" maxlength="30"></name-input>
-            <name-input v-model="surname" label="Фамилия" maxlength="30"></name-input>
 
-            <select-input v-model="sex"
-                          label="Пол"
-                          :items="$store.state.params.specSex"
+          <v-col>
+            <name-input
+                v-model="name"
+                label="Имя"
+                maxlength="30"
+            ></name-input>
+
+            <name-input
+                v-model="surname"
+                label="Фамилия"
+                maxlength="30"
+            ></name-input>
+
+            <select-input
+                v-model="sex"
+                label="Пол"
+                :items="$store.state.params.specSex"
             ></select-input>
 
             <phone-input v-model="phone"></phone-input>
           </v-col>
 
+
           <v-col>
             <div class="font-title fs-16 font-weight-bold">Цена за 1 час онлайн консультации</div>
 
-            <range-input :min-limit="0"
-                         :max-limit="1000"
-                         :min.sync="minInternalPrice"
-                         :max.sync="maxInternalPrice"
+            <range-input
+                :min.sync="minInternalPrice"
+                :max.sync="maxInternalPrice"
+                :min-limit="0"
+                :max-limit="1000"
             ></range-input>
 
             <div class="font-title fs-16 font-title font-weight-bold">Цена за 1 час очной консультации</div>
 
-            <range-input :min-limit="0"
-                         :max-limit="1000"
-                         :min.sync="minOnlinePrice"
-                         :max.sync="maxOnlinePrice"
+            <range-input
+                :min.sync="minOnlinePrice"
+                :max.sync="maxOnlinePrice"
+                :min-limit="0"
+                :max-limit="1000"
             ></range-input>
           </v-col>
 
         </v-row>
 
         <v-row>
-          <select-input multiple
-                        label="Специализация"
-                        :items="specializationsParams.map(el => {return {text: el.text, value: el._id}})"
-                        v-model="specializations"
-                        chips
-                        small-chips
-                        big-content
-          ></select-input>
-
-          <v-spacer></v-spacer>
-
           <select-input
+              v-model="specializations"
+              :items="specializationsParams.map(el => {return {text: el.text, value: el._id}})"
+              label="Специализация"
               multiple
-              label="Методы"
-              :items="methodsParams.map(el => {return {text: el.text, value: el._id}})"
-              v-model="methods_"
               chips
               small-chips
               big-content
@@ -64,14 +69,29 @@
           <v-spacer></v-spacer>
 
           <select-input
+              v-model="methods_"
+              :items="methodsParams.map(el => {return {text: el.text, value: el._id}})"
+              label="Методы"
               multiple
-              label="Условия"
+              chips
+              small-chips
+              big-content
+          ></select-input>
+
+          <v-spacer></v-spacer>
+
+          <select-input
               v-model="opportunities"
+              label="Условия"
               :required="false"
               :items="$store.state.params.opportunities"
-              chips small-chips big-content>
-          </select-input>
+              multiple
+              chips
+              small-chips
+              big-content
+          ></select-input>
         </v-row>
+
       </v-form>
 
       <v-row>
@@ -83,20 +103,40 @@
     </v-stepper-content>
 
     <v-stepper-content step="3">
-      <v-form lazy-validation ref="authForm">
+
+      <v-form
+          ref="authForm"
+          lazy-validation
+      >
         <v-row align="center">
+
           <v-col class="col-4">
             <email-input v-model="email" :check="true"></email-input>
             <password-input v-model="password"></password-input>
             <repeat-password-input :value="password"></repeat-password-input>
           </v-col>
+
           <v-col class="col-8">
-            <v-row class="fill-height rounded pa-2" align="center"
-                   style="position:relative; top: -10px; outline: 1px solid grey">
-              <div class="fs-14 overflow-y-auto" style="max-height: 400px" v-html="$store.state.content.specAgreement"></div>
-              <v-checkbox style="border-top: 1px solid grey; width: 100%" v-model="confirm" hide-details dense
-                          label="Согласен с пользовательским соглашением">
-              </v-checkbox>
+
+            <v-row
+                class="fill-height rounded pa-2"
+                style="position:relative; top: -10px; outline: 1px solid grey"
+                align="center"
+            >
+
+              <div
+                  class="fs-14 overflow-y-auto"
+                  style="max-height: 400px"
+                  v-html="$store.state.content.specAgreement">
+              </div>
+
+              <v-checkbox
+                  style="border-top: 1px solid grey; width: 100%"
+                  v-model="confirm"
+                  label="Согласен с пользовательским соглашением"
+                  hide-details
+                  dense
+              ></v-checkbox>
             </v-row>
 
           </v-col>
@@ -108,6 +148,7 @@
         <v-spacer></v-spacer>
         <ui-next-button :disabled="!confirm" @click="registerSpec">Завершить</ui-next-button>
       </v-row>
+
     </v-stepper-content>
   </div>
 </template>
@@ -126,6 +167,21 @@ import requests from "@/mixins/requests";
 
 export default {
   name: "RegistrationSpec",
+  components: {
+    UiBackButton,
+    UiNextButton,
+    RepeatPasswordInput,
+    PasswordInput,
+    EmailInput,
+    RangeInput,
+    PhoneInput,
+    SelectInput,
+    NameInput
+  },
+  mixins: [requests],
+  props: {
+    step: Number
+  },
   data() {
     return {
       minInternalPrice: 0,
@@ -146,9 +202,6 @@ export default {
       specializationsParams: [],
       methodsParams: []
     }
-  },
-  props: {
-    step: Number
   },
   methods: {
     registerSpec() {
@@ -194,18 +247,6 @@ export default {
           .catch()
     }
   },
-  components: {
-    UiBackButton,
-    UiNextButton,
-    RepeatPasswordInput,
-    PasswordInput,
-    EmailInput,
-    RangeInput,
-    PhoneInput,
-    SelectInput,
-    NameInput
-  },
-  mixins: [requests],
   mounted() {
     this.getMethodsSpecializations()
   },

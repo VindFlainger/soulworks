@@ -1,13 +1,17 @@
 <template>
-  <v-row style="align-items: stretch; position:relative; border: 1px solid black;" class="rounded-xl pa-2 pr-10">
+  <v-row
+      class="rounded-xl pa-2 pr-10"
+      style="align-items: stretch; position:relative; border: 1px solid black"
+  >
 
     <div style="height: inherit; position:relative; width: 250px">
-      <v-img :src="previewImg || require('@/assets/images/material-nophoto.png')"
-             class="rounded-xl"
-             style="position:absolute;"
-             max-width="250"
-             height="100%"
-             position="top center"
+      <v-img
+          class="rounded-xl"
+          style="position:absolute"
+          :src="previewImg || require('@/assets/images/material-nophoto.png')"
+          max-width="250"
+          height="100%"
+          position="top center"
       ></v-img>
     </div>
 
@@ -22,17 +26,28 @@
     </v-col>
 
     <v-col>
-      <div class="text-title fs-16" style="font-weight: 600">Читатели</div>
-      <ui-signed-avatars :users="readers" v-if="readers.length"></ui-signed-avatars>
+      <div
+          class="text-title fs-16"
+          style="font-weight: 600"
+      >
+        Читатели
+      </div>
+
+      <ui-signed-avatars
+          v-if="readers.length"
+          :users="readers"
+      ></ui-signed-avatars>
+
       <div v-else class="fs-14">
         Вы еще не предоставили доступ к этому материалу другим пользователям
       </div>
     </v-col>
 
-    <ui-cross-button @click="$emit('delete-material')"
-                     class="ml-4"
-                     absolute
-                     style="top: 50%; right: 10px; transform: translate(0,-50%)"
+    <ui-cross-button
+        class="ml-4"
+        style="top: 50%; right: 10px; transform: translate(0,-50%)"
+        absolute
+        @click="$emit('delete-material')"
     ></ui-cross-button>
 
   </v-row>
@@ -46,7 +61,12 @@ import UiCrossButton from "@/components/UI/Buttons/UiCrossButton";
 
 export default {
   name: "SpecMaterialCard",
-  components: {UiCrossButton, UiDefaultButton, UiSignedAvatars, UiConfirmButton},
+  components: {
+    UiCrossButton,
+    UiDefaultButton,
+    UiSignedAvatars,
+    UiConfirmButton
+  },
   props: {
     id: String,
     name: String,

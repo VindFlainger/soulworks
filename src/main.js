@@ -3,6 +3,7 @@ import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import store from './store'
 import router from './router'
+import Meta from 'vue-meta'
 
 import Moment from "@/plugins/moment";
 import Validator from "./plugins/validator";
@@ -25,6 +26,7 @@ Vue.config.productionTip = false
 Vue.use(Validator)
 Vue.use(Moment)
 Vue.use(Socket)
+Vue.use(Meta)
 
 
 

@@ -1,43 +1,82 @@
 <template>
-  <v-menu offset-y left min-width="350" open-on-hover>
+  <v-menu
+      min-width="350"
+      offset-y
+      left
+  >
     <template v-slot:activator="{on, attrs}">
       <div v-bind="attrs" v-on="on">
         <slot></slot>
       </div>
     </template>
 
-    <v-card color="white" elevation="0" max-width="350" outlined class="pa-3">
-      <div v-if="!this.isLogin" class="menu__content pa-2">
+    <v-card
+        class="pa-3"
+        color="white"
+        elevation="0"
+        max-width="350"
+        outlined
+    >
+      <div
+          class="menu__content pa-2"
+          v-if="!this.isLogin"
+      >
         <div class="text-center fs-14">
           Войдите в аккаунт или зарегистрируйте новый для получения доступа к уникальному функционалу!
         </div>
+
         <v-card-actions class="pa-0 pt-3">
-          <ui-default-button width="45%" @click="$root.$emit('show-login')">Войти</ui-default-button>
+          <ui-default-button
+              width="45%"
+              @click="$root.$emit('show-login')"
+          >
+            Войти
+          </ui-default-button>
+
           <v-spacer></v-spacer>
-          <ui-default-button width="45%" @click="$root.$emit('show-registration')">Регистрация</ui-default-button>
+
+          <ui-default-button
+              width="45%"
+              @click="$root.$emit('show-registration')"
+          >
+            Регистрация
+          </ui-default-button>
         </v-card-actions>
+
       </div>
 
-      <div v-if="this.isLogin && shortInfo" class="menu__content">
+      <div v-if="this.isLogin" class="menu__content">
         <v-row align="center" class="pa-2">
-          <ui-avatar :images="shortInfo.avatar?.images" :img-size="64" :size="55">
 
-          </ui-avatar>
+          <ui-avatar
+              :images="avatar?.images"
+              :img-size="64"
+              :size="55"
+          ></ui-avatar>
 
           <div class="ml-3">
-            <div class="font-title font-weight-bold fs-20" style="line-height: 100%">
-              {{ shortInfo.name }}
-              {{ shortInfo.surname }}
+            <div
+                class="font-title font-weight-bold fs-20"
+                style="line-height: 100%"
+            >
+              {{ name }}
+              {{ surname }}
             </div>
 
-            <div class="fs-16 grey--text text--lighten-1" style="font-weight: 300; letter-spacing: 1px">
+            <div
+                class="fs-16 grey--text text--lighten-1"
+                style="font-weight: 300; letter-spacing: 1px"
+            >
               {{ this.$store.state.role === 'spec' ? 'Психолог' : 'Пользователь' }}
             </div>
           </div>
         </v-row>
 
         <div style="border-bottom: 1px solid black; border-top: 1px solid black">
-          <div class="pa-1" v-if="this.$store.state.role === 'spec'">
+          <div
+              class="pa-1"
+              v-if="this.$store.state.role === 'spec'"
+          >
             <router-link :to="{name: 'specAccount'}" class="link">Личный кабинет</router-link>
             <router-link :to="{name: 'specClasses'}" class="link">Консультации</router-link>
             <router-link :to="{name: 'specTimetable'}" class="link">Расписание</router-link>
@@ -53,7 +92,11 @@
             <router-link :to="{name: 'specSecurity'}" class="link">Безопасность</router-link>
           </div>
         </div>
-        <div @click="logOut(false)" class="pa-1 link" style="font-weight: 600; cursor: pointer">
+        <div
+            class="pa-1 link"
+            style="font-weight: 600; cursor: pointer"
+            @click="logOut(false)"
+        >
           Выход
         </div>
       </div>
@@ -73,30 +116,33 @@ import UiAvatar from "@/components/UI/UiAvatar";
 export default {
   name: "HeaderUserMenu",
   components: {UiAvatar, UiDefaultButton},
+  mixins: [requests],
   data() {
     return {
-      shortInfo: undefined
+      name: '',
+      surname: '',
+      avatar: null,
     }
-  },
-  methods: {
-    getShortInfo() {
-      this.getData('http://localhost:3000/any/shortinfo', {handleError: true, handleErrorResponse: true})
-          .then(resp => {
-            this.shortInfo = resp.data
-          })
-          .finally(() => {
-          })
-    }
-  },
-  mounted() {
-    this.getShortInfo()
   },
   computed: {
     ...mapGetters({
       isLogin: 'isLogin',
     }),
   },
-  mixins:[requests]
+  methods: {
+    getShortInfo() {
+      this.getData('http://localhost:3000/any/shortinfo', {handleError: true, handleErrorResponse: true})
+          .then(resp => {
+            this.name = resp.data.name
+            this.surname = resp.data.surname
+            this.avatar = resp.data.avatar
+          })
+          .catch()
+    }
+  },
+  mounted() {
+    this.getShortInfo()
+  },
 }
 </script>
 

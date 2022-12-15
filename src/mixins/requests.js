@@ -6,7 +6,10 @@ axios.defaults.withCredentials = true
 export default {
     data() {
         return {
-            localLoading: false
+            localLoading: false, // TODO: deprecated (remove and find all)
+            requestError: false,
+            loadingProcesses: 0,
+            internalLoading: false
         }
     },
     mixins: [auth],
@@ -16,14 +19,29 @@ export default {
         },
         globalLoading() {
             return this.$store.state.loading
+        },
+        isLoading() {
+            return !!this.loadingProcesses
         }
     },
     methods: {
+        addInternalLoading() {
+            this.internalLoading = true
+        },
+        removeInternalLoading() {
+            this.internalLoading = false
+        },
         addLoadingProcess() {
-            this.$store.commit('setLoading', 1)
+            this.loadingProcesses++
         },
         removeLoadingProcess() {
-            this.$store.commit('setLoading', -1)
+            this.loadingProcesses--
+        },
+        setRequestErrorState() {
+            this.requestError = true
+        },
+        removeRequestErrorState() {
+            this.requestError = false
         },
         showAlert(type, time = 3000, text = '') {
             this.$root.emit('push-message', {type, time, text})

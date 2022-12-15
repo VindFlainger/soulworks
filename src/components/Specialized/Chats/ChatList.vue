@@ -1,11 +1,12 @@
 <template>
   <div ref="container" class="chat-area-list__wrapper">
 
-    <div v-if="messages[0]?.offset >= 0"
-         v-show="!loading"
-         class="chat-area-list__top-observer"
-         v-observer:top="loadPrevious">
-    </div>
+    <div
+        class="chat-area-list__top-observer"
+        v-if="messages[0]?.offset >= 0"
+        v-show="!loading"
+        v-observer:top="loadPrevious"
+    ></div>
 
 
     <div ref="list">
@@ -41,19 +42,27 @@
         v-if="!historyLoaded"
         v-show="!loading"
         class="chat-area-list__bottom-observer"
-        v-observer:bottom="loadNext">
-    </div>
+        v-observer:bottom="loadNext"
+    ></div>
 
-    <div v-for="message in loadingMessages" :key="message._id" class="fs-14">
+    <div
+        v-for="message in loadingMessages"
+        :key="message._id"
+        class="fs-14"
+    >
       <v-row class="message mb-2">
         <v-spacer></v-spacer>
-        <div class="pa-2 pr-15 blue lighten-4 rounded d-inline-block" style="max-width: 70%; position:relative;">
+        <div
+            class="pa-2 pr-15 blue lighten-4 rounded d-inline-block"
+            style="max-width: 70%; position:relative;"
+        >
           {{ message.text }}
           <div class="message-hint">
             <v-icon size="19">mdi-check</v-icon>
           </div>
         </div>
       </v-row>
+
     </div>
   </div>
 </template>

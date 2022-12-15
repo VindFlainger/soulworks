@@ -39,10 +39,10 @@ import UiBeautyList from "@/components/UI/UiBeautyList";
 
 export default {
   name: "RulesView",
-  data() {
-
-  },
-  components: {UiBeautyList, UiAvatarText, UiContentWrapper}
+  components: {UiBeautyList, UiAvatarText, UiContentWrapper},
+  metaInfo: {
+    title: 'Правила'
+  }
 }
 </script>
 

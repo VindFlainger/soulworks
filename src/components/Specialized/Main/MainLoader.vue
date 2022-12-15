@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="$store.state.loading" fullscreen>
+  <v-dialog fullscreen v-bind="$attrs">
     <div class="d-flex align-center justify-center" style="width: 100%; height: 100%; background: rgba(128,128,128,0.37)">
 
       <v-progress-circular size="115"  width="12" color="blue lighten-3" indeterminate style="position:absolute; z-index: 1" rotate="0"></v-progress-circular>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  name: "MainLoader"
+  name: "GlobalLoader",
 }
 </script>
 

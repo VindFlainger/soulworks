@@ -68,6 +68,24 @@ export default {
                 network: 'viber',
                 link: ''
             },
+        ],
+        specSort: [
+            {
+                text: 'По количеству обращений',
+                value: 1
+            },
+            {
+                text: 'По цене (сначало дороже)',
+                value: 2
+            },
+            {
+                text: 'По цене (сначало дешевле)',
+                value: 3
+            },
+            {
+                text: 'По дате регистрации',
+                value: 4
+            }
         ]
     }
 }

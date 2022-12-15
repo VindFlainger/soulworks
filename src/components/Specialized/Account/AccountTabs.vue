@@ -1,12 +1,18 @@
 <template>
-  <v-tabs vertical slider-color="transparent" class="profile-tabs">
-    <v-tab v-for="tab in tabs" :to="tab.link"
-           class="justify-start black--text"
-           :key="tab.title"
-           active-class="black--text white"
-           :ripple="false"
+  <v-tabs
+      class="profile-tabs"
+      vertical
+      slider-color="transparent"
+  >
+    <v-tab
+        class="justify-start black--text"
+        v-for="tab in tabs"
+        :key="tab.title"
+        :to="tab.link"
+        active-class="black--text white"
+        :ripple="false"
     >
-      {{tab.title | capitalize }}
+      {{ tab.title | capitalize }}
     </v-tab>
   </v-tabs>
 </template>
@@ -21,7 +27,7 @@ export default {
 </script>
 
 <style scoped>
-.v-tab{
+.v-tab {
   position: relative;
   background: #ECEFF1;
   text-transform: capitalize;
@@ -29,7 +35,7 @@ export default {
   color: black;
 }
 
-.v-tab::after{
+.v-tab::after {
   content: '';
   position: absolute;
   right: 0;
@@ -40,15 +46,15 @@ export default {
   z-index: 100;
 }
 
-.v-tab--active::before{
+.v-tab--active::before {
   display: none;
 }
 
-.profile-tabs >>>  .v-tabs-bar{
+.profile-tabs >>> .v-tabs-bar {
   background: #ECEFF1 !important;
 }
 
-a{
+a {
   border-radius: 20px 0 0 20px;
   overflow: hidden;
 }

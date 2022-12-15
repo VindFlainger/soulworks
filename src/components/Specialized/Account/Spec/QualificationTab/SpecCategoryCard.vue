@@ -10,8 +10,10 @@
       </div>
 
       <div class="font-weight-medium">Статус:
-        <span class="font-weight-light"
-              :class="{'green--text':approve, 'red--text': !approve}">
+        <span
+            class="font-weight-light"
+            :class="{'green--text':approve, 'red--text': !approve}"
+        >
           {{ approve ? 'Подтверждена' : 'Не подтверждена' }}
         </span>
       </div>
@@ -20,10 +22,11 @@
 
     <v-col>
       <v-row>
-        <ui-document-preview v-for="document in documents"
-                             :key="document.file"
-                             :name="document.name"
-                             :url="document.url"
+        <ui-document-preview
+            v-for="document in documents"
+            :key="document.id"
+            :name="document.name"
+            :url="document.url"
         ></ui-document-preview>
       </v-row>
     </v-col>

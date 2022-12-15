@@ -1,6 +1,10 @@
 <template>
 
-  <base-dialog max-width="500" @close="$emit('close')" :value="value">
+  <base-dialog
+      :value="value"
+      max-width="500"
+      @close="$emit('close')"
+  >
 
     <div class="font-title font-weight-bold fs-22">
       {{ surname }} {{ name }}
@@ -10,10 +14,15 @@
       <div>
         <span class="contact">Номер телефона:</span> +{{ phone }}
       </div>
-      <v-img v-for="messenger in messengers" :key="messenger"
-             :src="require(`@/assets/images/networks/${messenger}.png`)" max-width="25" height="25"
-             class="d-inline-block ma-1">
-      </v-img>
+
+      <v-img
+          class="d-inline-block ma-1"
+          v-for="messenger in messengers"
+          :key="messenger"
+          :src="require(`@/assets/images/networks/${messenger}.png`)"
+          max-width="25"
+          height="25"
+      ></v-img>
     </v-row>
 
     <div>
@@ -23,7 +32,11 @@
       <span class="contact">Контактная информация:</span> {{ connection }}
     </div>
 
-    <ui-social-links class="mt-1" :links="links" size="40"></ui-social-links>
+    <ui-social-links
+        class="mt-1"
+        :links="links"
+        size="40"
+    ></ui-social-links>
 
   </base-dialog>
 

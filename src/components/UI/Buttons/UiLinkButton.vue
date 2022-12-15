@@ -24,7 +24,4 @@ export default {
 </script>
 
 <style scoped>
-.link-button {
-
-}
 </style>

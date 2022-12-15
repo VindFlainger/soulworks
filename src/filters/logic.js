@@ -47,7 +47,7 @@ export const online = (v, sex) => {
     })()
     const diffD = moment().diff(v, 'days')
     if (!diffD) {
-        if (moment().day() !== moment(v).day() ) return `${prefix} вчера}`
+        if (moment().day() !== moment(v).day() ) return `${prefix} вчера`
         return `${prefix} сегодня в ${moment(v).format('HH:mm')}`
     }
     if (diffD < 7) return `${prefix} в ${moment(v).format('dd')}`

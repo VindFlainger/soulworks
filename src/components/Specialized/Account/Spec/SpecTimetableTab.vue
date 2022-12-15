@@ -1,9 +1,15 @@
 <template>
-  <v-card class="pa-4" elevation="0" v-if="timetable">
+  <v-card
+      v-if="timetable"
+      class="pa-4"
+      elevation="0"
+  >
     <ui-full-width-banner :img="require('@/assets/images/account/timetable.png')">
       <div class="fill-height d-flex align-center justify-center">
-        <div class="font-title pa-5 rounded"
-             style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px">
+        <div
+            class="font-title pa-5 rounded"
+            style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px"
+        >
           Ваше расписание
         </div>
       </div>
@@ -11,44 +17,70 @@
 
     <v-row>
       <v-col class="col-3">
-        <v-list-item-group class="pa-0" v-model="activeDay" mandatory>
-          <v-list-item v-for="day in days" :key="day" dense class="rounded overflow-x-hidden">
+        <v-list-item-group
+            class="pa-0"
+            v-model="activeDay"
+            mandatory
+        >
+          <v-list-item
+              class="rounded overflow-x-hidden"
+              v-for="day in days"
+              :key="day" dense
+          >
             {{ day }}
           </v-list-item>
         </v-list-item-group>
-
       </v-col>
 
       <v-col class="col-6 pa-0">
         <v-row>
-          <v-col class="col-4 pa-0" v-for="i in [0,1,2]" :key="i">
+          <v-col
+              class="col-4 pa-0"
+              v-for="i in [0,1,2]"
+              :key="i"
+          >
             <v-list>
+              <!-- TODO: rewrite this freaking code with css cols-->
               <v-list-item
-                  v-for="j in [0,1,2,3,4,5,6,7]" :key="j"
-                  :class="
-                  timetable.includes(
-                        ( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168
-                      )
-                  ?'green lighten-5':''"
-                  class="d-inline-block pt-2 ma-1 rounded">
+                  class="d-inline-block pt-2 ma-1 rounded"
+                  v-for="j in [0,1,2,3,4,5,6,7]"
+                  :key="j"
+                  :class="timetable.includes((24 * activeDay + (j + i * 8)))?'green lighten-5':''"
+              >
+                <span
+                    class="fs-18"
+                    style="font-weight: 600"
+                >
+                  {{ j + i * 8 < 10 ? `0${j + i * 8}` : j + i * 8 }}:00
+                </span>
 
-            <span class="fs-18" style="font-weight: 600">
-              {{ j + i * 8 < 10 ? `0${j + i * 8}` : j + i * 8 }}:00
-            </span>
-                <v-btn fab outlined x-small class="rounded ml-3" elevation="0"
-                       style="position:relative; border: 2px #C8E6C9 solid;"
-                       :class="{'d-none': timetable.includes(  ( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168 ) }"
-                       @click="addTime(( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168)"
+                <v-btn
+                    class="rounded ml-3"
+                    style="position:relative; border: 2px #C8E6C9 solid;"
+                    :class="{'d-none': timetable.includes(24 * activeDay + (j + i * 8))}"
+                    fab
+                    outlined
+                    x-small
+                    elevation="0"
+                    @click="addTime(24 * activeDay + (j + i * 8))"
                 >
                   <div class="plus"></div>
                 </v-btn>
-                <v-btn fab outlined color="blue lighten-4" x-small class="rounded ml-3" elevation="0"
-                       style="position:relative; border: 2px #FFCDD2 solid"
-                       @click="delTime(( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168)"
-                       :class="{'d-none': !timetable.includes(  ( ( (24 * activeDay + (j + i * 8) + timeOffset) % 168 ) + 168 ) % 168 )}"
+
+                <v-btn
+                    class="rounded ml-3"
+                    style="position:relative; border: 2px #FFCDD2 solid"
+                    :class="{'d-none': !timetable.includes(24 * activeDay + (j + i * 8))}"
+                    elevation="0"
+                    color="blue lighten-4"
+                    fab
+                    outlined
+                    x-small
+                    @click="delTime(24 * activeDay + (j + i * 8))"
                 >
                   <div class="close"></div>
                 </v-btn>
+
               </v-list-item>
             </v-list>
           </v-col>
@@ -58,7 +90,7 @@
 
       <v-col class="pa-0 pt-1 d-flex align-center">
         <div>
-          <div class="font-title fs-14 font-weight-bold ">Справка</div>
+          <div class="font-title fs-14 font-weight-bold">Справка</div>
           <div class="fs-12">
             Данное расписание является статическим и переносится на каждую неделю автоматически.
             Пользователем доступна запись на это расписание на 7 дней вперед.
@@ -78,7 +110,7 @@ import requests from "@/mixins/requests";
 export default {
   name: "SpecTimetableTab",
   components: {UiFullWidthBanner},
-
+  mixins: [requests],
   data() {
     return {
       days: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
@@ -89,14 +121,19 @@ export default {
   },
   methods: {
     getTimetable() {
-      this.getData('http://localhost:3000/spec/timetable')
+      this.getData(`http://localhost:3000/spec/timetable?timeOffset=${this.timeOffset}`)
           .then(resp => {
             this.timetable = resp.data
           })
           .catch()
     },
     addTime(time) {
-      this.putData('http://localhost:3000/spec/timetable', {time})
+      this.putData('http://localhost:3000/spec/timetable',
+          {
+            time,
+            timeOffset: this.timeOffset
+          }
+      )
           .then(() => {
             this.timetable.push(time)
             this.$root.$emit('push-message', {text: 'Расписание успешно обновлено', type: 'success'})
@@ -104,7 +141,7 @@ export default {
           .catch()
     },
     delTime(time) {
-      this.delData(`http://localhost:3000/spec/timetable?time=${time}`)
+      this.delData(`http://localhost:3000/spec/timetable?time=${time}&timeOffset=${this.timeOffset}`)
           .then(() => {
             this.timetable = this.timetable.filter(el => el !== time)
             this.$root.$emit('push-message', {text: 'Расписание успешно обновлено', type: 'success'})
@@ -116,7 +153,9 @@ export default {
   mounted() {
     this.getTimetable()
   },
-  mixins: [requests]
+  metaInfo: {
+    title: 'Расписание'
+  }
 }
 </script>
 

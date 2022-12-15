@@ -1,14 +1,25 @@
 <template>
-  <base-dialog :value="true" @close="$root.$emit('close-info')" max-width="400">
-    <v-card class="pa-3 confirm__main" elevation="0" color="transparent" >
+  <base-dialog
+      :value="true"
+      max-width="400"
+      @close="$root.$emit('close-info')"
+  >
+
+    <v-card
+        class="pa-3 confirm__main"
+        elevation="0"
+        color="transparent"
+    >
 
       <div class="pa-4">
-        <div class="fs-22 font-title font-weight-bold text-center " style="letter-spacing: 2px">
-          {{title}}
+        <div
+            class="fs-22 font-title font-weight-bold text-center"
+            style="letter-spacing: 2px"
+        >
+          {{ title }}
         </div>
-        <div class="text-center fs-12" >
-          {{subtitle}}
-        </div>
+
+        <div class="text-center fs-12">{{ subtitle }}</div>
       </div>
 
       <v-card-actions class="pa-0">
@@ -30,6 +41,7 @@
 
 <script>
 import BaseDialog from "@/components/Dialogs/BaseDialog";
+
 export default {
   name: "InfoDialog",
   components: {BaseDialog},
@@ -41,7 +53,6 @@ export default {
     subtitle: {
       type: String,
     }
-
   }
 }
 </script>
@@ -56,7 +67,7 @@ export default {
   bottom: 0;
   z-index: -1;
   opacity: 0.1;
-  background: url('@/assets/images/confirm-bg.png') 0 0 / cover ;
+  background: url('@/assets/images/confirm-bg.png') 0 0 / cover;
 }
 
 .confirm__main::before {
@@ -67,6 +78,6 @@ export default {
   top: 0;
   bottom: 0;
   z-index: -1;
-  background: white ;
+  background: white;
 }
 </style>

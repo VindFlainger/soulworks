@@ -1,7 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import MainView from "@/views/MainView";
-import SpecialistsView from "@/views/SpecialistsView";
+
+const SpecialistsView = () => import("@/views/SpecialistsView");
+const QAView = () => import("@/views/QAView")
+const AboutView = () => import("@/views/AboutView")
+
+
 import store from '../store'
 import SpecAccountTab from "@/components/Specialized/Account/Spec/SpecAccountTab";
 import SpecTimetableTab from "@/components/Specialized/Account/Spec/SpecTimetableTab";
@@ -16,7 +21,7 @@ import ProfileView from "@/views/ProfileView";
 import NotFoundView from "@/views/NotFoundView";
 import RulesView from "@/views/RulesView";
 import PublicationsView from "@/views/PublicationsView";
-import AboutView from "@/views/AboutView";
+
 import SupportView from "@/views/SupportView";
 import SpecAccountEditTab from "@/components/Specialized/Account/Spec/SpecAccountEditTab";
 import UserAccountTab from "@/components/Specialized/Account/User/UserAccountTab";
@@ -35,7 +40,7 @@ const routes = [
     {
         path: '/',
         name: 'home',
-        component: MainView
+        component: MainView,
     },
     {
         path: '/spec',
@@ -173,17 +178,28 @@ const routes = [
         component: SupportView
     },
     {
+        path: '/qa',
+        name: 'qa',
+        component: QAView
+    },
+    {
         path: '*',
         name: 'notfound',
         component: NotFoundView
-    }
+    },
 ]
+
+const scrollHandler = (to, from, savedPosition) => {
+    if (savedPosition) return {x: 0, y: 0}
+    return {x: 0, y: 0}
+}
 
 
 const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
-    routes
+    routes,
+    scrollBehavior: scrollHandler
 })
 
 

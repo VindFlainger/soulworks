@@ -1,21 +1,36 @@
 <template>
-  <div>
+  <div class="registration-user">
+
     <v-stepper-content step="2">
+
       <v-form ref="accountForm">
+
         <v-row align="center">
+
           <v-avatar size="200">
             <v-img :src="require(`@/assets/images/user.png`)"></v-img>
           </v-avatar>
 
           <v-col>
-            <name-input v-model="name" label="Имя" maxlength="30"></name-input>
-            <name-input v-model="surname" label="Фамилия" maxlength="30" class="mt-1"></name-input>
+            <name-input
+                v-model="name"
+                label="Имя"
+                maxlength="30"
+            ></name-input>
+
+            <name-input
+                v-model="surname"
+                label="Фамилия"
+                maxlength="30"
+                class="mt-1"
+            ></name-input>
           </v-col>
 
           <v-col>
-            <select-input v-model="sex"
-                          label="Пол"
-                          :items="$store.state.params.userSex"
+            <select-input
+                v-model="sex"
+                label="Пол"
+                :items="$store.state.params.userSex"
             ></select-input>
 
             <phone-input v-model="phone"></phone-input>
@@ -27,6 +42,7 @@
           вы желаете сохранить анонимность воспользуйтесь псевдонимом. Вы сможете изменить имя и фамилию в любое время в
           вашем личном кабинете.
         </div>
+
       </v-form>
 
       <v-row>
@@ -38,24 +54,41 @@
     </v-stepper-content>
 
     <v-stepper-content step="3">
-      <v-form lazy-validation ref="authForm">
+      <v-form
+          ref="authForm"
+          lazy-validation
+      >
+
         <v-row align="center">
+
           <v-col class="col-4">
             <email-input v-model="email" :check="true"></email-input>
             <password-input v-model="password"></password-input>
             <repeat-password-input :value="password"></repeat-password-input>
           </v-col>
-          <v-col class="col-8">
-            <v-row class="fill-height rounded pa-2" align="center"
-                   style="position:relative; top: -10px; outline: 1px solid grey">
-              <div class="fs-14 overflow-y-auto" style="max-height: 400px"
-                   v-html="$store.state.content.userAgreement"></div>
-              <v-checkbox style="border-top: 1px solid grey; width: 100%" v-model="confirm" hide-details dense
-                          label="Согласен с пользовательским соглашением">
-              </v-checkbox>
-            </v-row>
 
+          <v-col class="col-8">
+            <v-row
+                class="fill-height rounded pa-2"
+                style="position:relative; top: -10px; outline: 1px solid grey"
+                align="center"
+            >
+              <div
+                  class="fs-14 overflow-y-auto"
+                  style="max-height: 400px"
+                  v-html="$store.state.content.userAgreement"
+              ></div>
+
+              <v-checkbox
+                  style="border-top: 1px solid grey; width: 100%"
+                  v-model="confirm"
+                  label="Согласен с пользовательским соглашением"
+                  hide-details
+                  dense
+              ></v-checkbox>
+            </v-row>
           </v-col>
+
         </v-row>
       </v-form>
 
@@ -81,6 +114,20 @@ import requests from "@/mixins/requests";
 
 export default {
   name: "RegistrationUser",
+  components: {
+    UiBackButton,
+    UiNextButton,
+    RepeatPasswordInput,
+    PasswordInput,
+    EmailInput,
+    PhoneInput,
+    SelectInput,
+    NameInput
+  },
+  mixins: [requests],
+  props: {
+    step: Number
+  },
   data() {
     return {
       name: '',
@@ -91,9 +138,6 @@ export default {
       password: '',
       confirm: false,
     }
-  },
-  props: {
-    step: Number
   },
   methods: {
     registerSpec() {
@@ -113,22 +157,10 @@ export default {
             })
             this.$root.$emit('close-registration')
           })
-          .catch(() => {
-          })
+          .catch()
           .finally(() => this.localLoading = false)
     },
   },
-  components: {
-    UiBackButton,
-    UiNextButton,
-    RepeatPasswordInput,
-    PasswordInput,
-    EmailInput,
-    PhoneInput,
-    SelectInput,
-    NameInput
-  },
-  mixins: [requests],
 }
 </script>
 
