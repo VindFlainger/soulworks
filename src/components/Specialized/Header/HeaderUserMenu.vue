@@ -59,15 +59,14 @@
                 class="font-title font-weight-bold fs-20"
                 style="line-height: 100%"
             >
-              {{ name }}
-              {{ surname }}
+              {{ fullName}}
             </div>
 
             <div
                 class="fs-16 grey--text text--lighten-1"
                 style="font-weight: 300; letter-spacing: 1px"
             >
-              {{ this.$store.state.role === 'spec' ? 'Психолог' : 'Пользователь' }}
+              {{ role | roleFilter }}
             </div>
           </div>
         </v-row>
@@ -75,7 +74,7 @@
         <div style="border-bottom: 1px solid black; border-top: 1px solid black">
           <div
               class="pa-1"
-              v-if="this.$store.state.role === 'spec'"
+              v-if="role === 'spec'"
           >
             <router-link :to="{name: 'specAccount'}" class="link">Личный кабинет</router-link>
             <router-link :to="{name: 'specClasses'}" class="link">Консультации</router-link>
@@ -83,7 +82,7 @@
             <router-link :to="{name: 'specReviews'}" class="link">Отзывы</router-link>
             <router-link :to="{name: 'specSecurity'}" class="link">Безопасность</router-link>
           </div>
-          <div v-if="this.$store.state.role === 'user'">
+          <div v-if="role === 'user'">
             <router-link :to="{name: 'userAccount'}" class="link">Личный кабинет</router-link>
             <router-link :to="{name: 'userClasses'}" class="link">Консультации</router-link>
             <router-link :to="{name: 'userReviews'}" class="link">Отзывы</router-link>
@@ -112,37 +111,42 @@ import {mapGetters} from "vuex";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import requests from "@/mixins/requests";
 import UiAvatar from "@/components/UI/UiAvatar";
+import {role} from "@/filters/logic";
 
 export default {
   name: "HeaderUserMenu",
   components: {UiAvatar, UiDefaultButton},
   mixins: [requests],
+  filters: {
+    roleFilter: role
+  },
   data() {
     return {
-      name: '',
-      surname: '',
       avatar: null,
     }
   },
   computed: {
     ...mapGetters({
       isLogin: 'isLogin',
+      role: 'getRole',
+      fullName: 'getFullName',
+      id: 'getId'
     }),
   },
+  mounted() {
+    if (this.isLogin){
+      this.getAccountData()
+    }
+  },
   methods: {
-    getShortInfo() {
-      this.getData('http://localhost:3000/any/shortinfo', {handleError: true, handleErrorResponse: true})
+    getAccountData(){
+      this.getData(`http://localhost:3000/data/short?userId=${this.id}`)
           .then(resp => {
-            this.name = resp.data.name
-            this.surname = resp.data.surname
             this.avatar = resp.data.avatar
           })
           .catch()
     }
-  },
-  mounted() {
-    this.getShortInfo()
-  },
+  }
 }
 </script>
 

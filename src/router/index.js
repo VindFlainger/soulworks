@@ -28,7 +28,7 @@ import UserAccountTab from "@/components/Specialized/Account/User/UserAccountTab
 import UserAccountEditTab from "@/components/Specialized/Account/User/UserAccountEditTab";
 import UserReviewsTab from "@/components/Specialized/Account/User/UserReviewsTab";
 import UserClassesTab from "@/components/Specialized/Account/User/UserClassesTab";
-import UserMaterialsTab from "@/components/Specialized/Account/User/UserMaterialsTab";
+import UserMaterialsTab from "@/components/Specialized/Account/User/MaterialsTab/UserMaterialsTab.vue";
 import UserFavouritesTab from "@/components/Specialized/Account/User/UserFavouritesTab";
 import ChatsView from "@/views/ChatsView";
 import ChatView from "@/views/ChatView";
@@ -205,7 +205,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(el => el.meta.requiredAuth)) {
-        if (!(store.getters.isLogin || (localStorage.getItem('token') && localStorage.getItem('email')))) {
+        if (!(store.getters.isLogin || localStorage.getItem('token'))) {
             next({name: 'home', query: {redirect: to.fullPath}})
         } else {
             next()

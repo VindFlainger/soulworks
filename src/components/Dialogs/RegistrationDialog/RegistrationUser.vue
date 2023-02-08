@@ -95,7 +95,7 @@
       <v-row>
         <ui-back-button @click="$emit('input', 2)"></ui-back-button>
         <v-spacer></v-spacer>
-        <ui-next-button :disabled="!confirm" @click="registerSpec">Завершить</ui-next-button>
+        <ui-next-button :disabled="!confirm" @click="register">Завершить</ui-next-button>
       </v-row>
     </v-stepper-content>
   </div>
@@ -140,8 +140,8 @@ export default {
     }
   },
   methods: {
-    registerSpec() {
-      this.localLoading = true
+    register() {
+      this.internalLoading = true
       this.postData('http://localhost:3000/registration/user', {
         name: this.name,
         surname: this.surname,
@@ -158,7 +158,7 @@ export default {
             this.$root.$emit('close-registration')
           })
           .catch()
-          .finally(() => this.localLoading = false)
+          .finally(() => this.internalLoading = false)
     },
   },
 }

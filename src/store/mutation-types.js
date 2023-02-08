@@ -1,0 +1,8 @@
+export const SET_SESSION_END = 'SET_SESSION_END'
+export const SET_REFRESHING_SESSION = 'SET_REFRESHING_SESSION'
+export const SET_TOKEN = 'SET_TOKEN'
+export const SET_ROLE = 'SET_ROLE'
+export const SET_EMAIL = 'SET_EMAIL'
+export const SET_ID = 'SET_ID'
+export const CLEAR_AUTH_DATA = 'CLEAR_AUTH_DATA'
+export const SET_AUTH_DATA = 'SET_AUTH_DATA'

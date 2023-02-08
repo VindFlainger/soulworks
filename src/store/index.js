@@ -3,33 +3,17 @@ import Vuex from 'vuex'
 import content from "@/store/modules/content";
 import params from "@/store/modules/params";
 import chat from "@/store/modules/chat";
+import auth from "@/store/modules/auth";
 import notifications from "@/store/modules/notifications";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
+        strict: process.env.NODE_ENV === 'development',
         state: {
-            width: 0,
-            token: null,
-            email: null,
-            role: null,
-            id: null,
-            sessionEnd: 0,
-            connected: false,
             timeZoneOffset: -new Date().getTimezoneOffset() / 60
         },
-        getters: {
-            mobile(state) {
-                return state.width < 1264
-            },
-            isLogin(state) {
-                return !!(state.token && state.email)
-            }
-        },
         mutations: {
-            setWidth(state, val) {
-                state.width = val
-            },
             setToken(state, val) {
                 state.token = val
                 localStorage.setItem('token', val)
@@ -61,20 +45,13 @@ export default new Vuex.Store({
                 state.role = role
                 state.id = id
             },
-            changeConnectionStatus({commit, dispatch}, val) {
-                if (!val) {
-                    dispatch('disconnection')
-                } else {
-                    dispatch('connection')
-                }
-                commit('setConnected', val)
-            }
         },
         modules: {
             content,
             params,
             chat,
-            notifications
+            notifications,
+            auth
         }
     },
 )

@@ -63,7 +63,7 @@
           <ui-default-button
               :disabled="!loginFormValid || !password"
               width="40%"
-              :loading="localLoading"
+              :loading="internalLoading"
               @click="login"
           >
             Вход
@@ -118,7 +118,7 @@
                 elevation="0"
                 color="green lighten-3"
                 width="40%"
-                :loading="localLoading"
+                :loading="internalLoading"
                 outlined
                 @click="recover"
             >
@@ -140,6 +140,9 @@ import DefaultInput from "@/components/UI/Inputs/DefaultInput";
 import EmailInput from "@/components/UI/Inputs/EmailInput";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import requests from "@/mixins/requests";
+import {SET_AUTH_DATA} from "@/store/mutation-types";
+
+const axios = require('axios').default
 
 export default {
   name: "LoginDialog",
@@ -158,25 +161,29 @@ export default {
   methods: {
     login() {
       if (this.$refs.loginForm.validate()) {
-        this.localLoading = true
-        this.postData('http://localhost:3000/auth/login', {
+        this.internalLoading = true
+
+        axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, {
           email: this.email,
           password: this.password,
           device: window.navigator.userAgent
         })
             .then(resp => {
-              this.$store.commit('setToken', resp.data.token)
-              this.$store.commit('setEmail', resp.data.email)
-              this.$store.commit('setRole', resp.data.role)
-              this.$store.commit('setId', resp.data.id)
+              this.$store.commit(SET_AUTH_DATA, {
+                id: resp.data.id,
+                token: resp.data.token,
+                email: resp.data.email,
+                role: resp.data.role,
+                name: resp.data.name,
+                surname: resp.data.surname,
+              })
               this.$root.$emit('close-login')
-
-              return this.getSessionToken()
             })
             .then(() => {
-              this.$router.go(0)
               if (this.$route.query.redirect) {
-                this.$router.push(this.$route.query.redirect)
+                window.location.replace(this.$route.query.redirect)
+              } else {
+                this.$router.go(0)
               }
             })
             .catch(err => {
@@ -186,13 +193,13 @@ export default {
               }
             })
             .finally(() => {
-              this.localLoading = false
+              this.internalLoading = false
             })
       }
     },
     recover() {
       if (this.$refs.recoverForm.validate()) {
-        this.localLoading = true
+        this.internalLoading = true
         this.postData('http://localhost:3000/auth/recover', {
           email: this.email,
         })
@@ -206,7 +213,7 @@ export default {
             })
             .catch()
             .finally(() => {
-              this.localLoading = false
+              this.internalLoading = false
             })
       }
     }

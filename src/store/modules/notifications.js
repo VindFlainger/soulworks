@@ -4,30 +4,20 @@ export default {
     namespaced: true,
     state: {
         notifications: [],
+        displayingNotifications: [],
         newNotificationCount: 0,
         limit: 4,
         loading: false,
         lastLoaded: false
     },
     getters: {
-        getNotifications(state) {
-            return state.notifications
-        },
-        getLimit(state) {
-            return state.limit
-        },
-        getNotificationsCount(state) {
-            return state.notifications.length
-        },
-        getNewNotificationsCount(state) {
-            return state.newNotificationCount
-        },
-        isLoading(state) {
-            return state.loading
-        },
-        isLastLoaded(state) {
-            return state.lastLoaded
-        }
+        getNotifications: state => state.notifications,
+        getLimit: state => state.limit,
+        getNotificationsCount: state => state.notifications.length,
+        getNewNotificationsCount: state => state.newNotificationCount,
+        isLoading: state => state.loading,
+        isLastLoaded: state => state.lastLoaded,
+        getDisplayingNotifications: state => state.displayingNotifications
     },
     mutations: {
         APPEND_NOTIFICATIONS(state, notifications) {
@@ -53,6 +43,12 @@ export default {
                 state.newNotificationCount--
                 ntf.read = true
             }
+        },
+        APPEND_DISPLAYING_NOTIFICATION(state, notification) {
+            state.displayingNotifications.push(notification)
+        },
+        REMOVE_DISPLAYING_NOTIFICATION(state, notificationId) {
+            state.displayingNotifications = state.displayingNotifications.filter(el => el.id !== notificationId)
         }
     },
     actions: {
@@ -73,7 +69,7 @@ export default {
 
                 commit('SET_LOADING', true)
 
-                axios.get('http://localhost:3000/any/notifications/getAll', {
+                axios.get('http://localhost:3000/any/notifications/getNotifications', {
                     params: {
                         limit: getters.getLimit,
                         offset: getters.getNotificationsCount
@@ -92,6 +88,15 @@ export default {
                 notificationId
             })
                 .then(commit('SET_NOTIFICATION_READ', notificationId))
+        },
+        addNewNotification({commit}, notification) {
+            commit('PREPEND_NOTIFICATIONS', [notification])
+            commit('APPEND_DISPLAYING_NOTIFICATION', notification)
+            setTimeout(() => {
+                    commit('REMOVE_DISPLAYING_NOTIFICATION', notification.id)
+                }
+                , 4000
+            )
         }
     }
 }

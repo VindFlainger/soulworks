@@ -1,12 +1,14 @@
 <template>
-<div>
-  materials
-</div>
+  <div>
+    <slot>
+
+    </slot>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "UserMaterialsTab"
+  name: "NotificationBottomBaseCard"
 }
 </script>
 

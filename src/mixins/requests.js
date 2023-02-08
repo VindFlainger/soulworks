@@ -1,4 +1,5 @@
 import auth from "@/mixins/auth";
+import store from "@/store";
 
 const axios = require('axios').default
 axios.defaults.withCredentials = true
@@ -6,20 +7,12 @@ axios.defaults.withCredentials = true
 export default {
     data() {
         return {
-            localLoading: false, // TODO: deprecated (remove and find all)
-            requestError: false,
             loadingProcesses: 0,
             internalLoading: false
         }
     },
     mixins: [auth],
     computed: {
-        mobile() {
-            return this.$store.getters.mobile
-        },
-        globalLoading() {
-            return this.$store.state.loading
-        },
         isLoading() {
             return !!this.loadingProcesses
         }
@@ -36,12 +29,6 @@ export default {
         },
         removeLoadingProcess() {
             this.loadingProcesses--
-        },
-        setRequestErrorState() {
-            this.requestError = true
-        },
-        removeRequestErrorState() {
-            this.requestError = false
         },
         showAlert(type, time = 3000, text = '') {
             this.$root.emit('push-message', {type, time, text})
@@ -78,23 +65,14 @@ export default {
          * @param {Object?} axiosConfig
          * @return {Promise<requestResponse> || Promise<Error>}
          */
-        async getData(url, options, axiosConfig = {}) {
-            const {headers, ...config} = axiosConfig
-
-            await this.authInterceptor(true)
-
-            return this.getFormatResponse(
-                axios.get(
-                    url,
-                    {
-                        ...config,
-                        headers: {
-                            ...headers
-                        },
-                    }
-                ),
-                options
-            )
+        getData(url, options, axiosConfig = {}) {
+            return store.dispatch('authInterceptor')
+                .then(() => {
+                    return this.getFormatResponse(
+                        axios.get(url, axiosConfig),
+                        options
+                    )
+                })
         },
 
         /**
@@ -105,73 +83,35 @@ export default {
          * @param {Object?} axiosConfig
          * @return {Promise<requestResponse> || Promise<Error>}
          */
-        async postData(url, data, options, axiosConfig = {}) {
-            const {headers, ...config} = axiosConfig
-
-            await this.authInterceptor(true)
-
-            return this.getFormatResponse(
-                axios.post(
-                    url,
-                    data,
-                    {
-                        ...config,
-                        headers: {
-                            ...headers
-                        },
-                    }
-                ),
-                options
-            )
+        postData(url, data, options, axiosConfig = {}) {
+            return store.dispatch('authInterceptor')
+                .then(() => {
+                    return this.getFormatResponse(
+                        axios.post(url, data, axiosConfig),
+                        options
+                    )
+                })
         },
 
-        async putData(url, data, options, axiosConfig = {}) {
-            const {headers, ...config} = axiosConfig
-
-            await this.authInterceptor(true)
-
-            return this.getFormatResponse(
-                axios.put(
-                    url,
-                    data,
-                    {
-                        ...config,
-                        headers: {
-                            ...headers
-                        },
-                    }
-                ),
-                options
-            )
+        putData(url, data, options, axiosConfig = {}) {
+            return store.dispatch('authInterceptor')
+                .then(() => {
+                    return this.getFormatResponse(
+                        axios.put(url, data, axiosConfig),
+                        options
+                    )
+                })
         },
 
-        async delData(url, options, axiosConfig = {}) {
-            const {headers, ...config} = axiosConfig
-
-            await this.authInterceptor(true)
-
-            return this.getFormatResponse(
-                axios.delete(
-                    url,
-                    {
-                        ...config,
-                        headers: {
-                            ...headers
-                        },
-                    }
-                ),
-                options
-            )
+        delData(url, options, axiosConfig = {}) {
+            return store.dispatch('authInterceptor')
+                .then(() => {
+                    return this.getFormatResponse(
+                        axios.delete(url, axiosConfig),
+                        options
+                    )
+                })
         },
-
-
-        async authInterceptor(active) {
-            if (active && this.$store.state.sessionEnd < Date.now()) {
-                return this.getSessionToken()
-            }
-            return
-        },
-
 
         /**
          *
@@ -179,8 +119,7 @@ export default {
          * @param {requestOptions?} options
          * @return {Promise<requestResponse> || Promise<Error> }
          */
-        getFormatResponse(req, options) {
-            if (!options) options = {} // TODO: Check this on necessity (be careful, this is too stupid implementation)
+        getFormatResponse(req, options = {}) {
             return req
                 .then(resp => {
                     if (resp.data.error && options.handleErrorResponse) {
@@ -208,19 +147,5 @@ export default {
                     }
                 )
         },
-        getSessionToken() {
-            return axios.post('http://localhost:3000/auth/session', {
-                token: this.$store.state.token,
-                email: this.$store.state.email,
-            })
-                .then(() => {
-                    this.$store.state.sessionEnd = Date.now() + 1000 * 60 * (5 * 0.8) // 80% percents from 5 min
-                })
-                .catch(err => {
-                    if (err.response.data.code === 104) {
-                        this.logOut()
-                    }
-                })
-        }
     }
 }

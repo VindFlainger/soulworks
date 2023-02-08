@@ -26,7 +26,10 @@ import UiContentWrapper from "@/components/UI/UiContentWrapper";
 
 export default {
   name: "NotFoundView",
-  components: {UiContentWrapper}
+  components: {UiContentWrapper},
+  metaInfo: {
+    title: 'Страница не найдена'
+  }
 }
 </script>
 

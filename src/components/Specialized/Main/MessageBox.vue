@@ -1,22 +1,40 @@
+<!--TODO: rewrite with special vuex module-->
 <template>
-  <div style="position:fixed; bottom: 5px; right: 15px; z-index: 1000">
+  <div
+      style="position:fixed; bottom: 5px; right: 15px; z-index: 1000"
+      :class="viewportHook({base: 'message-box__align', sm: ''})"
+  >
     <transition-group name="alerts">
-      <v-alert v-for="message in messages" :key="message.id" class="pa-2" style="background: rgba(255,0,0,0)">
+      <v-alert
+          v-for="message in notifications"
+          :key="message.id"
+          class="pa-2 ma-0"
+          style="background: rgba(255,0,0,0);"
+      >
         <v-card
-            min-width="300"
+            min-width="320"
             max-width="700"
             elevation="0"
-            style="outline: 1px solid grey"
-            class="pa-0 black"
-            color="green lighten-5"
+            class="pa-2 bordered"
+            style="background: rgba(255,255,255,0.89)"
         >
+          <v-icon
+              :color="getColor(message.type)"
+              class="mr-3 blue lighten-4"
+              style="position:absolute; top: 5px; left: 5px; border-radius: 30%; outline: 1px solid black"
+              :size="25"
+          >
+            {{ getIcon(message.type) }}
+          </v-icon>
 
-          <v-row class="pa-2" v-if="message.text" align="center">
-            <v-icon :color="message.type" class="mr-2" size="35">
-              {{ getIcon(message.type) }}
-            </v-icon>
-            <span class="fs-16 font-weight-medium">{{ message.text }}</span>
-
+          <v-row class="pa-2 flex-nowrap" align="center">
+            <div class="ml-5">
+              <span class="fs-16 font-weight-medium">{{ message.text }}</span>
+              <notification-bottom
+                  v-if="message.type='notification'"
+                  :data="message.notification"
+              ></notification-bottom>
+            </div>
           </v-row>
         </v-card>
       </v-alert>
@@ -25,12 +43,25 @@
 </template>
 
 <script>
+import NotificationBottom from "@/components/Specialized/Notification/Bottom/NotificationBottom.vue";
+
 export default {
   name: "MessageBox",
+  components: {NotificationBottom},
   data() {
     return {
       messages: [],
     }
+  },
+  computed: {
+    // rewrite with vuex (one notification center)
+    notifications() {
+      return [...this.$store.getters["notifications/getDisplayingNotifications"].map(el => ({
+        type: 'notification',
+        id: Date.now(),
+        notification: el
+      })), ...this.messages]
+    },
   },
   methods: {
     getIcon(type) {
@@ -41,13 +72,27 @@ export default {
           return 'mdi-check-circle'
         case 'primary':
           return 'mdi-information'
+        case 'notification':
+          return 'mdi-bell-outline'
+      }
+    },
+    getColor(type) {
+      switch (type) {
+        case 'error':
+          return 'red lighten-3'
+        case 'success':
+          return 'green lighten-3'
+        case 'primary':
+          return 'blue lighten-3'
+        case 'notification':
+          return 'black'
       }
     },
     listenEvents() {
       this.$root.$on('push-message', message => {
         const id = Date.now()
         this.messages.push({...message, id})
-        setTimeout(()=>{
+        setTimeout(() => {
           this.messages = this.messages.filter(message => message.id !== id)
         }, message.time || 2000)
       })
@@ -77,6 +122,14 @@ export default {
 
 .alerts-leave-to {
   transform: translateX(300px);
+}
+
+.message-box__align {
+  position: fixed;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  width: calc(100% - 10px);
 }
 
 

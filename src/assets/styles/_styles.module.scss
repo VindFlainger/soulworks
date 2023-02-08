@@ -50,6 +50,157 @@
   font-size: 40px !important;
 }
 
+.afs-40-20 {
+  font-size: 20px;
+}
+
+.afs-40-30 {
+  font-size: 30px;
+}
+
+.afs-30-15 {
+  font-size: 15px;
+}
+
+.afs-30-20 {
+  font-size: 20px;
+}
+
+.afs-22-14 {
+  font-size: 14px;
+}
+
+.afs-18-12 {
+  font-size: 12px;
+}
+
+
+@media (min-width: 600px) {
+  .afs-40-20 {
+    font-size: 25px;
+  }
+  .afs-40-30 {
+    font-size: 32px;
+  }
+  .afs-30-15 {
+    font-size: 18px;
+  }
+  .afs-30-20 {
+    font-size: 22px;
+  }
+  .afs-22-14 {
+    font-size: 16px;
+  }
+  .afs-18-12 {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 960px) {
+  .afs-40-20 {
+    font-size: 30px;
+  }
+  .afs-40-30 {
+    font-size: 35px;
+  }
+  .afs-30-15 {
+    font-size: 22px;
+  }
+  .afs-30-20 {
+    font-size: 25px;
+  }
+  .afs-22-14 {
+    font-size: 18px;
+  }
+  .afs-18-12 {
+    font-size: 15px;
+  }
+}
+
+@media (min-width: 1264px) {
+  .afs-40-20 {
+    font-size: 35px;
+  }
+  .afs-40-30 {
+    font-size: 37px;
+  }
+  .afs-30-15 {
+    font-size: 26px;
+  }
+  .afs-30-20 {
+    font-size: 27px;
+  }
+  .afs-22-14 {
+    font-size: 20px;
+  }
+  .afs-18-12 {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1904px) {
+  .afs-40-20 {
+    font-size: 40px;
+  }
+  .afs-40-30 {
+    font-size: 40px;
+  }
+  .afs-30-15 {
+    font-size: 30px;
+  }
+  .afs-30-20 {
+    font-size: 30px;
+  }
+  .afs-22-14 {
+    font-size: 22px;
+  }
+  .afs-18-12 {
+    font-size: 18px;
+  }
+}
+
+/* For correction icons position */
+.crc-t-2 {
+  position: relative;
+  top: 2px;
+}
+
+.crc-t-n2 {
+  position: relative;
+  top: -2px;
+}
+
+.crc-b-2 {
+  position: relative;
+  bottom: 2px;
+}
+
+.crc-b-n2 {
+  position: relative;
+  bottom: -2px;
+}
+
+.crc-l-2 {
+  position: relative;
+  left: 2px;
+}
+
+.crc-l-n2 {
+  position: relative;
+  left: -2px;
+}
+
+.crc-r-2 {
+  position: relative;
+  right: 2px;
+}
+
+.crc-r-n2 {
+  position: relative;
+  right: -2px;
+}
+
+
 .font-text {
   font-family: 'Open Sans', sans-serif !important;
 }
@@ -66,9 +217,30 @@
   text-transform: uppercase;
 }
 
-.bordered{
+.text-one-line {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.bordered {
   border: 1px solid black !important;
   border-radius: 14px !important;
 }
+
+.background-none {
+  background: none !important;
+}
+
+.line-height-1rem {
+  line-height: 1rem !important;
+}
+.line-height-1-25rem {
+  line-height: 1.25rem !important;
+}
+
+
+
+
 
 

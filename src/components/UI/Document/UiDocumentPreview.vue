@@ -9,8 +9,8 @@
     </div>
     <div class="document-preview__refresh-area" v-if="unsuccessful">
       <div class="document-preview__center-area">
-        <v-btn icon   x-large @click="$emit('refresh')">
-          <v-avatar  style="background: rgba(0,0,0,0.76)">
+        <v-btn icon x-large @click="$emit('refresh')">
+          <v-avatar style="background: rgba(0,0,0,0.76)">
             <v-icon color="white">mdi-refresh</v-icon>
           </v-avatar>
         </v-btn>
@@ -22,12 +22,18 @@
       </div>
     </div>
     <div class="document-preview__center-area" v-if="clearable">
-     <slot name="center"></slot>
+      <slot name="center"></slot>
     </div>
-    <v-img :src="require(`@/assets/images/filetypes/${formatExtension}.png`)" max-width="110" class="ma-1"></v-img>
+    <v-img :src="require(`@/assets/images/filetypes/${formatExtension}.png`)" :max-width="maxWidth"
+           class="ma-1"></v-img>
     <slot name="before-name"></slot>
 
-    <div class="document-preview__name fs-12 text-center" style="text-overflow: ellipsis;" >{{ formatName }}</div>
+    <div
+        class="document-preview__name fs-12 text-center" style="text-overflow: ellipsis;"
+        :style="{maxWidth: `${maxWidth}px`}"
+    >
+      {{ formatName }}
+    </div>
     <slot name="after-name"></slot>
   </a>
 </template>
@@ -81,6 +87,10 @@ export default {
     unsuccessful: {
       type: Boolean,
       default: false
+    },
+    maxWidth: {
+      type: Number,
+      default: 110
     }
   },
   computed: {
@@ -114,10 +124,10 @@ export default {
   left: 0;
   top: 0;
   background: rgba(0, 0, 0, 0.22);
-  transition: opacity .3s linear ;
+  transition: opacity .3s linear;
 }
 
-.document-preview__center-area{
+.document-preview__center-area {
   position: absolute;
   display: flex;
   align-items: center;
@@ -129,19 +139,19 @@ export default {
   z-index: 1;
 }
 
-.document-preview__close-area:hover{
+.document-preview__close-area:hover {
   opacity: 1;
 }
 
-.document-preview-button{
+.document-preview-button {
   position: absolute;
   z-index: 10;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%)
+  transform: translate(-50%, -50%)
 }
 
-.document-preview__refresh-area{
+.document-preview__refresh-area {
   z-index: 2;
   position: absolute;
   width: 100%;

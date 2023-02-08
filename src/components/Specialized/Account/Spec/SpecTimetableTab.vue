@@ -106,6 +106,7 @@
 <script>
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import requests from "@/mixins/requests";
+import {mapState} from "vuex";
 
 export default {
   name: "SpecTimetableTab",
@@ -118,6 +119,12 @@ export default {
       timetable: undefined,
       timeOffset: -new Date().getTimezoneOffset() / 60
     }
+  },
+  computed: {
+    ...mapState()
+  },
+  mounted() {
+    this.getTimetable()
   },
   methods: {
     getTimetable() {
@@ -148,10 +155,6 @@ export default {
           })
           .catch()
     },
-  },
-
-  mounted() {
-    this.getTimetable()
   },
   metaInfo: {
     title: 'Расписание'

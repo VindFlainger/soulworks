@@ -11,6 +11,7 @@
       </keep-alive>
 
       <global-loader :value="isGlobalLoading"></global-loader>
+      <global-loader :value="isGlobalLoading"></global-loader>
 
       <div>
         <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps"
@@ -36,7 +37,6 @@
 import MainHeader from "@/components/Specialized/Header/MainHeader";
 import MainFooter from "@/components/Specialized/Main/MainFooter";
 import MessageBox from "@/components/Specialized/Main/MessageBox";
-import {mapState} from "vuex";
 import GlobalLoader from "@/components/Specialized/Main/MainLoader";
 
 export default {
@@ -50,23 +50,13 @@ export default {
       findUserDialog: false,
       dynProps: {},
       footerVisible: true,
-      isGlobalLoading: false
+      isGlobalLoading: false,
     }
   },
   metaInfo: {
     titleTemplate: chunk => chunk ? `${chunk} | Soul Works` : 'Soul Works - Ваша психология'
   },
-  mounted() {
-    const callback = () => this.$store.commit('setWidth', window.innerWidth)
-    callback()
-    window.addEventListener('resize', callback)
-  },
   created() {
-    this.$store.dispatch('setAuthData')
-        .then(() => {
-          this.$store.dispatch('getAuthedContent')
-        })
-
     this.$root.$on('show-confirm', (props = {}) => {
       this.dynProps = props
       this.confirmDialog = true
@@ -107,9 +97,11 @@ export default {
       this.isGlobalLoading = !!v
     })
   },
-  computed: {
-    ...mapState(['connected'])
-  },
+  mounted() {
+    if (this.$store.getters.isLogin) {
+      this.$store.dispatch('getAuthedContent')
+    }
+  }
 }
 </script>
 
@@ -124,6 +116,11 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: normal;
+}
+
 
 .router-link-exact-active {
   text-decoration: none;

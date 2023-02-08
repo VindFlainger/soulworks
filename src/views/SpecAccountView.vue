@@ -10,8 +10,6 @@
         </v-tab-item>
       </v-tabs-items>
     </v-row>
-
-
   </ui-content-wrapper>
 
 </template>

@@ -15,6 +15,7 @@ import RegistrationDialog from "@/components/Dialogs/RegistrationDialog/Registra
 import InfoDialog from "@/components/Dialogs/InfoDialog";
 import LoginDialog from "@/components/Dialogs/LoginDialog";
 import FindUserDialog from "@/components/Dialogs/FindUserDialog";
+import responsiveness from "@/mixins/responsiveness";
 
 
 textFilters.forEach(tf => {
@@ -29,13 +30,12 @@ Vue.use(Socket)
 Vue.use(Meta)
 
 
-
-
 Vue.component('ConfirmDialog', ConfirmDialog)
 Vue.component('RegistrationDialog', RegistrationDialog)
 Vue.component('InfoDialog', InfoDialog)
 Vue.component('LoginDialog', LoginDialog)
 Vue.component('FindUserDialog', FindUserDialog)
+Vue.mixin(responsiveness)
 
 
 new Vue({

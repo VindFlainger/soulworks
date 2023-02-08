@@ -153,11 +153,15 @@
           <ui-default-button
               class="mb-2"
               width="100%"
-              @click="$emit('open-contacts', )">
+              @click="$emit('open-contacts')">
             Контакты
           </ui-default-button>
 
-          <ui-default-button width="100%" @click="booking" v-if="$store.state.role !== 'spec'">
+          <ui-default-button
+              width="100%"
+              @click="booking"
+              v-if="role !== 'spec'"
+          >
             Запись
           </ui-default-button>
 
@@ -173,10 +177,15 @@ import UiOrderBar from "@/components/UI/UiOrderBar";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import UiAvatar from "@/components/UI/UiAvatar";
 import {online} from "@/filters/logic";
+import {mapGetters} from "vuex";
 
 export default {
   name: "SpecialistCard",
-  components: {UiAvatar, UiDefaultButton, UiOrderBar},
+  components: {
+    UiAvatar,
+    UiDefaultButton,
+    UiOrderBar
+  },
   props: {
     id: {
       type: String,
@@ -242,6 +251,11 @@ export default {
       type: Object,
       required: true
     },
+  },
+  computed: {
+    ...mapGetters({
+      'role': 'getRole'
+    })
   },
   methods: {
     booking() {
