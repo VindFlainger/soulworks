@@ -1,5 +1,5 @@
 <template>
-  <notification-bottom-base-card>
+  <alerts-notification-base-card>
     <v-row class="flex-nowrap" align="center">
 
       <div>
@@ -67,17 +67,18 @@
       </v-btn>
 
     </v-row>
-  </notification-bottom-base-card>
+  </alerts-notification-base-card>
 </template>
 
 <script>
-import NotificationBottomBaseCard from "@/components/Specialized/Notification/Bottom/NotificationBottomBaseCard.vue";
 import UiDocumentPreview from "@/components/UI/Document/UiDocumentPreview.vue";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton.vue";
+import AlertsNotificationBaseCard
+  from "@/components/Specialized/Main/Alerts/Notification/AlertsNotificationBaseCard.vue";
 
 export default {
-  name: "NotificationBottomMediaCard",
-  components: {UiDefaultButton, UiDocumentPreview, NotificationBottomBaseCard},
+  name: "AlertsNotificationMediaCard",
+  components: {AlertsNotificationBaseCard, UiDefaultButton, UiDocumentPreview},
   props: {
     title: {
       type: String,

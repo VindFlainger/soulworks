@@ -4,7 +4,6 @@ export default {
     namespaced: true,
     state: {
         notifications: [],
-        displayingNotifications: [],
         newNotificationCount: 0,
         limit: 4,
         loading: false,
@@ -17,7 +16,6 @@ export default {
         getNewNotificationsCount: state => state.newNotificationCount,
         isLoading: state => state.loading,
         isLastLoaded: state => state.lastLoaded,
-        getDisplayingNotifications: state => state.displayingNotifications
     },
     mutations: {
         APPEND_NOTIFICATIONS(state, notifications) {
@@ -44,12 +42,6 @@ export default {
                 ntf.read = true
             }
         },
-        APPEND_DISPLAYING_NOTIFICATION(state, notification) {
-            state.displayingNotifications.push(notification)
-        },
-        REMOVE_DISPLAYING_NOTIFICATION(state, notificationId) {
-            state.displayingNotifications = state.displayingNotifications.filter(el => el.id !== notificationId)
-        }
     },
     actions: {
         getAuthedContent: {
@@ -89,14 +81,9 @@ export default {
             })
                 .then(commit('SET_NOTIFICATION_READ', notificationId))
         },
-        addNewNotification({commit}, notification) {
+        addNewNotification({commit, dispatch}, notification) {
             commit('PREPEND_NOTIFICATIONS', [notification])
-            commit('APPEND_DISPLAYING_NOTIFICATION', notification)
-            setTimeout(() => {
-                    commit('REMOVE_DISPLAYING_NOTIFICATION', notification.id)
-                }
-                , 4000
-            )
+            dispatch('addAlert', {content: notification, type: 'notification'}, {root: true})
         }
     }
 }

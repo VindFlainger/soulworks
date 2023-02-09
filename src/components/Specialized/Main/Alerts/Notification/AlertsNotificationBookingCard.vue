@@ -1,5 +1,5 @@
 <template>
-  <notification-bottom-base-card>
+  <alerts-notification-base-card>
     <v-row class="flex-nowrap" align="center">
       <div>
         <h4 class="font-weight-bold text-h6 line-height-1rem">
@@ -53,16 +53,20 @@
         </v-row>
       </div>
     </v-row>
-  </notification-bottom-base-card>
+  </alerts-notification-base-card>
 </template>
 
 <script>
 import UiAvatar from "@/components/UI/UiAvatar.vue";
-import NotificationBottomBaseCard from "@/components/Specialized/Notification/Bottom/NotificationBottomBaseCard.vue";
+import AlertsNotificationBaseCard
+  from "@/components/Specialized/Main/Alerts/Notification/AlertsNotificationBaseCard.vue";
 
 export default {
-  name: "NotificationBottomBookingCard",
-  components: {NotificationBottomBaseCard, UiAvatar},
+  name: "AlertsNotificationBookingCard",
+  components: {
+    AlertsNotificationBaseCard,
+    UiAvatar
+  },
   props: {
     user: {
       type: Object,

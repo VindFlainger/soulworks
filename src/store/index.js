@@ -4,6 +4,7 @@ import content from "@/store/modules/content";
 import params from "@/store/modules/params";
 import chat from "@/store/modules/chat";
 import auth from "@/store/modules/auth";
+import alert from "@/store/modules/alert";
 import notifications from "@/store/modules/notifications";
 
 Vue.use(Vuex)
@@ -51,7 +52,8 @@ export default new Vuex.Store({
             params,
             chat,
             notifications,
-            auth
+            auth,
+            alert
         }
     },
 )

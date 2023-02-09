@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: "NotificationBottomBaseCard"
+  name: "AlertsNotificationBaseCard"
 }
 </script>
 

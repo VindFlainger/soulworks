@@ -1,5 +1,5 @@
 <template>
-  <notification-bottom-base-card>
+  <alerts-notification-base-card>
     <v-row class="flex-nowrap" align="center">
 
       <div>
@@ -30,15 +30,16 @@
         <v-icon>mdi-send-outline</v-icon>
       </v-btn>
     </v-row>
-  </notification-bottom-base-card>
+  </alerts-notification-base-card>
 </template>
 
 <script>
-import NotificationBottomBaseCard from "@/components/Specialized/Notification/Bottom/NotificationBottomBaseCard.vue";
+import AlertsNotificationBaseCard
+  from "@/components/Specialized/Main/Alerts/Notification/AlertsNotificationBaseCard.vue";
 
 export default {
-  name: "NotificationBottomMessageCard",
-  components: {NotificationBottomBaseCard},
+  name: "AlertsNotificationMessageCard",
+  components: {AlertsNotificationBaseCard},
   props: {
     title: {
       type: String,
