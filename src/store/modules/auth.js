@@ -1,24 +1,18 @@
-const axios = require('axios').default
 import {
     CLEAR_AUTH_DATA, SET_AUTH_DATA,
     SET_EMAIL,
     SET_ID,
-    SET_REFRESHING_SESSION,
+    SET_SESSION_REFRESHING,
     SET_ROLE,
     SET_SESSION_END,
     SET_TOKEN
 } from "@/store/mutation-types";
 
-
-export const notAllowedTokenError = new Error('token is not allowed')
-export const sessionError = new Error('impossible to create session')
-
-
 export default {
     state: () => ({
         token: localStorage.getItem('token'),
         sessionEnd: 0,
-        refreshingSession: false,
+        sessionRefreshing: false,
         email: localStorage.getItem('email'),
         id: localStorage.getItem('id'),
         role: localStorage.getItem('role'),
@@ -27,10 +21,12 @@ export default {
     }),
     getters: {
         isLogin: state => !!state.token,
+        isSessionRefreshing: state => state.sessionRefreshing,
         getRole: state => state.role,
         getId: state => state.id,
         getEmail: state => state.email,
-        isSessionActive: state => !!state.sessionEnd && state.sessionEnd > Date.now(),
+        getToken: state => state.token,
+        isSessionActive: (state, _, rootState) => !!state.sessionEnd && state.sessionEnd > rootState.currentTime,
         getName: state => state.name,
         getSurname: state => state.surname,
         getFullName: state => `${state.name} ${state.surname}`,
@@ -39,8 +35,8 @@ export default {
         [SET_SESSION_END](state, v) {
             state.sessionEnd = v
         },
-        [SET_REFRESHING_SESSION](state, v) {
-            state.refreshingSession = v
+        [SET_SESSION_REFRESHING](state, v) {
+            state.sessionRefreshing = v
         },
         [SET_TOKEN](state, v) {
             state.token = v
@@ -87,37 +83,4 @@ export default {
             localStorage.setItem('surname', surname)
         }
     },
-    actions: {
-        refreshSession({state, commit}) {
-            commit('SET_REFRESHING_SESSION', true)
-            return axios.post(`${process.env.VUE_APP_API_URL}/auth/session`, {
-                token: state.token,
-            })
-                .then(() => {
-                    commit('SET_SESSION_END', Date.now() + 1000 * 60 * (5 * 0.8))
-                })
-                .catch(err => {
-                    if (err.response.data.code === 104) throw notAllowedTokenError
-                    throw err
-                })
-                .finally(() => commit('SET_REFRESHING_SESSION', false))
-        },
-        authInterceptor({state, getters, dispatch}) {
-            return new Promise((resolve, reject) => {
-                if (getters.isSessionActive) resolve()
-                else {
-                    if (state.refreshingSession) {
-                        const callback = () => {
-                            if (!state.refreshingSession) {
-                                getters.isSessionActive ? resolve() : reject(sessionError)
-                            } else {
-                                setTimeout(callback, 100)
-                            }
-                        }
-                        setTimeout(callback, 100)
-                    } else resolve(dispatch('refreshSession'))
-                }
-            })
-        },
-    }
 }

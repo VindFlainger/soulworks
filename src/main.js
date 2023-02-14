@@ -38,9 +38,11 @@ Vue.component('FindUserDialog', FindUserDialog)
 Vue.mixin(responsiveness)
 
 
-new Vue({
+const vm = new Vue({
     vuetify,
     store,
     router,
     render: h => h(App)
 }).$mount('#app')
+
+export default vm

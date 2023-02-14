@@ -1,5 +1,5 @@
 <template>
-  <ui-input-badge :value="required && showRequiredBadge">
+  <ui-input-badge :value="required && showRequiredBadge" >
     <v-text-field
         @input="$emit('input', $event)"
         :value="value"
@@ -48,6 +48,7 @@ export default {
 <style scoped>
 .input {
   max-width: 300px;
+  min-width: 270px;
   border-radius: 14px
 }
 

@@ -14,13 +14,10 @@
 
       <!--TODO: rewrite with vuex      -->
       <div>
-        <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps"
-                   style="position:relative; z-index: 10001"></component>
-        <component :is="infoDialog?'info-dialog':''" v-bind="dynProps"
-                   style="position:relative; z-index: 10001"></component>
+        <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps"></component>
+        <component :is="infoDialog?'info-dialog':''" v-bind="dynProps"></component>
         <component :is="registrationDialog?'registration-dialog':''" v-bind="dynProps"></component>
-        <component :is="loginDialog?'login-dialog':''" v-bind="dynProps"
-                   style="position:relative; z-index: 10001"></component>
+        <component :is="loginDialog?'login-dialog':''" v-bind="dynProps"></component>
         <component :is="findUserDialog?'find-user-dialog':''" v-bind="dynProps"></component>
       </div>
 
@@ -37,6 +34,7 @@
         style="z-index: 999999999"
     ></speed-dial>
 
+
   </v-app>
 </template>
 
@@ -47,9 +45,12 @@ import MessageBox from "@/components/Specialized/Main/Alerts/AlertsBox.vue";
 import GlobalLoader from "@/components/Specialized/Main/MainLoader";
 import SpeedDial from "@/components/Specialized/Main/SpeedDial.vue";
 import {mapGetters} from "vuex";
+import DefaultInput from "@/components/UI/Inputs/DefaultInput.vue";
+import {startRefreshing} from "@/store/action-types";
+
 
 export default {
-  components: {SpeedDial, GlobalLoader, MessageBox, MainFooter, MainHeader},
+  components: {DefaultInput, SpeedDial, GlobalLoader, MessageBox, MainFooter, MainHeader},
   data() {
     return {
       confirmDialog: false,
@@ -112,6 +113,7 @@ export default {
     })
   },
   mounted() {
+    this.$store.dispatch(startRefreshing)
     if (this.isLogin) {
       this.$store.dispatch('getAuthedContent')
     }
@@ -156,8 +158,20 @@ nav {
 }
 
 ::-webkit-scrollbar {
-  width: 0;
+  width: 3px;
+  background: none;
 }
+
+::-webkit-scrollbar-button {
+  background: none;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 6px;
+  background: #9a9999;
+  border-radius: 5px;
+}
+
 
 *::selection {
   background: none;

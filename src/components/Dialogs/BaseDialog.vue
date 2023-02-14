@@ -5,27 +5,32 @@
             content-class="rounded-xl white"
   >
 
-
     <v-row v-if="!easyContainer" style="position: sticky; z-index: 2; top: 0;">
       <v-spacer></v-spacer>
-      <slot name="close-button">
-        <ui-close-button class="mr-1" @click="$emit('close')"></ui-close-button>
+      <slot name="close-button" >
+        <v-btn
+            icon
+            class="mr-1 white"
+            @click="$emit('close')"
+            style="outline: 1px solid black; position:relative; top: 8px; right: 4px"
+            small
+        >
+          <v-icon color="black">mdi-window-close</v-icon>
+        </v-btn>
       </slot>
-
     </v-row>
 
 
-    <v-card v-if="!empty" class="pa-2 pa-md-4 mt-n8" style="background: none; position:relative;">
+    <div v-if="!empty" class="pa-2 pa-md-4 mt-n6" style="background: none; position:relative;">
       <div style="position:relative; z-index: 1">
         <slot></slot>
       </div>
       <div v-if="background" class="base-dialog"></div>
-    </v-card>
+    </div>
   </v-dialog>
 </template>
 
 <script>
-import UiCloseButton from "@/components/UI/Buttons/UiCloseButton";
 
 export default {
   name: "BaseDialog",
@@ -43,7 +48,6 @@ export default {
       default: false
     }
   },
-  components: {UiCloseButton}
 }
 </script>
 
@@ -63,5 +67,7 @@ export default {
 .v-dialog {
   position: relative;
 }
+
+.no-overflow{}
 
 </style>

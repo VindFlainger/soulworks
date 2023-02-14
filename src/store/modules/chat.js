@@ -1,7 +1,6 @@
-const axios = require('axios').default
-axios.defaults.withCredentials = true
 import Vue from 'vue'
 import socket from '../../sockets'
+import {axiosPipeline} from "../../../utils/axiosMiddlaware";
 
 export default {
     state: {
@@ -101,7 +100,7 @@ export default {
     },
     actions: {
         getAuthedContent({commit}) {
-            axios.get('http://localhost:3000/any/chats/allNewMessagesCount')
+            axiosPipeline.get('http://localhost:3000/any/chats/allNewMessagesCount', {needAuth: true})
                 .then(resp => {
                     commit('setNewMessagesCount', resp.data)
                 })
@@ -110,7 +109,7 @@ export default {
             return new Promise((resolve, reject) => {
                 commit('createChatIfNotExists', userId)
 
-                axios.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`)
+                axiosPipeline.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`, {needAuth: true})
                     .then(resp => {
                         const readOffset = resp.data.readOffset
                         const viewedOffset = resp.data.viewedOffset
@@ -120,12 +119,13 @@ export default {
                         commit('setViewedOffset', [userId, viewedOffset])
                         commit('setFinalOffset', [userId, finalOffset])
 
-                        axios.get(`http://localhost:3000/any/chats/messages`, {
+                        axiosPipeline.get(`http://localhost:3000/any/chats/messages`, {
                             params: {
                                 userId,
                                 offset: (readOffset - state.limit / 2 + 1) < 0?0:readOffset - state.limit / 2 + 1,
                                 limit: state.limit / 2
-                            }
+                            },
+                            needAuth: true
                         })
                             .then(resp => {
                                 commit('initMessages', [userId, resp.data])
@@ -138,7 +138,7 @@ export default {
         },
         loadChatLatestMessages({state, commit}, userId) {
             return new Promise((resolve, reject) => {
-                axios.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`)
+                axiosPipeline.get(`http://localhost:3000/any/chats/offsets?userId=${userId}`, {needAuth: true})
                     .then(resp => {
                         const viewedOffset = resp.data.viewedOffset
                         const finalOffset = resp.data.finalOffset
@@ -147,12 +147,13 @@ export default {
                         commit('setViewedOffset', [userId, viewedOffset])
                         commit('setFinalOffset', [userId, finalOffset])
 
-                        axios.get(`http://localhost:3000/any/chats/messages`, {
+                        axiosPipeline.get(`http://localhost:3000/any/chats/messages`, {
                             params: {
                                 userId,
                                 offset: finalOffset >= state.limit ? finalOffset - state.limit + 1 : 0,
                                 limit: state.limit
-                            }
+                            },
+                            needAuth: true
                         })
                             .then(resp => {
                                 commit('dropMessages')
@@ -165,12 +166,13 @@ export default {
         },
         loadChatPreviousMessages({state, commit}, userId) {
             return new Promise((resolve, reject) => {
-                    axios.get(`http://localhost:3000/any/chats/messages`, {
+                    axiosPipeline.get(`http://localhost:3000/any/chats/messages`, {
                         params: {
                             userId,
                             offset: state.chats[userId].firstOffset - state.limit,
                             limit: state.limit
-                        }
+                        },
+                        needAuth: true
                     })
                         .then(resp => {
                             commit('prependMessages', [userId, resp.data])
@@ -186,12 +188,13 @@ export default {
                     commit('appendMessages', [userId, state.chats[userId].newMessages.filter(msg => msg.offset > state.chats[userId].lastOffset)])
                     resolve()
                 } else {
-                    axios.get(`http://localhost:3000/any/chats/messages`, {
+                    axiosPipeline.get(`http://localhost:3000/any/chats/messages`, {
                         params: {
                             userId,
                             offset: state.chats[userId].lastOffset + 1,
                             limit: state.limit
-                        }
+                        },
+                        needAuth: true
                     })
                         .then(resp => {
                             commit('appendMessages', [userId, resp.data])
@@ -254,7 +257,7 @@ export default {
             commit('setViewedOffset', [userId, offset])
         },
         getNewMessagesCount({commit}) {
-            return axios.get('http://localhost:3000/any/chats/allNewMessagesCount')
+            return axiosPipeline.get('http://localhost:3000/any/chats/allNewMessagesCount', {needAuth: true})
                 .then(resp => {
                     commit('setNewMessagesCount', resp.data)
                 })

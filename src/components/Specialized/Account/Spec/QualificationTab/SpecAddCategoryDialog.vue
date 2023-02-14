@@ -5,14 +5,12 @@
       @close="$emit('close')"
   >
     <div v-if="value">
-
       <v-row>
         <v-col>
           <v-form
               ref="form"
               v-model="valid"
           >
-
             <default-input
                 v-model="category"
                 label="Категория"
@@ -41,7 +39,7 @@
 
         <ui-confirm-button
             :disabled="!valid || fileLoading || !files.length"
-            @click="addCategory"
+            @click="$emit('set-category', category, files.map(el => el.id))"
         >
           Загрузить
         </ui-confirm-button>
@@ -91,19 +89,6 @@ export default {
         this.category = ''
         this.files = []
       }
-    }
-  },
-  methods: {
-    addCategory() {
-      this.putData('http://localhost:3000/spec/qualification/category', {
-        name: this.category,
-        documents: this.files.map(file => file.id)
-      })
-          .then(() => {
-            this.$root.$emit('push-message', {text: 'Категория успешно добавлена', type: 'success', time: 2000})
-            this.$emit('updated')
-          })
-          .catch()
     }
   },
 }

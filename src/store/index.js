@@ -6,46 +6,34 @@ import chat from "@/store/modules/chat";
 import auth from "@/store/modules/auth";
 import alert from "@/store/modules/alert";
 import notifications from "@/store/modules/notifications";
+import {SET_CURRENT_TIME} from "@/store/mutation-types";
+import {startRefreshing} from "@/store/action-types";
+import {mobileAndTabletCheck} from "../../utils/globals";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
         strict: process.env.NODE_ENV === 'development',
         state: {
-            timeZoneOffset: -new Date().getTimezoneOffset() / 60
+            timeZoneOffset: -new Date().getTimezoneOffset() / 60,
+            currentTime: Date.now(),
+            mobile: mobileAndTabletCheck()
+        },
+        getters: {
+            getTimeZoneOffset: state => state.timeZoneOffset,
+            isMobile: state => state.mobile
         },
         mutations: {
-            setToken(state, val) {
-                state.token = val
-                localStorage.setItem('token', val)
-            },
-            setEmail(state, val) {
-                state.email = val
-                localStorage.setItem('email', val)
-            },
-            setRole(state, val) {
-                state.role = val
-                localStorage.setItem('role', val)
-            },
-            setId(state, val) {
-                state.id = val
-                localStorage.setItem('id', val)
-            },
-            setConnected(state, val) {
-                state.connected = val
+            [SET_CURRENT_TIME](state, v) {
+                state.currentTime = v
             }
         },
         actions: {
-            setAuthData({state}) {
-                const email = localStorage.getItem('email')
-                const token = localStorage.getItem('token')
-                const role = localStorage.getItem('role')
-                const id = localStorage.getItem('id')
-                state.email = email
-                state.token = token
-                state.role = role
-                state.id = id
-            },
+            [startRefreshing]({commit}) {
+                setInterval(() => {
+                    commit(SET_CURRENT_TIME, Date.now())
+                }, 5000)
+            }
         },
         modules: {
             content,

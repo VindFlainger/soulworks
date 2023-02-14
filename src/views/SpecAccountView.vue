@@ -1,8 +1,23 @@
 <template>
   <ui-content-wrapper style="background: #ECEFF1">
-    <v-row class="flex-nowrap">
-      <profile-tabs :tabs="tabs"></profile-tabs>
-      <v-tabs-items v-model="tab" style="border-radius: 0 20px 20px 20px;  flex-grow: 1">
+    <v-row
+        :class="viewportHook({base: 'flex-column',md: 'flex-nowrap'})"
+    >
+      <account-menu-desktop
+          v-if="viewportHook({base: false, md: true})"
+          :tabs="tabs"
+      ></account-menu-desktop>
+      <account-menu-mobile
+          v-else
+          :tabs="tabs"
+          class="mb-2"
+      ></account-menu-mobile>
+
+      <v-tabs-items
+          v-model="tab"
+          style="flex-grow:1"
+          :class="viewportHook({base: 'spec-account-view__items-mobile', md: 'spec-account-view__items-desktop'})"
+      >
         <v-tab-item :value="$route.name">
           <keep-alive>
             <router-view style="min-height: 500px"></router-view>
@@ -15,12 +30,15 @@
 </template>
 
 <script>
-import ProfileTabs from "@/components/Specialized/Account/AccountTabs";
+
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
+import AccountMenuDesktop from "@/components/Specialized/Account/Menu/AccountMenuDesktop.vue";
+import AccountMenuMobile from "@/components/Specialized/Account/Menu/AccountMenuMobile.vue";
+
 export default {
   name: "SpecAccountView",
-  components: {UiContentWrapper, ProfileTabs},
-  data(){
+  components: {AccountMenuMobile, AccountMenuDesktop, UiContentWrapper},
+  data() {
     return {
       tab: 'account',
       tabs: [
@@ -55,7 +73,7 @@ export default {
       ]
     }
   },
-  beforeRouteUpdate(to, from, next){
+  beforeRouteUpdate(to, from, next) {
     this.tab = to.name
     next()
   },
@@ -66,10 +84,17 @@ export default {
 </script>
 
 <style scoped>
-.v-tabs{
+.v-tabs {
   flex: none;
   width: auto;
 }
 
+.spec-account-view__items-desktop {
+  border-radius: 0 20px 20px 20px;
+}
+
+.spec-account-view__items-mobile {
+  border-radius: 20px 20px 20px 20px;
+}
 
 </style>

@@ -15,93 +15,138 @@
       </div>
     </ui-full-width-banner>
 
-    <v-row class="mt-3">
+    <v-row class="mt-3 align-start" justify="center" justify-md="start">
+
       <date-input
+          class="col-md-4"
+          :width="viewportHook({base: 250, lg: 310})"
+          style="max-width: 320px"
           v-model="date"
           @change="getClasses(new Date($event).getTime())"
       ></date-input>
 
-      <v-col class="ml-16">
-        <div class="font-title fs-22 font-weight-bold">
+      <div class="ml-md-4 ml-xl-16 col-md-7 col-auto pa-0">
+
+        <div class="d-none font-title fs-22 font-weight-bold">
           {{ $moment(date).format('LL') }}
         </div>
 
-        <div v-if="classes">
-          <div
-              v-for="_class in classes"
-              :key="_class.time"
+        <div
+            class="mb-3"
+            style="max-width: 550px"
+            v-for="_class in classes"
+            :key="_class.time"
+        >
+          <v-row
+              align="center"
           >
-            <v-row
-                style="max-width: 400px"
-                align="center pa-3 pl-0"
-            >
-              <div>
-                <span class="fs-20 font-weight-bold">{{ `${_class.time < 10 ? '0' : ''}${_class.time}:00` }}</span>
-              </div>
+
+            <h4 class="col-12 text-h5 font-weight-bold pa-1">
+              {{ `${_class.time < 10 ? '0' : ''}${_class.time}:00` }}
+            </h4>
+
+            <v-row class="pa-0 flex-nowrap ml-2" align="center">
+              <ui-class-indicators
+                  :state="_class.state"
+                  class="d-flex flex-column"
+              ></ui-class-indicators>
 
               <ui-avatar
-                  class="ml-3"
+                  class="ml-1"
                   size="70"
                   :img-size="64"
                   :images="_class.participant.avatar?.images"
               ></ui-avatar>
 
-              <div class="ml-4 pa-0">
-                <div
-                    class="fs-18"
-                    style="font-weight: 600"
-                >
-                  <router-link
-                      class="text-decoration-none black--text"
-                      :to="{name: 'profile', params: {id: _class.participant._id}}">
-                    {{ _class.participant.surname }} {{ _class.participant.name }}
-                  </router-link>
-                </div>
-                <div class="fs-12 grey--text text--darken-2"> {{ _class.participant.email }}</div>
+              <div class="ml-3">
+                <router-link
+                    class="text-decoration-none black--text text-subtitle-1 font-weight-bold text-subtitle-1"
+                    :to="{name: 'profile', params: {id: _class.participant._id}}">
+                  {{ _class.participant.surname }} {{ _class.participant.name }}
+                </router-link>
+
+                <p class="text-caption" style="overflow-wrap: anywhere">
+                  {{ _class.participant.email }}
+                </p>
               </div>
 
               <v-spacer></v-spacer>
 
-              <div class="d-flex flex-column mr-1">
-                <v-icon :disabled="!_class.state.cancelled" color="red lighten-3">mdi-close-octagon-outline</v-icon>
-                <v-icon :disabled="!_class.state.confirmed" color="green lighten-3">mdi-check-decagram-outline</v-icon>
-                <v-icon :disabled="!_class.state.missed" color="orange lighten-3">mdi-alert-octagon-outline</v-icon>
+              <div>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-btn
+                        v-on="on"
+                        v-bind="attrs"
+                        class="ma-1"
+                        :disabled="!!_class.state || new Date(_class.date).setHours(_class.time) < Date.now()"
+                        elevation="0"
+                        color="red"
+                        fab
+                        outlined
+                        x-small
+                        @click="delClass(_class._id)"
+                    >
+                      <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Отменить занятие</span>
+                </v-tooltip>
+
+
+                <v-tooltip bottom>
+                  <template v-slot:activator="{on, attrs}">
+                    <v-btn
+                        v-on="on"
+                        v-bind="attrs"
+                        class="ma-1"
+                        :disabled="!!_class.state || new Date(_class.date).setHours(_class.time) > Date.now()"
+                        elevation="0"
+                        color="orange"
+                        fab
+                        outlined
+                        x-small
+                        @click="reportClass(_class._id)"
+                    >
+                      <v-icon>mdi-alert-box-outline</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Сообщить о пропуске</span>
+                </v-tooltip>
               </div>
 
-              <v-btn
-                  :disabled="_class.state.cancelled || _class.state.confirmed || _class.state.missed"
-                  elevation="0"
-                  color="red"
-                  fab
-                  outlined
-                  small
-                  @click="delClass(_class._id)"
-              >
-                <v-icon>mdi-close</v-icon>
-              </v-btn>
             </v-row>
 
+          </v-row>
 
-          </div>
+          <ui-class-data
+              class="ml-2"
+              :opportunities="_class.opportunities"
+              :method="_class.method.text"
+              :specialization="_class.specialization.text"
+          ></ui-class-data>
+
+
+        </div>
+        <div
+            class="d-flex flex-column align-center mt-4"
+            v-if="classes.length === 0"
+        >
+          <v-img
+              :src="require('@/assets/images/content/no-content-1.png')"
+              max-width="50"
+              height="50"
+          ></v-img>
+
           <div
-              class="d-flex flex-column align-center mt-4"
-              v-if="classes.length === 0"
+              class="text-center fs-14"
+              style="font-weight: 600; max-width: 200px"
           >
-            <v-img
-                :src="require('@/assets/images/content/no-content-1.png')"
-                max-width="50"
-                height="50"
-            ></v-img>
-
-            <div
-                class="text-center fs-14"
-                style="font-weight: 600; max-width: 200px"
-            >
-              На выбранную дату нету засписей
-            </div>
+            На выбранную дату нету засписей
           </div>
         </div>
-      </v-col>
+
+      </div>
     </v-row>
 
 
@@ -114,20 +159,22 @@ import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import UiAvatar from "@/components/UI/UiAvatar";
 import requests from "@/mixins/requests";
 import DateInput from "@/components/UI/Inputs/DateInput";
+import UiClassData from "@/components/UI/UiClassData.vue";
+import UiClassIndicators from "@/components/UI/UiClassIndicators.vue";
 
 export default {
   name: "SpecClassesTab",
-  components: {DateInput, UiAvatar, UiFullWidthBanner},
+  components: {UiClassIndicators, UiClassData, DateInput, UiAvatar, UiFullWidthBanner},
   mixins: [requests],
   data() {
     return {
       date: new Date().toISOString().substring(0, 10),
-      classes: null
+      classes: []
     }
   },
   methods: {
     getClasses(date) {
-      this.getData(`http://localhost:3000/spec/classes?date=${date}&timeOffset=${-new Date().getTimezoneOffset() / 60}`)
+      this.getDataAuthed(`spec/classes/getClasses?date=${date}&timeOffset=${-new Date().getTimezoneOffset() / 60}`)
           .then(resp => {
             this.classes = resp.data
           })
@@ -137,18 +184,32 @@ export default {
       this.$root.$emit('show-confirm',
           {
             text: 'За отмену занятия Вам будут начислены штрафные баллы. ' +
-                'Если инициатива исходит не от Вас сообщите клиенту о возможности отмены им занятия без штрафных санкций!'
+                'Если инициатива исходит не от Вас - сообщите клиенту о возможности отмены им занятия без штрафных санкций!'
           }
       )
       this.$root.$once('close-confirm', v => {
         if (v) {
-          this.delData(`http://localhost:3000/spec/classes?id=${id}`)
+          this.delDataAuthed(`spec/classes/cancelClass?classId=${id}`,
+              {
+                handleError: true,
+                handleSuccess: true,
+                successMessage: 'Консультация успешно отменена'
+              }
+          )
               .then(() => {
-                this.classes.find(_class => _class._id === id).state.cancelled = true
+                this.classes.find(_class => _class._id === id).state = 'cancelled'
               })
-              .catch()
+              .catch(() => {
+              })
         }
       })
+    },
+    reportClass() {
+      this.$root.$emit('show-confirm',
+          {
+            text: 'Ваше обращение будет обработано в ближайшее время'
+          }
+      )
     }
   },
   mounted() {

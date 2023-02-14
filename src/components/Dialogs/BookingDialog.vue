@@ -126,13 +126,12 @@ export default {
     specId: { // wrapper over content for prevent mounted loading
       type: String,
     },
-
   },
   methods: {
     getBookingTimetable(date) {
       this.addInternalLoading()
       this.time = -1
-      this.getData(`http://localhost:3000/user/classes/bookingTimetable`, null,
+      this.getData(`http://localhost:3000/user/classes/bookingTimetable`, null, false,
           {
             params: {
               specId: this.specId,
@@ -150,7 +149,7 @@ export default {
     },
     getBookingData() {
       this.addLoadingProcess()
-      this.getData(`http://localhost:3000/user/classes/bookingData?specId=${this.specId}`)
+      this.getDataAuthed(`http://localhost:3000/user/classes/bookingData?specId=${this.specId}`)
           .then(resp => {
             this.specializations = resp.data.specializations
             this.methods = resp.data.methods
@@ -162,7 +161,7 @@ export default {
     },
     booking() {
       if (this.$refs.form.validate()) {
-        this.postData('http://localhost:3000/user/classes/booking', {
+        this.postDataAuthed('http://localhost:3000/user/classes/booking', {
           specId: this.specId,
           date: new Date(this.date).setUTCHours(0, 0, 0, 0),
           method: this.method,

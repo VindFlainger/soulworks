@@ -15,8 +15,8 @@
       </div>
     </ui-full-width-banner>
 
-    <v-row>
-      <v-col class="col-3">
+    <v-row >
+      <v-col class="col-12 col-sm-4 col-lg-3">
         <v-list-item-group
             class="pa-0"
             v-model="activeDay"
@@ -32,7 +32,7 @@
         </v-list-item-group>
       </v-col>
 
-      <v-col class="col-6 pa-0">
+      <v-col class="col-12 col-sm-7 col-md-8 col-lg-6 pa-0">
         <v-row>
           <v-col
               class="col-4 pa-0"
@@ -42,20 +42,20 @@
             <v-list>
               <!-- TODO: rewrite this freaking code with css cols-->
               <v-list-item
-                  class="d-inline-block pt-2 ma-1 rounded"
+                  class="d-inline-block pa-2 ma-1 rounded pa-md-3"
                   v-for="j in [0,1,2,3,4,5,6,7]"
                   :key="j"
                   :class="timetable.includes((24 * activeDay + (j + i * 8)))?'green lighten-5':''"
               >
                 <span
-                    class="fs-18"
+                    class="text-body-2 text-md-h6 font-weight-medium"
                     style="font-weight: 600"
                 >
                   {{ j + i * 8 < 10 ? `0${j + i * 8}` : j + i * 8 }}:00
                 </span>
 
                 <v-btn
-                    class="rounded ml-3"
+                    class="rounded ml-1"
                     style="position:relative; border: 2px #C8E6C9 solid;"
                     :class="{'d-none': timetable.includes(24 * activeDay + (j + i * 8))}"
                     fab
@@ -68,7 +68,7 @@
                 </v-btn>
 
                 <v-btn
-                    class="rounded ml-3"
+                    class="rounded ml-1"
                     style="position:relative; border: 2px #FFCDD2 solid"
                     :class="{'d-none': !timetable.includes(24 * activeDay + (j + i * 8))}"
                     elevation="0"
@@ -88,7 +88,7 @@
       </v-col>
 
 
-      <v-col class="pa-0 pt-1 d-flex align-center">
+      <v-col class="pa-0 pt-1 d-flex align-center col-12 col-lg-3">
         <div>
           <div class="font-title fs-14 font-weight-bold">Справка</div>
           <div class="fs-12">
@@ -106,7 +106,7 @@
 <script>
 import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import requests from "@/mixins/requests";
-import {mapState} from "vuex";
+import {mapGetters} from "vuex";
 
 export default {
   name: "SpecTimetableTab",
@@ -117,43 +117,54 @@ export default {
       days: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
       activeDay: 0,
       timetable: undefined,
-      timeOffset: -new Date().getTimezoneOffset() / 60
     }
   },
   computed: {
-    ...mapState()
+    ...mapGetters({
+      timeZoneOffset: 'getTimeZoneOffset'
+    })
   },
   mounted() {
     this.getTimetable()
   },
   methods: {
     getTimetable() {
-      this.getData(`http://localhost:3000/spec/timetable?timeOffset=${this.timeOffset}`)
+      this.getDataAuthed(`spec/timetable/getTime?timeOffset=${this.timeZoneOffset}`, {handleError: true})
           .then(resp => {
             this.timetable = resp.data
           })
-          .catch()
+          .catch(() => {
+          })
     },
     addTime(time) {
-      this.putData('http://localhost:3000/spec/timetable',
+      this.postDataAuthed('spec/timetable/setTime',
           {
             time,
-            timeOffset: this.timeOffset
+            timeOffset: this.timeZoneOffset
+          },
+          {
+            handleError: true,
+            handleSuccess: true,
+            successMessage: 'Расписание успешно обновлено'
           }
       )
           .then(() => {
             this.timetable.push(time)
-            this.$root.$emit('push-message', {text: 'Расписание успешно обновлено', type: 'success'})
           })
-          .catch()
+          .catch(() => {
+          })
     },
     delTime(time) {
-      this.delData(`http://localhost:3000/spec/timetable?time=${time}&timeOffset=${this.timeOffset}`)
+      this.delDataAuthed(`spec/timetable/deleteTime?time=${time}&timeOffset=${this.timeZoneOffset}`, {
+        handleError: true,
+        handleSuccess: true,
+        successMessage: 'Расписание успешно обновлено'
+      })
           .then(() => {
             this.timetable = this.timetable.filter(el => el !== time)
-            this.$root.$emit('push-message', {text: 'Расписание успешно обновлено', type: 'success'})
           })
-          .catch()
+          .catch(() => {
+          })
     },
   },
   metaInfo: {

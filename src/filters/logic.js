@@ -27,6 +27,21 @@ export const role = v => {
     }
 }
 
+export const opportunities = v => {
+    switch (v) {
+        case 'teens':
+            return 'работа с подростками'
+        case 'family':
+            return 'семейная консультация'
+        case 'children':
+            return 'работа с детьми'
+        case 'internal':
+            return 'оффлайн консультация'
+        default:
+            return ''
+    }
+}
+
 export const date = v => {
     const diffD = moment().diff(v, 'days')
     if (!diffD) {

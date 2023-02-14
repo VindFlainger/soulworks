@@ -9,14 +9,14 @@
          @drop="draggingOver = false"
     >
       <div class="file-input__drop-zone" :class="{'file-input__drop-zone_blocking': draggingOver}">
-        <div>
+        <div v-if="!isMobile" class="d-flex flex-column align-center">
           <v-img :src="require('@/assets/images/cloudupload.png')" :max-width="70"></v-img>
-        </div>
-        <div class="text-center fs-18 font-weight-bold">
-          Перетащите файлы
-        </div>
-        <div class="text-center fs-14">
-          или
+          <div class="text-center fs-18 font-weight-bold">
+            Перетащите файлы
+          </div>
+          <div class="text-center fs-14">
+            или
+          </div>
         </div>
         <label class="file-input__label" :class="{'grey lighten-1': uploadingFiles.length + files.length >= maxFiles}">
           <v-icon color="black" size="26">mdi-upload</v-icon>
@@ -86,18 +86,6 @@ import requests from "@/mixins/requests";
 export default {
   name: "FileInput",
   components: {UiDocumentPreview},
-  data() {
-    return {
-      files: [],
-      uploadingFiles: [],
-      errorMessages: [],
-      notAllowedExtensionMessageVisible: false,
-      tooLargeSizeMessageVisible: false,
-      notAllowedFileCountVisible: false,
-      draggingOver: false,
-      loadingCounter: 0
-    }
-  },
   props: {
     value: {
       type: Number,
@@ -128,6 +116,23 @@ export default {
     tooLargeSizeMessage: {
       type: String,
       required: false
+    }
+  },
+  data() {
+    return {
+      files: [],
+      uploadingFiles: [],
+      errorMessages: [],
+      notAllowedExtensionMessageVisible: false,
+      tooLargeSizeMessageVisible: false,
+      notAllowedFileCountVisible: false,
+      draggingOver: false,
+      loadingCounter: 0
+    }
+  },
+  computed: {
+    isMobile(){
+      return this.$store.getters.isMobile
     }
   },
   methods: {

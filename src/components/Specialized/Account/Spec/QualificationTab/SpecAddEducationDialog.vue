@@ -4,12 +4,19 @@
       max-width="690"
       @close="$emit('close')"
   >
-    <div v-if="value">
+    <div v-if="value" class="pa-1">
 
-      <v-row>
-        <date-input v-model="graduation"></date-input>
-        <v-col>
+      <v-row justify="center">
+        <date-input
+            class="col-12 col-sm-5"
+            :width="viewportHook({base: 250, md: 280})"
+            style="max-width: 300px"
+            v-model="graduation"
+        ></date-input>
+
+        <div class="col-sm-6">
           <v-form
+              class="align-center d-flex flex-column"
               ref="form"
               v-model="valid"
           >
@@ -36,7 +43,7 @@
             ></file-input>
 
           </v-form>
-        </v-col>
+        </div>
       </v-row>
 
 
@@ -49,7 +56,7 @@
 
         <ui-confirm-button
             :disabled="!valid || fileLoading || !files.length"
-            @click="addEducation"
+            @click="$emit('add-education', institution, graduation, files.map(file => file.id))"
         >
           Загрузить
         </ui-confirm-button>
@@ -105,27 +112,11 @@ export default {
       }
     }
   },
-  methods: {
-    addEducation() {
-      this.putData('http://localhost:3000/spec/qualification/education', {
-        institution: this.institution,
-        graduation: new Date(this.graduation).getTime(),
-        documents: this.files.map(file => file.id)
-      })
-          .then(() => {
-            this.$root.$emit('push-message', {
-              text: 'Учреждение образования успешно добавлено',
-              type: 'success',
-              time: 2000
-            })
-            this.$emit('updated')
-          })
-          .catch()
-    }
-  },
 }
 </script>
 
 <style scoped>
-
+::-webkit-scrollbar {
+  width: 0;
+}
 </style>

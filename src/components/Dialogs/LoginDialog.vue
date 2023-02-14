@@ -1,9 +1,10 @@
 <template>
-  <v-dialog
+  <base-dialog
       :value="true"
       max-width="450"
       content-class="white"
-      @click:outside="$root.$emit('close-registration')"
+      @close="$root.$emit('close-login')"
+      @click:outline="$root.$emit('close-login')"
   >
 
     <div
@@ -130,9 +131,7 @@
       </div>
 
     </div>
-
-
-  </v-dialog>
+  </base-dialog>
 </template>
 
 <script>
@@ -141,12 +140,13 @@ import EmailInput from "@/components/UI/Inputs/EmailInput";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import requests from "@/mixins/requests";
 import {SET_AUTH_DATA} from "@/store/mutation-types";
+import BaseDialog from "@/components/Dialogs/BaseDialog.vue";
 
 const axios = require('axios').default
 
 export default {
   name: "LoginDialog",
-  components: {UiDefaultButton, EmailInput, DefaultInput},
+  components: {BaseDialog, UiDefaultButton, EmailInput, DefaultInput},
   mixins: [requests],
   data() {
     return {
@@ -155,7 +155,7 @@ export default {
       correct: true,
       email: '',
       password: '',
-      recoverDialog: false
+      recoverDialog: false,
     }
   },
   methods: {

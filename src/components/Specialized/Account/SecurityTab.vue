@@ -81,11 +81,12 @@
       <v-spacer></v-spacer>
 
       <v-col class="col-6">
-        <v-card class="pa-2" elevation="0">
-          <div class="font-title fs-20">Сессии</div>
+        <div class="font-title fs-20">Сессии</div>
+        <div style="max-height: 400px; overflow-y: auto">
           <v-card
               class="pa-2 ma-1"
-              v-for="session in sessions"
+              v-for="(session,i) in sessions"
+              v-show="i < 3 || showAll"
               :key="session.device"
               elevation="0"
               :class="{'green lighten-5': session.device === userAgent}"
@@ -119,12 +120,14 @@
               </v-btn>
 
             </v-row>
-
-
           </v-card>
-        </v-card>
+          <v-row justify="center">
+            <ui-default-button small @click="showAll=true">
+              Показать еще
+            </ui-default-button>
+          </v-row>
 
-
+        </div>
       </v-col>
 
       <v-spacer></v-spacer>
@@ -156,7 +159,8 @@ export default {
       userAgent: undefined,
       password: '',
       newPassword: '',
-      valid: true
+      valid: true,
+      showAll: false
     }
   },
   methods: {

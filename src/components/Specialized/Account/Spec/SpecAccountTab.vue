@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     getAccountData() {
-      this.getData('http://localhost:3000/spec/account')
+      this.getDataAuthed('spec/account', {handleError: true})
           .then(resp => {
                 this.userId = resp.data.id
                 this.name = resp.data.name
@@ -201,7 +201,7 @@ export default {
                 this.sessionStats = resp.data.statistic.sessions
               }
           )
-          .catch()
+          .catch(()=>{})
     }
   },
   mounted() {

@@ -24,8 +24,9 @@
         {{ text }}
       </div>
 
-      <v-card-actions class="pa-0">
+      <v-card-actions class="pa-0 flex-wrap justify-center">
         <ui-default-button
+            class="ma-1"
             outlined
             color="red"
             width="150"
@@ -34,9 +35,10 @@
           Отмена
         </ui-default-button>
 
-        <v-spacer></v-spacer>
+
 
         <ui-default-button
+            class="ma-1"
             outlined
             color="green"
             width="150"

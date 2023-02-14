@@ -18,18 +18,16 @@ export default {
             state.alerts.push(alert)
         },
         [SET_MUTE](state, time) {
-            console.log('mute')
             state.mute = Date.now() + time
             localStorage.setItem('mute', state.mute)
         },
         [REMOVE_MUTE](state) {
-            console.log('unmute')
             state.mute = 0
             localStorage.removeItem('mute')
         }
     },
     actions: {
-        [addAlert]({commit, getters}, {content, time = 5000, type = 'warn', ignoreMute = false}) {
+        [addAlert]({commit, getters}, {content, time = 5000, type = 'request', ignoreMute = false}) {
             if (getters.isMute && !ignoreMute) return 0
 
             const id = setTimeout(() => {

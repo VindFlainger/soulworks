@@ -1,8 +1,8 @@
 <template>
   <v-tabs
       class="profile-tabs"
-      vertical
       slider-color="transparent"
+      vertical
   >
     <v-tab
         class="justify-start black--text"
@@ -19,9 +19,12 @@
 
 <script>
 export default {
-  name: "AccountTabs",
+  name: "AccountMenuDesktop",
   props: {
-    tabs: Array
+    tabs: {
+      type: Array,
+      required: true
+    }
   }
 }
 </script>

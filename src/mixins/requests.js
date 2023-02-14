@@ -1,8 +1,6 @@
-import auth from "@/mixins/auth";
+import {axiosPipeline} from "../../utils/axiosMiddlaware";
 import store from "@/store";
-
-const axios = require('axios').default
-axios.defaults.withCredentials = true
+import {addAlert} from "@/store/action-types";
 
 export default {
     data() {
@@ -11,7 +9,6 @@ export default {
             internalLoading: false
         }
     },
-    mixins: [auth],
     computed: {
         isLoading() {
             return !!this.loadingProcesses
@@ -30,118 +27,90 @@ export default {
         removeLoadingProcess() {
             this.loadingProcesses--
         },
-        showAlert(type, time = 3000, text = '') {
-            this.$root.emit('push-message', {type, time, text})
+
+
+        getData(url, options, auth = false, axiosConfig = {}) {
+            return this.getFormatResponse(
+                axiosPipeline.get(url, {needAuth: auth, ...axiosConfig}),
+                options
+            )
         },
 
-        /**
-         * Options for http request wrapper
-         * @alias requestOptions
-         * @type {
-         *      {
-         *        handleError: Boolean?,
-         *        handleErrorResponse: Boolean?,
-         *        alertErrorResponseTitle: String?,
-         *        needAuth: Boolean
-         *      }
-         * }
-         */
-
-        /**
-         * Wrapped request response
-         * @alias requestResponse
-         * @type {
-         *     {
-         *         data: Object,
-         *         status: Number
-         *     }
-         * }
-         */
-
-        /**
-         *
-         * @param {string} url
-         * @param {requestOptions?} options
-         * @param {Object?} axiosConfig
-         * @return {Promise<requestResponse> || Promise<Error>}
-         */
-        getData(url, options, axiosConfig = {}) {
-            return store.dispatch('authInterceptor')
-                .then(() => {
-                    return this.getFormatResponse(
-                        axios.get(url, axiosConfig),
-                        options
-                    )
-                })
+        getDataAuthed(url, options, axiosConfig) {
+            return this.getData(url, options, true, axiosConfig)
         },
 
-        /**
-         *
-         * @param {string} url
-         * @param {Object?} data
-         * @param {requestOptions?} options
-         * @param {Object?} axiosConfig
-         * @return {Promise<requestResponse> || Promise<Error>}
-         */
-        postData(url, data, options, axiosConfig = {}) {
-            return store.dispatch('authInterceptor')
-                .then(() => {
-                    return this.getFormatResponse(
-                        axios.post(url, data, axiosConfig),
-                        options
-                    )
-                })
+        postData(url, data, options, auth = false, axiosConfig = {}) {
+            return this.getFormatResponse(
+                axiosPipeline.post(url, data, {needAuth: auth, ...axiosConfig}),
+                options
+            )
         },
 
-        putData(url, data, options, axiosConfig = {}) {
-            return store.dispatch('authInterceptor')
-                .then(() => {
-                    return this.getFormatResponse(
-                        axios.put(url, data, axiosConfig),
-                        options
-                    )
-                })
+        postDataAuthed(url, data, options, axiosConfig) {
+            return this.postData(url, data, options, true, axiosConfig)
         },
 
-        delData(url, options, axiosConfig = {}) {
-            return store.dispatch('authInterceptor')
-                .then(() => {
-                    return this.getFormatResponse(
-                        axios.delete(url, axiosConfig),
-                        options
-                    )
-                })
+        putData(url, data, options, auth = false, axiosConfig = {}) {
+            return this.getFormatResponse(
+                axiosPipeline.put(url, data, {needAuth: auth, ...axiosConfig}),
+                options
+            )
         },
 
-        /**
-         *
-         * @param req
-         * @param {requestOptions?} options
-         * @return {Promise<requestResponse> || Promise<Error> }
-         */
-        getFormatResponse(req, options = {}) {
+        putDataAuthed(url, data, options, axiosConfig) {
+            return this.putData(url, data, options, true, axiosConfig)
+        },
+
+        delData(url, options, auth = false, axiosConfig = {}) {
+            return this.getFormatResponse(
+                axiosPipeline.delete(url, {needAuth: auth, ...axiosConfig}),
+                options
+            )
+        },
+
+        delDataAuthed(url, options, axiosConfig) {
+            return this.delData(url, options, true, axiosConfig)
+        },
+
+
+        getFormatResponse(req, options) {
+            options = options || {}
             return req
                 .then(resp => {
-                    if (resp.data.error && options.handleErrorResponse) {
-                        this.showAlert(
-                            'error',
-                            2000,
-                            resp.data.code ? `Error code ${resp.data.code}` : resp.data.error
-                        )
+                    if (options.handleSuccess) {
+                        store.dispatch(addAlert, {
+                            type: 'request',
+                            ignoreMute: true,
+                            content: {
+                                type: 'success',
+                                success: {
+                                    message: options.successMessage,
+                                }
+                            },
+                        })
                     }
+
                     return {
                         status: resp.status,
                         ok: !(resp.status >= 400 && resp.status < 200),
                         data: resp.data
                     }
                 })
+                // TODO: check the fact that only valid server error-code responses appears here (middleware filter)
                 .catch(err => {
-                        if (err?.response?.data?.code && options.handleErrorResponse) {
-                            this.showAlert(
-                                'error',
-                                2000,
-                                `Произошла ошибка, код ошибки ${err.response.data.code}`
-                            )
+                        if (options.handleError) {
+                            store.dispatch(addAlert, {
+                                type: 'request',
+                                ignoreMute: true,
+                                content: {
+                                    type: 'error',
+                                    error: {
+                                        code: err.response.data.code,
+                                        message: err.response.data.message,
+                                    }
+                                },
+                            })
                         }
                         throw err
                     }

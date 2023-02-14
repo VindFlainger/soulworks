@@ -1,4 +1,4 @@
-import {default as axios} from "axios";
+import {axiosPipeline} from "../../../utils/axiosMiddlaware";
 
 export default {
     namespaced: true,
@@ -47,7 +47,7 @@ export default {
         getAuthedContent: {
             root: true,
             handler({commit, dispatch}) {
-                axios.get('http://localhost:3000/any/notifications/getNewCount')
+                axiosPipeline.get('http://localhost:3000/any/notifications/getNewCount', {needAuth: true})
                     .then(resp => {
                         commit('SET_NEW_COUNT', resp.data)
                     })
@@ -61,11 +61,12 @@ export default {
 
                 commit('SET_LOADING', true)
 
-                axios.get('http://localhost:3000/any/notifications/getNotifications', {
+                axiosPipeline.get('http://localhost:3000/any/notifications/getNotifications', {
                     params: {
                         limit: getters.getLimit,
                         offset: getters.getNotificationsCount
-                    }
+                    },
+                    needAuth: true
                 })
                     .then(resp => {
                         commit('APPEND_NOTIFICATIONS', resp.data)
@@ -76,9 +77,9 @@ export default {
             })
         },
         setNotificationRead({commit}, notificationId) {
-            return axios.post('http://localhost:3000/any/notifications/setReadState', {
+            return axiosPipeline.post('http://localhost:3000/any/notifications/setReadState', {
                 notificationId
-            })
+            }, {needAuth: true})
                 .then(commit('SET_NOTIFICATION_READ', notificationId))
         },
         addNewNotification({commit, dispatch}, notification) {

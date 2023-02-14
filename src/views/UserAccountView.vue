@@ -1,7 +1,14 @@
 <template>
   <ui-content-wrapper style="background: #ECEFF1">
     <v-row class="flex-nowrap">
-      <profile-tabs :tabs="tabs"></profile-tabs>
+      <account-menu-desktop
+          v-if="viewportHook({base: false, md: true})"
+          :tabs="tabs"
+      ></account-menu-desktop>
+      <account-menu-mobile
+          v-else
+          :tabs="tabs"
+      ></account-menu-mobile>
       <v-tabs-items v-model="tab" style="border-radius: 0 20px 20px 20px;  flex-grow: 1">
         <v-tab-item :value="$route.name">
           <keep-alive>
@@ -17,11 +24,13 @@
 </template>
 
 <script>
-import ProfileTabs from "@/components/Specialized/Account/AccountTabs";
+
 import UiContentWrapper from "@/components/UI/UiContentWrapper";
+import AccountMenuDesktop from "@/components/Specialized/Account/Menu/AccountMenuDesktop.vue";
+import AccountMenuMobile from "@/components/Specialized/Account/Menu/AccountMenuMobile.vue";
 export default {
   name: "UserAccountView",
-  components: {UiContentWrapper, ProfileTabs},
+  components: {AccountMenuMobile, AccountMenuDesktop, UiContentWrapper},
   data(){
     return {
       tab: 'account',

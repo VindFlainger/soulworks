@@ -61,7 +61,7 @@ export default {
       required: true
     },
     graduation: {
-      type: Number,
+      type: String,
       required: true
     },
     approve: {
