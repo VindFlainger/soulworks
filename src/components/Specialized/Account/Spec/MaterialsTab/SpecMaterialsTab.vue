@@ -8,15 +8,20 @@
 
 
     <account-base-layout
-        preview-title="ваши материалы"
+        :preview-title="$t('account.spec.materials.section-name')"
         :preview-image="require('@/assets/images/account/materials.png')"
     >
 
-      <v-row class="pa-2" style="border-radius: 15px; border: 1px solid black" align="center">
-        <v-chip class="ma-1 ma-sm-0">Всего материалов: <span class="font-weight-bold ml-1">{{ totalCount }}</span></v-chip>
-        <v-spacer></v-spacer>
-        <ui-confirm-button @click="addMaterialDialogVisible = true" class="ma-1 ma-sm-0">Добавить материал</ui-confirm-button>
-      </v-row>
+
+      <account-base-chips :chips="[{name: $t('account.spec.materials.total-materials'), value: totalCount}]">
+        <ui-confirm-button
+            class="ma-1 ma-sm-0"
+            @click="addMaterialDialogVisible = true"
+        >
+          {{ $t('account.spec.materials.add-material') }}
+        </ui-confirm-button>
+      </account-base-chips>
+
 
       <div v-if="materials.length">
         <spec-materials-list
@@ -33,14 +38,11 @@
         ></ui-pagination>
       </div>
 
-      <ui-fullscreen-no-content-banner v-else :to="{path: '*'}">
-          <span class="text-center fs-20 font-weight-medium">
-            Вы еще не добавили материалы!
-          </span>
-        <span class="text-center fs-14" style="max-width: 500px">
-            Добавляйте свои уникальные материалы и делитесь им со своими клиентами или другими пользователями
-          </span>
-      </ui-fullscreen-no-content-banner>
+      <ui-fullscreen-no-content-banner
+          v-else
+          :title="$t('account.spec.materials.no-materials-title')"
+          :caption="$t('account.spec.materials.no-materials-caption')"
+      ></ui-fullscreen-no-content-banner>
 
     </account-base-layout>
 
@@ -55,9 +57,20 @@ import UiFullscreenNoContentBanner from "@/components/UI/UiFullscreenNoContentBa
 import SpecMaterialsList from "@/components/Specialized/Account/Spec/MaterialsTab/SpecMaterialsList";
 import SpecAddMaterialsDialog from "@/components/Specialized/Account/Spec/MaterialsTab/SpecAddMaterialsDialog";
 import AccountBaseLayout from "@/components/Specialized/Account/AccountBaseLayout.vue";
+import AccountBaseChips from "@/components/Specialized/Account/AccountBaseChips.vue";
 
 export default {
   name: "SpecMaterialsTab",
+  components: {
+    AccountBaseChips,
+    AccountBaseLayout,
+    SpecAddMaterialsDialog,
+    SpecMaterialsList,
+    UiFullscreenNoContentBanner,
+    UiConfirmButton,
+    UiPagination,
+  },
+  mixins: [requests],
   data() {
     return {
       materials: [],
@@ -66,6 +79,9 @@ export default {
       totalCount: 0,
       addMaterialDialogVisible: false
     }
+  },
+  mounted() {
+    this.getMaterials(1)
   },
   methods: {
     getMaterials(page) {
@@ -147,20 +163,10 @@ export default {
       })
     }
   },
-  components: {
-    AccountBaseLayout,
-    SpecAddMaterialsDialog,
-    SpecMaterialsList,
-    UiFullscreenNoContentBanner,
-    UiConfirmButton,
-    UiPagination,
-  },
-  mounted() {
-    this.getMaterials(1)
-  },
-  mixins: [requests],
-  metaInfo: {
-    title: 'Материалы'
+  metaInfo() {
+    return {
+      title: this.$t('account.spec.materials.section-name')
+    }
   }
 }
 </script>

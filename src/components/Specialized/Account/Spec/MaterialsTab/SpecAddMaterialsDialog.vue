@@ -10,7 +10,6 @@
           v-model="valid"
           lazy-validation
       >
-
         <v-row>
           <easy-photo-input
               v-model="previewImage"
@@ -18,7 +17,7 @@
           <default-input
               class="ml-1 flex-grow-1"
               v-model="name"
-              label="Название"
+              :label="$t('common.labels.name')"
               maxlength="30"
               content-class="file__button"
               :max-width="320"
@@ -31,7 +30,7 @@
             :required="false"
             counter="250"
             maxlength="250"
-            label="Описание"
+            :label="$t('common.labels.description')"
         ></text-area-input>
 
         <file-input
@@ -42,7 +41,9 @@
         ></file-input>
 
         <v-row class="mt-2">
-          <ui-default-button @click="$emit('close')">Отмена</ui-default-button>
+          <ui-default-button @click="$emit('close')">
+            {{$t('common.buttons.cancel')}}
+          </ui-default-button>
 
           <v-spacer></v-spacer>
 
@@ -50,7 +51,7 @@
               :disabled="!valid || fileLoading || !files.length"
               @click="addMaterial"
           >
-            Загрузить
+            {{$t('common.buttons.upload')}}
           </ui-confirm-button>
         </v-row>
       </v-form>

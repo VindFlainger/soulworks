@@ -2,25 +2,29 @@
   <v-row class="bordered" align="center">
 
     <div style="width: 350px">
-      <div class="font-weight-medium">Учреждение:
+      <div class="font-weight-medium">
+        {{$t('account.spec.qualification.institution')}}:
         <span class="font-weight-light">
           {{ institution }}
         </span>
       </div>
 
-      <div class="font-weight-medium">Год выпуска:
+      <div class="font-weight-medium">
+        {{$t('account.spec.qualification.graduate')}}:
         <span class="font-weight-light">
           {{ $moment(graduation).format('y') }}
         </span>
       </div>
 
-      <div class="font-weight-medium">Статус:
+      <div class="font-weight-medium">
+        {{$t('account.spec.qualification.status')}}:
         <span :class="{'green--text': approve, 'red--text': !approve}" class="font-weight-light">
           {{ approve ? 'Подтверждена' : 'Не подтверждена' }}
         </span>
       </div>
 
-      <div class="font-weight-medium">Дата рассмотрения:
+      <div class="font-weight-medium">
+        {{$t('account.spec.qualification.check-date')}}:
         <span :class="{'green--text': approve, 'indigo--text': !approve}" class="font-weight-light">
           {{ watched ? $moment(watched).format('lll') : 'В рассмотрении' }}
         </span>

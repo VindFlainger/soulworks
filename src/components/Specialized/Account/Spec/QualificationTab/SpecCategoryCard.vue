@@ -3,13 +3,15 @@
 
     <div style="max-width: 300px">
 
-      <div class="font-weight-medium">Название:
+      <div class="font-weight-medium">
+        {{$t('account.spec.qualification.name')}}:
         <span class="font-weight-light">
           {{ name }}
         </span>
       </div>
 
-      <div class="font-weight-medium">Статус:
+      <div class="font-weight-medium">
+        {{$t('account.spec.qualification.status')}}:
         <span
             class="font-weight-light"
             :class="{'green--text':approve, 'red--text': !approve}"

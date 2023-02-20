@@ -13,18 +13,19 @@
     ></spec-add-category-dialog>
 
     <account-base-layout
-        preview-title="квалификация"
+        :preview-title="$t('account.spec.qualification.section-name')"
         :preview-image="require('@/assets/images/account/qualification.png')"
     >
       <div>
-        <div class="text-h6 font-weight-bold font-title comfortaa">Образование</div>
+        <div class="text-h6 font-weight-bold font-title comfortaa">
+          {{ $t('account.spec.qualification.education') }}
+        </div>
         <div class="text-caption mt-n1 grey--text text--darken-2 mb-2 sans">
-          Каждое указанное учебное заведение подтверждается отдельно по прикрепленным документам. Максимальное
-          количество учреждений образования - 5. В случае отказа на Вашу почту будет отправлено письмо с указанием
-          причины.
+          {{ $t('account.spec.qualification.education-description') }}
         </div>
 
-        <account-base-chips :chips="[{name: 'Всего учебных заведений:', value: education.length}]">
+        <account-base-chips
+            :chips="[{name: $t('account.spec.qualification.total-institutes-chip'), value: education.length}]">
 
           <ui-confirm-button
               class="ma-1 ma-sm-0"
@@ -53,17 +54,15 @@
       </div>
 
       <div>
-        <h4 class="text-h6 font-weight-bold comfortaa">Категория</h4>
+        <h4 class="text-h6 font-weight-bold comfortaa">{{ $t('account.spec.qualification.category') }}</h4>
 
         <p class="text-caption mt-n1 grey--text text--darken-2 mb-2 sans">
-          После добавления новой квалификации Вам необходимо дождаться ее подтверждения. В случае отказа на Вашу почту
-          будет отправлено письмо с указанием причины.
-          <span class="font-weight-bold">
-            После загрузки данных о новой квалификации подтверждение текущей будет потеряно.
-          </span>
+          {{ $t('account.spec.qualification.category-description') }}
         </p>
 
-        <ui-confirm-button @click="addCategoryDialogVisible = true">Загрузить</ui-confirm-button>
+        <ui-confirm-button @click="addCategoryDialogVisible = true">
+          {{ $t('common.buttons.upload') }}
+        </ui-confirm-button>
 
         <spec-category-card
             class="pa-2 mt-3"
@@ -102,6 +101,18 @@ export default {
     UiConfirmButton,
   },
   mixins: [requests],
+  data() {
+    return {
+      category: {},
+      education: [],
+      addQualificationDialogVisible: false,
+      addCategoryDialogVisible: false
+    }
+  },
+  mounted() {
+    this.getCategory()
+    this.getEducation()
+  },
   methods: {
     getCategory() {
       this.getDataAuthed('spec/qualification/getCategory', {handleError: true})
@@ -120,14 +131,14 @@ export default {
           })
     },
     delEducation(id) {
-      this.$root.$emit('show-confirm', {text: 'Информация о данном учреждении образования будет удалена, а ее подтверждение аннулируется'})
+      this.$root.$emit('show-confirm', {text: this.$t('account.spec.qualification.delete-education-confirm')})
       this.$root.$once('close-confirm', v => {
         if (v) {
           this.delDataAuthed(`spec/qualification/delEducation?institutionId=${id}`,
               {
                 handleError: true,
                 handleSuccess: true,
-                successMessage: 'сведения об учебном заведении успешно удалены'
+                successMessage: this.$t('account.spec.qualification.delete-education-success')
               }
           )
               .then(() => {
@@ -147,7 +158,7 @@ export default {
           {
             handleError: true,
             handleSuccess: true,
-            successMessage: 'категория успешно изменена'
+            successMessage: this.$t('account.spec.qualification.edit-category-success')
           }
       )
           .then(() => {
@@ -170,7 +181,7 @@ export default {
           {
             handleError: true,
             handleSuccess: true,
-            successMessage: 'учреждение образования успешно добавлено'
+            successMessage: this.$t('account.spec.qualification.add-education-success')
           }
       )
           .then(() => {
@@ -184,20 +195,10 @@ export default {
           })
     }
   },
-  data() {
+  metaInfo() {
     return {
-      category: {},
-      education: [],
-      addQualificationDialogVisible: false,
-      addCategoryDialogVisible: false
+      title: this.$t('account.spec.qualification.section-name')
     }
-  },
-  mounted() {
-    this.getCategory()
-    this.getEducation()
-  },
-  metaInfo: {
-    title: 'Квалификация'
   }
 }
 </script>

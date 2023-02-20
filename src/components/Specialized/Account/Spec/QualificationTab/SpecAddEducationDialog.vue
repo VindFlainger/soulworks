@@ -23,13 +23,13 @@
 
             <default-input
                 v-model="institution"
-                label="Учреждение"
+                :label="$t('account.spec.qualification.institution')"
                 :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
             ></default-input>
 
             <default-input
                 :value="graduation"
-                label="Дата выпуска"
+                :label="$t('account.spec.qualification.graduate')"
                 disabled
             ></default-input>
 
@@ -49,7 +49,7 @@
 
       <v-row class="mt-3">
         <ui-default-button @click="$emit('close')">
-          Отмена
+          {{$t('common.buttons.cancel')}}
         </ui-default-button>
 
         <v-spacer></v-spacer>
@@ -58,7 +58,7 @@
             :disabled="!valid || fileLoading || !files.length"
             @click="$emit('add-education', institution, graduation, files.map(file => file.id))"
         >
-          Загрузить
+          {{$t('common.buttons.upload')}}
         </ui-confirm-button>
       </v-row>
 

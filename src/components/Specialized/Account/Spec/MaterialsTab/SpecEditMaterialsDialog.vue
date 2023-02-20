@@ -57,7 +57,7 @@
           </li>
         </ul>
         <div v-else>
-          Вы еще не добавили читателей
+          {{$t('account.spec.materials.no-readers')}}
         </div>
       </div>
 
@@ -67,7 +67,7 @@
         class="mt-2"
         @click="$emit('delete-material')"
     >
-      Удалить материал
+      {{$t('common.buttons.delete')}}
     </ui-default-button>
   </base-dialog>
 </template>

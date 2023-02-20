@@ -20,22 +20,28 @@
       <p class="mt-1 text-title text-body-1 sans">{{ description }}</p>
 
       <v-row class="mt-3" justify="space-between">
-        <ui-default-button @click="$emit('show-material')">Просмотр</ui-default-button>
-        <ui-confirm-button class="ml-1" @click="$emit('add-reader')">Поделиться</ui-confirm-button>
+        <ui-default-button @click="$emit('show-material')">
+          {{$t('common.buttons.see')}}
+        </ui-default-button>
+        <ui-confirm-button class="ml-1" @click="$emit('add-reader')">
+          {{$t('common.buttons.share')}}
+        </ui-confirm-button>
       </v-row>
 
       <div class="mt-3">
 
-        <h5 class="text-title text-subtitle-1 font-weight-bold comfortaa">Читатели:</h5>
+        <h5 class="text-title text-subtitle-1 font-weight-bold comfortaa">
+          {{$t('account.spec.materials.readers')}}:
+        </h5>
 
         <ui-signed-avatars
             v-if="readers.length"
             :users="readers"
         ></ui-signed-avatars>
-        <p v-else class="text-body-1 sans">
-          Вы еще не предоставили доступ к этому материалу другим пользователям
-        </p>
 
+        <p v-else class="text-body-1 sans">
+          {{$t('account.spec.materials.no-readers')}}:
+        </p>
       </div>
 
     </v-col>

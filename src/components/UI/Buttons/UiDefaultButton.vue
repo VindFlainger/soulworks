@@ -1,6 +1,16 @@
 <template>
-  <v-btn class="button" outlined :color="color" v-on="$listeners" v-bind="$attrs">
-    <slot>Отмена</slot>
+  <v-btn
+      class="button"
+      outlined
+      :color="color"
+      v-on="$listeners"
+      v-bind="$attrs"
+  >
+    <div class="text-title">
+      <slot>
+        Подтвердить
+      </slot>
+    </div>
   </v-btn>
 </template>
 
@@ -17,7 +27,7 @@ export default {
 </script>
 
 <style scoped>
-.button{
+.button {
   border-radius: 15px;
   text-transform: none
 }
