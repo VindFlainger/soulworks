@@ -21,7 +21,8 @@
         :value="!!material_"
         :material="material_"
         @close="material_ = null"
-        @delete-reader="deleteReader(material_._id, $event)"
+        @delete-reader="deleteReader(material_._id, $event);"
+        @delete-material="$emit('delete-material', material_._id); material_=null"
     ></spec-edit-materials-dialog>
   </div>
 </template>

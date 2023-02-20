@@ -5,7 +5,13 @@
       color="blue lighten-4"
       v-on="$listeners"
       v-bind="$attrs">
-    <slot>Подтвердить</slot>
+
+    <div class="text-title">
+      <slot>
+        Подтвердить
+      </slot>
+    </div>
+
   </v-btn>
 </template>
 
@@ -21,7 +27,7 @@ export default {
   text-transform: none
 }
 
-.button::before{
+.button::before {
   display: none;
 }
 </style>

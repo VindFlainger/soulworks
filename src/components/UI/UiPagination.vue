@@ -4,12 +4,7 @@
       v-on="$listeners"
       circle
       class="pagination"
-
-
-
-
   >
-
   </v-pagination>
 </template>
 

@@ -16,6 +16,7 @@ import InfoDialog from "@/components/Dialogs/InfoDialog";
 import LoginDialog from "@/components/Dialogs/LoginDialog";
 import FindUserDialog from "@/components/Dialogs/FindUserDialog";
 import responsiveness from "@/mixins/responsiveness";
+import i18n from './i18n'
 
 
 textFilters.forEach(tf => {
@@ -42,6 +43,7 @@ const vm = new Vue({
     vuetify,
     store,
     router,
+    i18n,
     render: h => h(App)
 }).$mount('#app')
 

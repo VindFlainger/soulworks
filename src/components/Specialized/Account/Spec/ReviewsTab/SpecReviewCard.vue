@@ -1,44 +1,44 @@
 <template>
   <!--  TODO: key WTF??? (refactoring)-->
   <v-card
-      class="pa-4 mt-4 bordered"
-      :key="reviewerId"
+      class="pa-4 bordered"
       outlined
   >
     <v-row>
 
       <ui-avatar
           :images="reviewerAvatar?.images"
-          :size="100"
+          :size="viewportHook({base: 70, sm: 90})"
       ></ui-avatar>
 
-      <v-col class="pa-0 ml-5">
+      <v-col class="pa-0 ml-2 ml-md-5 ">
 
-        <div class="font-title fs-18 font-weight-bold">
+        <h4 class="font-title comfortaa text-subtitle-1 text-sm-h6 font-weight-bold">
           <router-link
               class="text-decoration-none black--text"
               :to="{name: 'profile', params: {id: reviewerId}}">
             {{ reviewerSurname }} {{ reviewerName }}
           </router-link>
-        </div>
+        </h4>
 
-        <div class="fs-16">
-          {{ $moment(date).format('lll') }}
+        <div class="text-body-1">
+          {{ $moment(date).format('ll') }}
         </div>
 
         <v-rating
-            class="ml-n2 mt-n1"
+            class="ml-n1 ml-sm-n2"
             color="blue lighten-3"
             background-color="grey"
             :value="stars"
             readonly
+            :dense="viewportHook({base: true, sm: false})"
         ></v-rating>
 
       </v-col>
     </v-row>
     <div class="mt-2">
-      <code class="font-title fs-16 font-weight-bold">{{ title }}</code>
-      <div class="fs-16 font-weight-light">{{ text }}</div>
+      <code class="font-title text-subtitle-1 font-weight-bold">{{ title }}</code>
+      <p class="text-body-1 font-weight-light">{{ text }}</p>
     </div>
   </v-card>
 </template>
@@ -59,7 +59,7 @@ export default {
       required: true
     },
     date: {
-      type: Number,
+      type: String,
       required: true
     },
     reviewerId: {

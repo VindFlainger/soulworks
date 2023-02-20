@@ -1,28 +1,29 @@
 <template>
-  <v-row
-      class="flex-column d-inline-flex pa-1"
-      align="center"
-      :style="{width: `${maxWidth}px`, maxWidth: `${maxWidth}px`}"
+  <div
+      :class="row?'d-flex justify-center':''"
   >
-    <v-icon
-        color="red"
-        :size="size"
-    >
-      {{ icon }}
-    </v-icon>
-    <span class="mt-1 red--text font-weight-bold">
+    <div class="d-flex flex-column align-center">
+      <v-icon
+          class="d-block"
+          color="red"
+          :size="size"
+      >
+        mdi-alert
+      </v-icon>
+      <p class="ma-0 red--text font-weight-bold">
         {{ title }}
-    </span>
-    <span class="fs-10 text-center red--text">{{message}}</span>
-    <ui-default-button
-        v-if="retrying"
-        color="red"
-        class="mt-2"
-        @click="$emit('retry')"
-    >
-      Повторить
-    </ui-default-button>
-  </v-row>
+      </p>
+      <span class="fs-10 text-center red--text">{{ message }}</span>
+      <ui-default-button
+          v-if="retrying"
+          color="red"
+          class="mt-2"
+          @click="$emit('retry')"
+      >
+        Повторить
+      </ui-default-button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -47,24 +48,11 @@ export default {
     message: {
       type: String,
     },
-    maxWidth: {
-      type: Number,
-      default: 350
+    row: {
+      type: Boolean,
+      default: false
     },
-    kind: {
-      type: String,
-    }
   },
-  computed: {
-    icon() {
-      switch (this.kind) {
-        case 'request':
-          return 'mdi-alert-octagon'
-        default:
-          return 'mdi-alert'
-      }
-    },
-  }
 }
 </script>
 

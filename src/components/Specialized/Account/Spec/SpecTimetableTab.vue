@@ -1,21 +1,9 @@
 <template>
-  <v-card
-      v-if="timetable"
-      class="pa-4"
-      elevation="0"
+  <account-base-layout
+      :preview-title="$t('account.spec.timetable.section-name')"
+      :preview-image="require('@/assets/images/account/timetable.png')"
   >
-    <ui-full-width-banner :img="require('@/assets/images/account/timetable.png')">
-      <div class="fill-height d-flex align-center justify-center">
-        <div
-            class="font-title pa-5 rounded"
-            style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px"
-        >
-          Ваше расписание
-        </div>
-      </div>
-    </ui-full-width-banner>
-
-    <v-row >
+    <v-row>
       <v-col class="col-12 col-sm-4 col-lg-3">
         <v-list-item-group
             class="pa-0"
@@ -90,27 +78,27 @@
 
       <v-col class="pa-0 pt-1 d-flex align-center col-12 col-lg-3">
         <div>
-          <div class="font-title fs-14 font-weight-bold">Справка</div>
-          <div class="fs-12">
-            Данное расписание является статическим и переносится на каждую неделю автоматически.
-            Пользователем доступна запись на это расписание на 7 дней вперед.
-            В случае если вы не успеете изменить расписание заблаговременно пользователю сможет записаться к
-            вам на консультацию, а за ее отмену или пропуск Вам будут начислены штрафные баллы.
-          </div>
+          <h5 class="font-title comfortaa text-body-1 font-weight-bold">
+            {{$t('account.spec.timetable.info')}}
+          </h5>
+          <p class="text-caption sans">
+            {{$t('account.spec.timetable.info-text')}}
+          </p>
         </div>
       </v-col>
     </v-row>
-  </v-card>
+  </account-base-layout>
+
 </template>
 
 <script>
-import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import requests from "@/mixins/requests";
 import {mapGetters} from "vuex";
+import AccountBaseLayout from "@/components/Specialized/Account/AccountBaseLayout.vue";
 
 export default {
   name: "SpecTimetableTab",
-  components: {UiFullWidthBanner},
+  components: {AccountBaseLayout},
   mixins: [requests],
   data() {
     return {
@@ -167,8 +155,10 @@ export default {
           })
     },
   },
-  metaInfo: {
-    title: 'Расписание'
+  metaInfo() {
+    return {
+      title: this.$t('account.spec.timetable.section-name')
+    }
   }
 }
 </script>

@@ -1,54 +1,44 @@
 <template>
   <v-row
-      class="rounded-xl pa-2 pr-10"
+      class="rounded-xl"
       style="align-items: stretch; position:relative; border: 1px solid black"
   >
 
-    <div style="height: inherit; position:relative; width: 250px">
+    <div style="height: inherit; position:relative;" class="col-12 col-md-6">
       <v-img
+          :height="viewportHook({base: 200, md: 300})"
           class="rounded-xl"
-          style="position:absolute"
+          width="100%"
           :src="previewImg || require('@/assets/images/material-nophoto.png')"
-          max-width="250"
-          height="100%"
           position="top center"
       ></v-img>
     </div>
 
-    <v-col class="ml-3">
-      <div class="text-decoration-underline text-title font-title fs-18">{{ name }}</div>
-      <div class="mt-1 text-title">{{ description }}</div>
-      <div class="mt-1 text-title">Опубликована: {{ $moment(date).format('lll') }}</div>
-      <v-row class="mt-1">
+    <v-col class="col-md-6 pt-0">
+
+      <h5 class="text-decoration-underline text-title font-title text-h6 comfortaa">{{ name }}</h5>
+      <p class="mt-1 text-title text-body-1 sans">{{ description }}</p>
+
+      <v-row class="mt-3" justify="space-between">
         <ui-default-button @click="$emit('show-material')">Просмотр</ui-default-button>
-        <ui-confirm-button class="ml-4" @click="$emit('add-reader')">Поделиться</ui-confirm-button>
+        <ui-confirm-button class="ml-1" @click="$emit('add-reader')">Поделиться</ui-confirm-button>
       </v-row>
-    </v-col>
 
-    <v-col>
-      <div
-          class="text-title fs-16"
-          style="font-weight: 600"
-      >
-        Читатели
+      <div class="mt-3">
+
+        <h5 class="text-title text-subtitle-1 font-weight-bold comfortaa">Читатели:</h5>
+
+        <ui-signed-avatars
+            v-if="readers.length"
+            :users="readers"
+        ></ui-signed-avatars>
+        <p v-else class="text-body-1 sans">
+          Вы еще не предоставили доступ к этому материалу другим пользователям
+        </p>
+
       </div>
 
-      <ui-signed-avatars
-          v-if="readers.length"
-          :users="readers"
-      ></ui-signed-avatars>
-
-      <div v-else class="fs-14">
-        Вы еще не предоставили доступ к этому материалу другим пользователям
-      </div>
     </v-col>
-
-    <ui-cross-button
-        class="ml-4"
-        style="top: 50%; right: 10px; transform: translate(0,-50%)"
-        absolute
-        @click="$emit('delete-material')"
-    ></ui-cross-button>
 
   </v-row>
 </template>
@@ -57,12 +47,10 @@
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import UiSignedAvatars from "@/components/UI/UiSignedAvatars";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
-import UiCrossButton from "@/components/UI/Buttons/UiCrossButton";
 
 export default {
   name: "SpecMaterialCard",
   components: {
-    UiCrossButton,
     UiDefaultButton,
     UiSignedAvatars,
     UiConfirmButton

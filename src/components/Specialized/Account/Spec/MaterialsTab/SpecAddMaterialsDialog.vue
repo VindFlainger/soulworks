@@ -1,7 +1,7 @@
 <template>
   <base-dialog
       :value="value"
-      max-width="500"
+      max-width="450"
       @close="$emit('close')"
   >
     <div v-if="value">
@@ -12,16 +12,18 @@
       >
 
         <v-row>
+          <easy-photo-input
+              v-model="previewImage"
+          ></easy-photo-input>
           <default-input
+              class="ml-1 flex-grow-1"
               v-model="name"
               label="Название"
               maxlength="30"
+              content-class="file__button"
+              :max-width="320"
+              :min-width="220"
           ></default-input>
-
-          <easy-photo-input
-              v-model="previewImage"
-              class="ml-3"
-          ></easy-photo-input>
         </v-row>
 
         <text-area-input
@@ -120,5 +122,7 @@ export default {
 </script>
 
 <style scoped>
-
+.file__button{
+  width: 200px;
+}
 </style>

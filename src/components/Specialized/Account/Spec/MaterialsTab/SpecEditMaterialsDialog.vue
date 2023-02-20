@@ -6,14 +6,14 @@
   >
     <div v-if="value && material">
 
-      <div class="font-weight-medium text-title fs-22 font-title">{{ material.name }}</div>
+      <h4 class="text-title text-h5 comfortaa font-weight-bold">{{ material.name }}</h4>
 
-      <div
-          class="fs-14 text-title pl-1 grey--text text--darken-2"
+      <p
+          class="text-body-2 sans text-title pl-1 grey--text text--darken-2"
           style="border-left: 3px solid grey"
       >
         {{ material.description }}
-      </div>
+      </p>
 
       <v-row class="mt-3">
         <ui-document-preview
@@ -25,26 +25,35 @@
         ></ui-document-preview>
       </v-row>
 
-      <div class="font-weight-bold mt-3 fs-20">Читатели</div>
+      <h4 class="font-weight-bold mt-3 sans text-h6">Читатели</h4>
 
-      <div>
+      <div style="max-height: 300px; overflow-y: auto">
         <ul
             v-if="material.readers.length"
             class="ml-2"
         >
           <li
-              class="fs-18"
+              class="text-body-1"
               v-for="reader in material.readers"
               :key="reader._id"
           >
-            {{ reader.surname }} {{ reader.name }} ({{ reader._id }})
-            <v-btn
-                icon
-                small
-                @click="$emit('delete-reader', reader._id)"
-            >
-              <v-icon color="red">mdi-close</v-icon>
-            </v-btn>
+            <v-row style="max-width: 240px" justify="space-between">
+              <div>
+                <p class="ma-0">
+                  {{ reader.surname }} {{ reader.name }}
+                </p>
+                <p class="text-caption mb-1 mt-n1">
+                  {{ reader._id }}
+                </p>
+              </div>
+              <v-btn
+                  icon
+                  small
+                  @click="$emit('delete-reader', reader._id)"
+              >
+                <v-icon color="red">mdi-close</v-icon>
+              </v-btn>
+            </v-row>
           </li>
         </ul>
         <div v-else>
@@ -53,6 +62,13 @@
       </div>
 
     </div>
+    <ui-default-button
+        color="red"
+        class="mt-2"
+        @click="$emit('delete-material')"
+    >
+      Удалить материал
+    </ui-default-button>
   </base-dialog>
 </template>
 
@@ -60,10 +76,12 @@
 import BaseDialog from "@/components/Dialogs/BaseDialog";
 import UiDocumentPreview from "@/components/UI/Document/UiDocumentPreview";
 import requests from "@/mixins/requests";
+import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton.vue";
 
 export default {
   name: "SpecEditMaterialsDialog",
   components: {
+    UiDefaultButton,
     UiDocumentPreview,
     BaseDialog
   },

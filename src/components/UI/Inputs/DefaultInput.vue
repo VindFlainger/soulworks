@@ -1,11 +1,11 @@
 <template>
-  <ui-input-badge :value="required && showRequiredBadge" >
+  <ui-input-badge :value="required && showRequiredBadge">
     <v-text-field
         @input="$emit('input', $event)"
         :value="value"
         v-bind="$attrs"
         v-on="$listeners"
-        :style="$attrs.style"
+        :style="{...$attrs.style, maxWidth: `${maxWidth}px`, minWidth: `${minWidth}px`}"
         filled
         background-color="white"
         class="input"
@@ -38,17 +38,21 @@ export default {
     rules: {
       type: Array,
       default: () => []
-    }
+    },
+    minWidth: {
+      type: [Number, String],
+      default: 270
+    },
+    maxWidth: {
+      type: [Number, String],
+      default: 300
+    },
   },
-  mounted() {
-  }
 }
 </script>
 
 <style scoped>
 .input {
-  max-width: 300px;
-  min-width: 270px;
   border-radius: 14px
 }
 

@@ -32,13 +32,11 @@
       </div>
 
       <div>
-        <v-row justify="center">
-          <ui-problem
-              v-if="state.matches('content.unavailable')"
-              @retry="getMaterials">
-
-          </ui-problem>
-        </v-row>
+        <ui-problem
+            row
+            v-if="state.matches('content.unavailable')"
+            @retry="getMaterials">
+        </ui-problem>
         <ui-loader
             v-if="['content.fetching','content.rejected'].some(state.matches)"
             row

@@ -24,30 +24,21 @@
           причины.
         </div>
 
-        <v-row class="pa-2 ma-1 mb-3 bordered" align="center">
-
-          <v-chip class="ma-1 ma-sm-0">Всего учебных заведений:
-            <span class="font-weight-bold ml-1">{{ education.length }}</span>
-          </v-chip>
-
-          <v-chip class="ml-4" v-if="viewportHook({base: false, sm: true})">Подтверждено:
-            <span class="font-weight-bold ml-1">{{ education.filter(educ => educ.approve).length }}</span>
-          </v-chip>
-
-          <v-spacer></v-spacer>
+        <account-base-chips :chips="[{name: 'Всего учебных заведений:', value: education.length}]">
 
           <ui-confirm-button
               class="ma-1 ma-sm-0"
               :disabled="education.length >= 5"
               @click="addQualificationDialogVisible = true"
           >
-            Добавить
+            {{ $t('common.buttons.add') }}
           </ui-confirm-button>
 
-        </v-row>
+        </account-base-chips>
+
 
         <spec-education-card
-            class="pa-2 ma-1 mb-3"
+            class="pa-2 mb-3"
             v-for="educ in education"
             :key="educ._id"
             :id="educ._id"
@@ -97,10 +88,12 @@ import SpecAddCategoryDialog from "@/components/Specialized/Account/Spec/Qualifi
 import SpecEducationCard from "@/components/Specialized/Account/Spec/QualificationTab/SpecEducationCard";
 import SpecCategoryCard from "@/components/Specialized/Account/Spec/QualificationTab/SpecCategoryCard";
 import AccountBaseLayout from "@/components/Specialized/Account/AccountBaseLayout.vue";
+import AccountBaseChips from "@/components/Specialized/Account/AccountBaseChips.vue";
 
 export default {
   name: "SpecQualificationTab",
   components: {
+    AccountBaseChips,
     AccountBaseLayout,
     SpecCategoryCard,
     SpecEducationCard,

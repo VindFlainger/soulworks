@@ -8,8 +8,20 @@
         class="mt-2"
     ></v-img>
 
-    <slot name="append"
-          class="mt-4"
+    <slot>
+      <div class="d-flex flex-column align-center" style="max-width: 350px">
+        <p class="text-h6 sans font-weight-bold text-center">
+          {{title}}
+        </p>
+        <p class="text-body-2 text-center">
+          {{caption}}
+        </p>
+      </div>
+    </slot>
+
+    <slot
+        name="append"
+        class="mt-4"
     ></slot>
   </div>
 </template>
@@ -19,6 +31,10 @@
 
 export default {
   name: "UiFullscreenNoContentBanner",
+  props: {
+    title: String,
+    caption: String
+  },
   methods: {
     getRandomIcon() {
       return require(`@/assets/images/content/no-content-${Math.floor(Math.random() * 3)}.png`)

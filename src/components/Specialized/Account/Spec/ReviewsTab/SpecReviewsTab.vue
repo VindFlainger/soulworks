@@ -1,105 +1,139 @@
-<!--TODO: add pagination and rewrite server-side avg stars aggregation-->
 <template>
-  <v-card
-      class="pa-4"
-      elevation="0"
+
+  <account-base-layout
+      :preview-title="$t('account.spec.reviews.section-name')"
+      :preview-image="require('@/assets/images/account/reviews.png')"
   >
 
-    <ui-full-width-banner :img="require('@/assets/images/account/reviews.png')">
-      <div class="fill-height d-flex align-center justify-center">
-        <div
-            class="font-title pa-5 rounded"
-            style="font-size: 35px; background: rgba(255,255,255,0.55); line-height: 100%; letter-spacing: 2px"
-        >
-          Отзывы на Вас
-        </div>
+    <account-base-chips
+        :chips="[
+              {name: $t('account.spec.reviews.count'), value: totalCount},
+              {name: $t('account.spec.reviews.average-rating'), value: avgStars},
+          ]"
+    ></account-base-chips>
+
+    <div v-if="state.matches('resolved')">
+      <div v-if="reviews.length">
+        <review-card
+            class="mt-4"
+            v-for="review in reviews"
+            :key="review._id"
+            :reviewer-id="review._id"
+            :date="review.createdAt"
+            :title="review.title"
+            :text="review.text"
+            :reviewer-name="review.reviewer.name"
+            :reviewer-surname="review.reviewer.surname"
+            :reviewer-avatar="review.reviewer.avatar"
+            :stars="review.stars"
+        ></review-card>
       </div>
-    </ui-full-width-banner>
-
-    <v-card
-        class="pa-2 mt-4 bordered"
-        v-if="reviews"
-        outlined
-    >
-
-      <v-chip>Всего отзывов:
-        <span class="font-weight-bold ml-1">{{ reviews.length }}</span>
-      </v-chip>
-
-      <v-chip class="ml-4">Средняя оценка:
-        <span class="font-weight-bold ml-1">{{ avgStars }}</span>
-      </v-chip>
-
-    </v-card>
-
-    <div v-if="reviews && reviews.length">
-      <review-card
-          v-for="review in reviews"
-          :key="review._id"
-          :reviewer-id="review._id"
-          :date="review.date"
-          :title="review.title"
-          :text="review.text"
-          :reviewer-name="review.reviewer.name"
-          :reviewer-surname="review.reviewer.surname"
-          :reviewer-avatar="review.reviewer.avatar"
-          :stars="review.stars"
-      ></review-card>
+      <ui-fullscreen-no-content-banner
+          v-else
+          :title="$t('account.spec.reviews.no-reviews')"
+          :caption="$t('account.spec.reviews.no-reviews-explain')"
+      ></ui-fullscreen-no-content-banner>
     </div>
 
-    <ui-fullscreen-no-content-banner
-        v-else
-        :to="{path: '*'}"
-    >
-      <span class="text-center fs-20 font-weight-medium">
-            На вас еще никто не оставил отзыв!
-      </span>
-      <span class="text-center fs-14" style="max-width: 500px">
-            Просите своих клиентов оставлять отзывы о консультациях. Отзывы помогают найти вас другим клиентам.
-      </span>
-    </ui-fullscreen-no-content-banner>
+    <ui-requesting-visualizer
+        :loading="['fetching','rejected'].some(state.matches)"
+        :problem="state.matches('unavailable')"
+        @retry="getReviewsInfo(page)"
+    ></ui-requesting-visualizer>
 
-  </v-card>
+    <ui-pagination
+        class="mt-2"
+        v-show="['resolved'].some(state.matches)"
+        :value="page"
+        :length="totalPages"
+        @input="loadReviewsInfo"
+    ></ui-pagination>
+
+  </account-base-layout>
+
 </template>
 
 <script>
-import UiFullWidthBanner from "@/components/UI/UiFullWidthBanner";
 import requests from "@/mixins/requests";
 import UiFullscreenNoContentBanner from "@/components/UI/UiFullscreenNoContentBanner";
 import ReviewCard from "@/components/Specialized/Account/Spec/ReviewsTab/SpecReviewCard";
+import AccountBaseLayout from "@/components/Specialized/Account/AccountBaseLayout.vue";
+import UiPagination from "@/components/UI/UiPagination.vue";
+import fetchingMachine from "@/mixins/fetchingMachine";
+import matches from "validator/es/lib/matches";
+import UiRequestingVisualizer from "@/components/UI/UiRequestingVisualizer.vue";
+import AccountBaseChips from "@/components/Specialized/Account/AccountBaseChips.vue";
 
 export default {
   name: "SpecReviewsTab",
   components: {
+    AccountBaseChips,
+    UiRequestingVisualizer,
+    UiPagination,
+    AccountBaseLayout,
     ReviewCard,
     UiFullscreenNoContentBanner,
-    UiFullWidthBanner
   },
-  mixins: [requests],
+  mixins: [requests, fetchingMachine],
   data() {
     return {
-      reviews: undefined
+      reviews: undefined,
+      page: 0,
+      totalCount: 0,
+      limit: 5,
+      avgStars: 0
     }
   },
   computed: {
-    avgStars() {
-      return (this.reviews.reduce((acc, el) => acc + el.stars, 0) / this.reviews.length) || 0
+    totalPages() {
+      return Math.ceil(this.totalCount / this.limit)
     }
   },
-  methods: {
-    getReviewsInfo() {
-      this.getData('http://localhost:3000/spec/account/reviews')
-          .then(resp => {
-            this.reviews = resp.data
-          })
-          .catch()
+  watch: {
+    'state.value': function (val, oldVal) {
+      if (val === 'waiting' && oldVal === 'rejected') {
+        this.getReviewsInfo(this.page)
+      }
     }
   },
   mounted() {
-    this.getReviewsInfo()
+    this.loadReviewsInfo(Number.parseInt(this.$route.query.page))
   },
-  metaInfo: {
-    title: 'Отзывы'
+  methods: {
+    matches,
+    loadReviewsInfo(page) {
+      page = page ? page : 1
+      this.page = page
+      if (page !== 1) {
+        this.$router.push({name: this.$route.name, query: {page}})
+      }
+      if (this.$route.query.page && page === 1) {
+        this.$router.push({name: this.$route.name})
+      }
+      this.getReviewsInfo(page)
+    },
+    getReviewsInfo(page) {
+      this.send('CONTENT_FETCH')
+      this.getDataAuthed(`spec/account/getReviews?offset=${(page ? page - 1 : page) * this.limit}&limit=${this.limit}`)
+          .then(resp => {
+            this.reviews = resp.data.reviews
+            this.totalCount = resp.data.totalCount
+            this.send('CONTENT_RESOLVE')
+          })
+          .catch(() => this.send('CONTENT_REJECT'))
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (this.page !== Number.parseInt(to.query.page)) {
+      this.page = Number.parseInt(to.query.page) || 1
+      this.getReviewsInfo(this.page)
+    }
+    next()
+  },
+  metaInfo() {
+    return {
+      title: this.$t('account.spec.reviews.section-name')
+    }
   }
 }
 </script>

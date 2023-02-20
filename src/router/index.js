@@ -13,7 +13,7 @@ import SpecTimetableTab from "@/components/Specialized/Account/Spec/SpecTimetabl
 import SecurityTab from "@/components/Specialized/Account/SecurityTab";
 import SpecReviewsTab from "@/components/Specialized/Account/Spec/ReviewsTab/SpecReviewsTab";
 import SpecQualificationTab from "@/components/Specialized/Account/Spec/QualificationTab/SpecQualificationTab";
-import SpecClassesTab from "@/components/Specialized/Account/Spec/SpecClassesTab";
+import SpecClassesTab from "@/components/Specialized/Account/Spec/ClassesTab/SpecClassesTab.vue";
 import SpecMaterialsTab from "@/components/Specialized/Account/Spec/MaterialsTab/SpecMaterialsTab";
 import SpecAccountView from "@/views/SpecAccountView";
 import UserAccountView from "@/views/UserAccountView";

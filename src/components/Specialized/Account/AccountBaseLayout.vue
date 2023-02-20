@@ -34,7 +34,7 @@ export default {
     previewTitle: {
       type: String,
       required: true
-    }
+    },
   }
 }
 </script>
