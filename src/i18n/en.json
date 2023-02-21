@@ -1,0 +1,107 @@
+{
+  "common": {
+    "roles": {
+      "client": "client",
+      "specialist": "specialist",
+      "admin": "admin",
+      "user": "user"
+    },
+    "buttons": {
+      "add": "add",
+      "cancel": "cancel",
+      "upload": "upload",
+      "share": "share",
+      "see": "see",
+      "delete": "delete"
+    },
+    "labels": {
+      "description": "description",
+      "name": "name"
+    },
+    "validation": {
+      "unavailable-symbols": "Prohibited special characters have been introduced"
+    },
+    "data": {
+      "weekdays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    }
+  },
+  "nav": {
+    "routes": {
+      "about": "About",
+      "specialists": "Specialists",
+      "publications": "Publications",
+      "rules": "Rules"
+    },
+    "menu": {
+      "personal-account": "Personal account",
+      "classes": "Classes",
+      "timetable": "Timetable",
+      "reviews": "Reviews",
+      "security": "Security",
+      "materials": "Materials",
+      "favourite": "Favourite",
+      "logout": "Logout",
+      "login": "Login",
+      "register": "Register",
+      "no-login": "Log in to your account or register a new one to get access to the unique functionality!"
+    }
+  },
+  "account": {
+    "spec": {
+      "reviews": {
+        "section-name": "Reviews",
+        "no-reviews": "No one has left a review for you yet!",
+        "no-reviews-explain": "Ask your clients to leave feedback about the consultations. Reviews help other customers find you.",
+        "count": "Total reviews:",
+        "average-rating": "Average rating:"
+      },
+      "timetable": {
+        "section-name": "Timetable",
+        "info": "Info",
+        "info-text": "This schedule is static and is transferred to each week automatically.\n            The user has access to an entry for this schedule for 7 days ahead.\n            If you do not have time to change the schedule in advance, the user will be able to make an appointment with\n            you need a consultation, and for its cancellation or skipping you will be awarded penalty points."
+      },
+      "classes": {
+        "section-name": "Classes",
+        "no-classes": "There are no records for the selected date!",
+        "report-tooltip": "Report a pass",
+        "cancel-tooltip": "Cancel a class",
+        "delete-class-confirm": "Penalty points will be awarded to you for canceling a class. ' +\n                'If the initiative does not come from you, inform the client about the possibility of canceling the class without penalties!",
+        "delete-class-success": "The consultation was successfully canceled",
+        "report-class-success": "Your request will be processed in the near future"
+      },
+      "materials": {
+        "section-name": "Materials",
+        "add-material": "Add Material",
+        "total-materials": "Total materials",
+        "no-materials-title": "You haven't added the materials yet!",
+        "no-materials-caption": "Add your own unique content and share it with your customers or other users",
+        "readers": "Readers",
+        "no-readers": "You have not yet granted access to this material to other users",
+        "delete-material-confirm": "Do you really want to delete this material? Deleting the material will make it inaccessible to all readers",
+        "delete-reader-success": "Reader successfully deleted",
+        "add-reader-success": "Reader successfully added",
+        "add-material-success": "Material added successfully"
+      },
+      "qualification": {
+        "section-name": "Qualification",
+        "education": "Education",
+        "category": "Category",
+        "education-description": "Each specified educational institution is confirmed separately according to the attached documents. The maximum\n number of educational institutions is 5. In case of refusal, an email will be sent to your email with an indication of the reason.",
+        "category-description": " After adding a new qualification, you need to wait for its confirmation. In case of refusal, an email with the reason will be sent to your email\n.",
+        "total-institutes-chip": "Total educational institutions:",
+        "delete-education-confirm": "Information about this educational institution will be deleted, and its confirmation will be canceled",
+        "delete-education-success": "information about the educational institution has been successfully deleted",
+        "edit-category-success": "category changed successfully",
+        "add-education-success": "educational institution successfully added",
+        "institution": "Institution",
+        "graduate": "Graduate",
+        "status": "Status",
+        "check-date": "Date of review",
+        "name": "Name",
+        "confirm": "Confirmed",
+        "not-confirm": "Not confirmed",
+        "processing": "Considered"
+      }
+    }
+  }
+}

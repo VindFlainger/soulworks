@@ -5,6 +5,7 @@
       :preview-image="require('@/assets/images/account/reviews.png')"
   >
 
+
     <account-base-chips
         :chips="[
               {name: $t('account.spec.reviews.count'), value: totalCount},

@@ -12,7 +12,6 @@
 
       <global-loader :value="isGlobalLoading"></global-loader>
 
-      <!--TODO: rewrite with vuex      -->
       <div>
         <component :is="confirmDialog?'confirm-dialog':''" v-bind="dynProps"></component>
         <component :is="infoDialog?'info-dialog':''" v-bind="dynProps"></component>
@@ -186,10 +185,8 @@ nav {
   z-index: 1;
 }
 
-.v-menu__content {
-  box-shadow: none !important;
-  border: 1px solid black;
-  border-radius: 14px;
+.v-menu__content .v-list {
+  padding: 0;
 }
 
 </style>

@@ -8,12 +8,7 @@
 
       <h4 class="text-title text-h5 comfortaa font-weight-bold">{{ material.name }}</h4>
 
-      <p
-          class="text-body-2 sans text-title pl-1 grey--text text--darken-2"
-          style="border-left: 3px solid grey"
-      >
-        {{ material.description }}
-      </p>
+      <p class="text-body-2 sans text-title pl-1 grey--text text--darken-2 line-left">{{ material.description }}</p>
 
       <v-row class="mt-3">
         <ui-document-preview
@@ -25,9 +20,13 @@
         ></ui-document-preview>
       </v-row>
 
-      <h4 class="font-weight-bold mt-3 sans text-h6">Читатели</h4>
+      <h4 class="font-weight-bold mt-3 sans text-h6">{{$t('account.spec.materials.readers')}}</h4>
 
-      <div style="max-height: 300px; overflow-y: auto">
+      <v-card
+          class="overflow-y-auto"
+          elevation="0"
+          max-height="300"
+      >
         <ul
             v-if="material.readers.length"
             class="ml-2"
@@ -57,9 +56,9 @@
           </li>
         </ul>
         <div v-else>
-          {{$t('account.spec.materials.no-readers')}}
+          {{ $t('account.spec.materials.no-readers') }}
         </div>
-      </div>
+      </v-card>
 
     </div>
     <ui-default-button
@@ -67,7 +66,7 @@
         class="mt-2"
         @click="$emit('delete-material')"
     >
-      {{$t('common.buttons.delete')}}
+      {{ $t('common.buttons.delete') }}
     </ui-default-button>
   </base-dialog>
 </template>
@@ -94,5 +93,7 @@ export default {
 </script>
 
 <style scoped>
-
+.line-left {
+  border-left: 3px solid grey
+}
 </style>

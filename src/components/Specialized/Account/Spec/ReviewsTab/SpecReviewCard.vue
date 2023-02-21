@@ -1,5 +1,4 @@
 <template>
-  <!--  TODO: key WTF??? (refactoring)-->
   <v-card
       class="pa-4 bordered"
       outlined
@@ -22,7 +21,7 @@
         </h4>
 
         <div class="text-body-1">
-          {{ $moment(date).format('ll') }}
+          {{ $dj(date).format('DD MMMM, YYYY') }}
         </div>
 
         <v-rating
@@ -45,9 +44,15 @@
 
 <script>
 import UiAvatar from "@/components/UI/UiAvatar";
+import dayjs from "dayjs";
 
 export default {
   name: "ReviewCard",
+  computed: {
+    dayjs() {
+      return dayjs
+    }
+  },
   components: {UiAvatar},
   props: {
     title: {

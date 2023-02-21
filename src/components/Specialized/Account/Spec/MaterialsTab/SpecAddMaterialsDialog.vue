@@ -34,7 +34,7 @@
         ></text-area-input>
 
         <file-input
-            :accept="['docx', 'doc', 'rtf', 'tif', 'bmp', 'ppt', 'pptx', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xls', 'xlsx']"
+            :accept="acceptTypes"
             :loading.sync="fileLoading"
             :max-size="2000000"
             @input="files = $event"
@@ -42,7 +42,7 @@
 
         <v-row class="mt-2">
           <ui-default-button @click="$emit('close')">
-            {{$t('common.buttons.cancel')}}
+            {{ $t('common.buttons.cancel') }}
           </ui-default-button>
 
           <v-spacer></v-spacer>
@@ -51,7 +51,7 @@
               :disabled="!valid || fileLoading || !files.length"
               @click="addMaterial"
           >
-            {{$t('common.buttons.upload')}}
+            {{ $t('common.buttons.upload') }}
           </ui-confirm-button>
         </v-row>
       </v-form>
@@ -92,7 +92,8 @@ export default {
       files: [],
       valid: true,
       fileLoading: false,
-      previewImage: undefined
+      previewImage: undefined,
+      acceptTypes: ['docx', 'doc', 'rtf', 'tif', 'bmp', 'ppt', 'pptx', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xls', 'xlsx']
     }
   },
   methods: {
@@ -123,7 +124,7 @@ export default {
 </script>
 
 <style scoped>
-.file__button{
+.file__button {
   width: 200px;
 }
 </style>

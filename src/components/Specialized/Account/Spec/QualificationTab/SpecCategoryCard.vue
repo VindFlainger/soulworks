@@ -2,37 +2,33 @@
   <v-row class="bordered" align="center">
 
     <div style="max-width: 300px">
-
       <div class="font-weight-medium">
-        {{$t('account.spec.qualification.name')}}:
+        {{ $t('account.spec.qualification.name') }}:
         <span class="font-weight-light">
           {{ name }}
         </span>
       </div>
 
       <div class="font-weight-medium">
-        {{$t('account.spec.qualification.status')}}:
+        {{ $t('account.spec.qualification.status') }}:
         <span
             class="font-weight-light"
             :class="{'green--text':approve, 'red--text': !approve}"
         >
-          {{ approve ? 'Подтверждена' : 'Не подтверждена' }}
+          {{ approve ? $t('account.spec.qualification.confirm') : $t('account.spec.qualification.not-confirm') }}
         </span>
       </div>
-
     </div>
 
-    <v-col>
-      <v-row>
-        <ui-document-preview
-            v-for="document in documents"
-            :key="document.id"
-            :name="document.name"
-            :url="document.url"
-        ></ui-document-preview>
-      </v-row>
-    </v-col>
-
+    <v-row class="col-12 col-sm-auto ml-sm-3">
+      <ui-document-preview
+          v-for="document in documents"
+          :key="document.id"
+          :name="document.name"
+          :max-width="viewportHook({base: 60, md: 90})"
+          :url="document.url"
+      ></ui-document-preview>
+    </v-row>
 
   </v-row>
 </template>

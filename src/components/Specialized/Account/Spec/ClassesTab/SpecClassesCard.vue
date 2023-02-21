@@ -12,7 +12,7 @@
         <ui-class-indicators
             :state="state"
             class="d-flex flex-column"
-        ></ui-class-indicators>
+        />
 
         <ui-avatar
             class="ml-1"

@@ -51,7 +51,9 @@ export default {
                     .then(resp => {
                         commit('SET_NEW_COUNT', resp.data)
                     })
-                    .catch()
+                    .catch(err => {
+                        console.log(err)
+                    })
                 dispatch('loadNotifications')
             },
         },

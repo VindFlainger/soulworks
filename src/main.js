@@ -8,6 +8,8 @@ import Meta from 'vue-meta'
 import Moment from "@/plugins/moment";
 import Validator from "./plugins/validator";
 import Socket from "./plugins/socket";
+import Dayjs from "@/plugins/dayjs";
+
 
 import textFilters from "@/filters/text.js"
 import ConfirmDialog from "@/components/Dialogs/ConfirmDialog";
@@ -29,6 +31,7 @@ Vue.use(Validator)
 Vue.use(Moment)
 Vue.use(Socket)
 Vue.use(Meta)
+Vue.use(Dayjs)
 
 
 Vue.component('ConfirmDialog', ConfirmDialog)
