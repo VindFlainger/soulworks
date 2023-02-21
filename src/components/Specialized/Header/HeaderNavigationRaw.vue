@@ -32,6 +32,8 @@
       <router-link :to="{name: 'rules'}" class="header__link"> {{ $t('nav.routes.rules') }}</router-link>
     </div>
 
+    <header-localization class="pl-5 pr-5"></header-localization>
+
     <div class="d-flex">
       <v-badge
           v-if="isLogin"
@@ -115,10 +117,11 @@
 import {mapActions, mapGetters} from "vuex";
 import HeaderUserMenu from "@/components/Specialized/Header/HeaderUserMenu.vue";
 import HeaderNotifications from "@/components/Specialized/Header/HeaderNotifications.vue";
+import HeaderLocalization from "@/components/Specialized/Header/HeaderLocalization.vue";
 
 export default {
   name: "HeaderNavigationRaw",
-  components: {HeaderNotifications, HeaderUserMenu},
+  components: {HeaderLocalization, HeaderNotifications, HeaderUserMenu},
   computed: {
     ...mapGetters('notifications', {
       newNotificationsCount: 'getNewNotificationsCount',

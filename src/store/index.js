@@ -6,34 +6,18 @@ import chat from "@/store/modules/chat";
 import auth from "@/store/modules/auth";
 import alert from "@/store/modules/alert";
 import notifications from "@/store/modules/notifications";
-import {SET_CURRENT_TIME} from "@/store/mutation-types";
-import {startRefreshing} from "@/store/action-types";
 import {mobileAndTabletCheck} from "../../utils/globals";
+import internationalization from "@/store/modules/internationalization";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
         strict: process.env.NODE_ENV === 'development',
         state: {
-            timeZoneOffset: -new Date().getTimezoneOffset() / 60,
-            currentTime: Date.now(),
-            mobile: mobileAndTabletCheck()
+            mobile: mobileAndTabletCheck(),
         },
         getters: {
-            getTimeZoneOffset: state => state.timeZoneOffset,
-            isMobile: state => state.mobile
-        },
-        mutations: {
-            [SET_CURRENT_TIME](state, v) {
-                state.currentTime = v
-            }
-        },
-        actions: {
-            [startRefreshing]({commit}) {
-                setInterval(() => {
-                    commit(SET_CURRENT_TIME, Date.now())
-                }, 5000)
-            }
+            isMobile: state => state.mobile,
         },
         modules: {
             content,
@@ -41,7 +25,8 @@ export default new Vuex.Store({
             chat,
             notifications,
             auth,
-            alert
+            alert,
+            internationalization
         }
     },
 )

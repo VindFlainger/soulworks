@@ -12,7 +12,7 @@
         >
           <v-list-item
               class="rounded overflow-x-hidden"
-              v-for="day in days"
+              v-for="day in $t('common.data.weekdays')"
               :key="day" dense
           >
             {{ day }}
@@ -102,9 +102,8 @@ export default {
   mixins: [requests],
   data() {
     return {
-      days: ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'],
       activeDay: 0,
-      timetable: undefined,
+      timetable: [],
     }
   },
   computed: {

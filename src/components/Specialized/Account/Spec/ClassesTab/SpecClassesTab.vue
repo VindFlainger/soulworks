@@ -55,13 +55,21 @@ import SpecClassesCard from "@/components/Specialized/Account/Spec/ClassesTab/Sp
 
 export default {
   name: "SpecClassesTab",
-  components: {SpecClassesCard, UiFullscreenNoContentBanner, AccountBaseLayout, DateInput},
+  components: {
+    SpecClassesCard,
+    UiFullscreenNoContentBanner,
+    AccountBaseLayout,
+    DateInput
+  },
   mixins: [requests],
   data() {
     return {
       date: new Date().toISOString().substring(0, 10),
       classes: []
     }
+  },
+  mounted() {
+    this.getClasses(new Date(this.date).getTime())
   },
   methods: {
     getClasses(date) {
@@ -70,13 +78,13 @@ export default {
           .then(resp => {
             this.classes = resp.data
           })
-          .catch()
+          .catch(() => {
+          })
     },
     delClass(id) {
       this.$root.$emit('show-confirm',
           {
-            text: 'За отмену занятия Вам будут начислены штрафные баллы. ' +
-                'Если инициатива исходит не от Вас - сообщите клиенту о возможности отмены им занятия без штрафных санкций!'
+            text: this.$t('account.spec.classes.delete-class-confirm')
           }
       )
       this.$root.$once('close-confirm', v => {
@@ -85,7 +93,7 @@ export default {
               {
                 handleError: true,
                 handleSuccess: true,
-                successMessage: 'Консультация успешно отменена'
+                successMessage: this.$t('account.spec.classes.delete-class-success')
               }
           )
               .then(() => {
@@ -99,13 +107,11 @@ export default {
     reportClass() {
       this.$root.$emit('show-confirm',
           {
-            text: 'Ваше обращение будет обработано в ближайшее время'
+            text: this.$t('account.spec.classes.report-class-success')
           }
       )
+      // TODO: realize this functionality
     }
-  },
-  mounted() {
-    this.getClasses(new Date(this.date).getTime())
   },
   metaInfo() {
     return {

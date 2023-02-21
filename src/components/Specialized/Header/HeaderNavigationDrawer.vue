@@ -2,7 +2,7 @@
   <!-- TODO: find this fucking events end rewrite with out watchers!!!! -->
   <v-navigation-drawer
       app
-      class="pa-4"
+      class="pa-4 navigation-drawer"
       style="z-index: 10003"
       hide-overlay
       :value="value"
@@ -66,6 +66,7 @@
         {{ $t('nav.routes.rules') }}
       </router-link>
     </div>
+
   </v-navigation-drawer>
 </template>
 
@@ -87,5 +88,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

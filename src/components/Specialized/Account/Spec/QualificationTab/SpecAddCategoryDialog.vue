@@ -13,12 +13,11 @@
           >
             <default-input
                 v-model="category"
-                label="Категория"
-                :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :label="$t('account.spec.qualification.category')"
+                :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || $t('common.validation.unavailable-symbols')]"
             ></default-input>
 
             <file-input
-                ref="fileInput"
                 :accept="['docx', 'doc', 'rtf', 'tif', 'bmp', 'ppt', 'pptx', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xls', 'xlsx']"
                 :loading.sync="fileLoading"
                 :max-size="10000000"

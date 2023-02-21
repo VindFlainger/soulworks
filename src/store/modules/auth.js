@@ -26,7 +26,7 @@ export default {
         getId: state => state.id,
         getEmail: state => state.email,
         getToken: state => state.token,
-        isSessionActive: (state, _, rootState) => !!state.sessionEnd && state.sessionEnd > rootState.currentTime,
+        isSessionActive: (state, getters) => !!state.sessionEnd && state.sessionEnd > getters.getCurrentTime,
         getName: state => state.name,
         getSurname: state => state.surname,
         getFullName: state => `${state.name} ${state.surname}`,

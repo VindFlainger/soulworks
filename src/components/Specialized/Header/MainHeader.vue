@@ -23,20 +23,26 @@
 
             <header-navigation-raw v-if="viewportHook({base: false, md: true})"></header-navigation-raw>
 
-            <v-btn
-                v-if="viewportHook({base: true, md: false})"
-                fab
-                color="indigo lighten-5"
-                elevation="0"
-                @click="navigationVisible = true"
-            >
-              <v-icon large>mdi-menu</v-icon>
-            </v-btn>
+            <v-row align="center" justify="end" v-if="viewportHook({base: true, md: false})">
+              <header-localization></header-localization>
+
+              <v-btn
+                  class="ml-3"
+                  fab
+                  color="indigo lighten-5"
+                  elevation="0"
+                  @click="navigationVisible = true"
+              >
+                <v-icon large>mdi-menu</v-icon>
+              </v-btn>
+            </v-row>
+
 
           </v-row>
         </v-responsive>
       </v-container>
     </v-app-bar>
+
 
     <header-navigation-drawer
         v-if="viewportHook({base: true, md: false})"
@@ -51,11 +57,12 @@
 import {mapGetters} from "vuex";
 import HeaderNavigationDrawer from "@/components/Specialized/Header/HeaderNavigationDrawer.vue";
 import HeaderNavigationRaw from "@/components/Specialized/Header/HeaderNavigationRaw.vue";
+import HeaderLocalization from "@/components/Specialized/Header/HeaderLocalization.vue";
 
 
 export default {
   name: "MainHeader",
-  components: {HeaderNavigationRaw, HeaderNavigationDrawer},
+  components: {HeaderLocalization, HeaderNavigationRaw, HeaderNavigationDrawer},
   data() {
     return {
       navigationVisible: false

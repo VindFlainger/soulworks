@@ -12,7 +12,6 @@
         :preview-image="require('@/assets/images/account/materials.png')"
     >
 
-
       <account-base-chips :chips="[{name: $t('account.spec.materials.total-materials'), value: totalCount}]">
         <ui-confirm-button
             class="ma-1 ma-sm-0"
@@ -98,7 +97,7 @@ export default {
     },
     deleteMaterial(materialId) {
       this.$root.$emit('show-confirm', {
-        text: 'Вы действительно хотите удалить данный материал? Удаление материала сделает его недоступным для всех читателей.'
+        text: this.$t('account.spec.materials.delete-material-confirm')
       })
       this.$root.$once('close-confirm', v => {
         if (v) {
@@ -106,10 +105,11 @@ export default {
               {
                 handleError: true,
                 handleSuccess: true,
-                successMessage: 'Материал успешно удален'
+                successMessage: this.$t('account.spec.materials.delete-material-confirm')
               })
               .then(() => this.getMaterials(1))
-              .catch()
+              .catch(() => {
+              })
         }
       })
     },
@@ -119,26 +119,28 @@ export default {
           {
             handleError: true,
             handleSuccess: true,
-            successMessage: 'Материал успешно добавлен'
+            successMessage: this.$t('account.spec.materials.add-material-success')
           })
           .then(() => {
             this.getMaterials(1)
             this.addMaterialDialogVisible = false
           })
-          .catch()
+          .catch(() => {
+          })
     },
     deleteReader({materialId, readerId}) {
       this.delDataAuthed(`spec/materials/delReader?materialId=${materialId}&readerId=${readerId}`,
           {
             handleError: true,
             handleSuccess: true,
-            successMessage: 'Читатель успешно удален'
+            successMessage: this.$t('account.spec.materials.delete-reader-success')
           })
           .then(() => {
             const i = this.materials.findIndex(material => material._id === materialId)
             this.materials[i].readers = this.materials[i].readers.filter(reader => reader._id !== readerId)
           })
-          .catch()
+          .catch(() => {
+          })
     },
     addReader(materialId) {
       this.$root.$emit('show-find-user')
@@ -152,13 +154,14 @@ export default {
               {
                 handleError: true,
                 handleSuccess: true,
-                successMessage: 'Читатель успешно удален'
+                successMessage: this.$t('account.spec.materials.add-reader-success')
               }
           )
               .then(() => {
                 this.materials.find(material => material._id === materialId).readers.push(user)
               })
-              .catch()
+              .catch(() => {
+              })
         }
       })
     }

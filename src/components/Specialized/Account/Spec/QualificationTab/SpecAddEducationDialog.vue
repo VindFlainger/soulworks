@@ -5,12 +5,11 @@
       @close="$emit('close')"
   >
     <div v-if="value" class="pa-1">
-
       <v-row justify="center">
         <date-input
             class="col-12 col-sm-5"
             :width="viewportHook({base: 250, md: 280})"
-            style="max-width: 300px"
+            max-width="300"
             v-model="graduation"
         ></date-input>
 
@@ -24,7 +23,7 @@
             <default-input
                 v-model="institution"
                 :label="$t('account.spec.qualification.institution')"
-                :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :rules="[v => /^[0-9a-zA-ZА-я=!@# %^*()&+-,. ]*$/.test(v) || $t('account.common.validation.unavailable-symbols')]"
             ></default-input>
 
             <default-input
@@ -34,12 +33,11 @@
             ></default-input>
 
             <file-input
-                :accept="['docx', 'doc', 'rtf', 'tif', 'bmp', 'ppt', 'pptx', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xls', 'xlsx']"
+                :accept="acceptTypes"
                 :loading.sync="fileLoading"
                 :max-size="10000000"
                 :max-files="3"
                 @input="files = $event"
-                ref="fileInput"
             ></file-input>
 
           </v-form>
@@ -49,7 +47,7 @@
 
       <v-row class="mt-3">
         <ui-default-button @click="$emit('close')">
-          {{$t('common.buttons.cancel')}}
+          {{ $t('common.buttons.cancel') }}
         </ui-default-button>
 
         <v-spacer></v-spacer>
@@ -58,7 +56,7 @@
             :disabled="!valid || fileLoading || !files.length"
             @click="$emit('add-education', institution, graduation, files.map(file => file.id))"
         >
-          {{$t('common.buttons.upload')}}
+          {{ $t('common.buttons.upload') }}
         </ui-confirm-button>
       </v-row>
 
@@ -100,7 +98,8 @@ export default {
       files: [],
       graduation: this.$moment().toISOString().substring(0, 10),
       valid: true,
-      institution: ''
+      institution: '',
+      acceptTypes: ['docx', 'doc', 'rtf', 'tif', 'bmp', 'ppt', 'pptx', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'xls', 'xlsx']
     }
   },
   watch: {
