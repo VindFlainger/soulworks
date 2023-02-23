@@ -6,9 +6,7 @@
       v-on="$listeners"
       :required="required"
       :show-required-badge="showRequiredBadge"
-      :rules="[v => $validator.isAlpha(v, 'ru-RU') || 'Некорректный ввод, доступны только кириллические буквы']"
-  >
-  </default-input>
+  ></default-input>
 </template>
 
 <script>
@@ -24,3 +22,6 @@ export default {
   mixins: [inputs]
 }
 </script>
+
+<style scoped>
+</style>

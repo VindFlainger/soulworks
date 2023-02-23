@@ -16,12 +16,27 @@
       "edit": "edit",
       "show-more": "show more",
       "clear": "clear",
-      "change": "change"
+      "change": "change",
+      "return": "return"
     },
     "labels": {
       "description": "description",
       "name": "name",
-      "old-password": "your old password"
+      "old-password": "your old password",
+      "person-name": "name",
+      "person-surname": "surname",
+      "role": "role",
+      "email": "email",
+      "methods": "methods",
+      "specializations": "specializations",
+      "opportunities": "opportunities",
+      "communication": "communication",
+      "address": "address",
+      "contact-phone": "contact phone",
+      "contact-email": "contact email",
+      "sex": "sex",
+      "visa": "visa",
+      "about": "about me"
     },
     "validation": {
       "unavailable-symbols": "Prohibited special characters have been introduced"
@@ -35,13 +50,22 @@
         "Friday",
         "Saturday",
         "Sunday"
-      ]
+      ],
+      "opportunities": {
+        "family": "family class",
+        "teens": "working with teens",
+        "children": "working with children",
+        "internal": "offline working"
+      }
     },
     "ui": {
       "classes": "Classes",
       "classes-confirmed": "Classes confirmed",
       "classes-canceled": "Classes confirmed",
       "classes-missed": "Classes missed"
+    },
+    "feedbacks": {
+      "edit-success": "Edited successful"
     }
   },
   "nav": {
@@ -147,6 +171,20 @@
         "phone": "Phone",
         "connection": "Connection",
         "social-networks": "Social Networks"
+      },
+      "edit-personal-data": {
+        "section-name": "Edit account",
+        "personal-data": "Personal data",
+        "business-data": "Business data",
+        "services": "Services",
+        "presentation": "Self presentation",
+        "online-price": "Online classes price",
+        "internal-price": "Offline classes price",
+        "connection": "Address and connection",
+        "contacts": "Contacts",
+        "social-networks": "Social networks",
+        "about-social-links": "You can specify the IDs of your social\n            networks to go to them by click. The identifier is a simple string without special characters.",
+        "about-phone": "You can specify which social networks or messengers are available by this number."
       }
     }
   }

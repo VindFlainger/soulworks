@@ -92,4 +92,8 @@ export default {
 .error--text >>> .append::before, .error--text >>> .append::after{
   background: red;
 }
+
+.input >>> .v-label:first-letter {
+  text-transform: uppercase;
+}
 </style>

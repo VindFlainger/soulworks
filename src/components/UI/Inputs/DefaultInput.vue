@@ -67,4 +67,8 @@ export default {
 .error--text >>> fieldset {
   border-color: red !important;
 }
+
+.input >>> .v-label:first-letter {
+  text-transform: uppercase;
+}
 </style>
