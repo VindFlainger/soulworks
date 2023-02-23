@@ -1,7 +1,7 @@
 <template>
   <base-dialog
       :value="true"
-      max-width="450"
+      max-width="400"
       content-class="white"
       @close="$root.$emit('close-login')"
       @click:outline="$root.$emit('close-login')"
@@ -13,6 +13,7 @@
     >
 
       <v-form
+          actocomplete
           ref="loginForm"
           v-model="loginFormValid"
           lazy-validation
@@ -20,14 +21,12 @@
         <div class="text-center font-title fs-24 mb-3">Войти в систему</div>
 
         <email-input
-            style="width: 300px"
             v-model="email"
             :required-indicator="false"
         ></email-input>
 
         <default-input
             class="password-input"
-            style="width: 300px"
             v-model="password"
             label="Пароль"
             type="password"
@@ -35,6 +34,8 @@
             messages="Неверный пароль"
             :error="!correct"
             @focusin="correct = true"
+            id="current-password"
+            name="current-password"
         >
           <template v-slot:message>
             <a

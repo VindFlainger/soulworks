@@ -26,7 +26,7 @@ export default {
         this.$emit('update:loading', true)
         const fd = new FormData()
         fd.set('image', file, file.name)
-        this.postData('http://localhost:3000/upload/image', fd)
+        this.postData('upload/image', fd)
             .then(resp => {
               this.img = resp.data.url
               this.$emit('input', resp.data.id)

@@ -5,7 +5,6 @@
       v-bind="$attrs"
       v-on="$listeners"
       :required="required"
-      :show-required-badge="showRequiredBadge"
   ></default-input>
 </template>
 

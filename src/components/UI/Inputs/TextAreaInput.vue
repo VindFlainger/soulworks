@@ -1,18 +1,18 @@
 <template>
-  <ui-input-badge :value="required && showRequiredBadge">
-    <v-textarea
-        class="input textarea-input"
-        @input="$emit('input', $event)"
-        :value="value"
-        v-bind="$attrs"
-        v-on="$listeners"
-        outlined color="black"
-        :auto-grow="autoGrow"
-        :rules="[v => (!!v || !required) || 'Это обязательное поле', ...rules]"
-    >
-
-    </v-textarea>
-  </ui-input-badge>
+  <v-textarea
+      class="input textarea-input"
+      :style="{maxWidth: $maxWidth, minWidth: $minWidth}"
+      @input="$emit('input', $event)"
+      :value="value"
+      v-bind="$attrs"
+      v-on="$listeners"
+      outlined color="black"
+      :auto-grow="autoGrow"
+      :rules="[
+          v => (!!v || !required) || $t('common.validation.field-required'),
+          ...rules
+      ]"
+  ></v-textarea>
 </template>
 
 <script>

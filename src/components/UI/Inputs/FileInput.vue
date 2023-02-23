@@ -1,30 +1,38 @@
 <template>
   <div>
-    <div class="file-input"
-         :class="{'file-input_putting': draggingOver, 'file-input_error': tooLargeSizeMessageVisible || notAllowedExtensionMessageVisible}"
-         @drop.prevent="checkFiles($event.dataTransfer.files)"
-         @dragover.prevent
-         @dragenter="draggingOver = true"
-         @dragleave="draggingOver = false"
-         @drop="draggingOver = false"
+    <div
+        class="file-input"
+        :class="{'file-input_putting': draggingOver, 'file-input_error': tooLargeSizeMessageVisible || notAllowedExtensionMessageVisible}"
+        @drop.prevent="checkFiles($event.dataTransfer.files)"
+        @dragover.prevent
+        @dragenter="draggingOver = true"
+        @dragleave="draggingOver = false"
+        @drop="draggingOver = false"
     >
-      <div class="file-input__drop-zone" :class="{'file-input__drop-zone_blocking': draggingOver}">
+      <div
+          class="file-input__drop-zone"
+          :class="{'file-input__drop-zone_blocking': draggingOver}"
+      >
+
         <div v-if="!isMobile" class="d-flex flex-column align-center">
           <v-img :src="require('@/assets/images/cloudupload.png')" :max-width="70"></v-img>
           <div class="text-center fs-18 font-weight-bold">
-            Перетащите файлы
+            {{ $t('common.ui.drag-and-drop') }}
           </div>
           <div class="text-center fs-14">
-            или
+            {{ $t('common.ui.and') }}
           </div>
         </div>
+
         <label class="file-input__label" :class="{'grey lighten-1': uploadingFiles.length + files.length >= maxFiles}">
           <v-icon color="black" size="26">mdi-upload</v-icon>
-          <span class="fs-16">Выберите файлы</span>
-          <input @input="checkFiles($event.target.files)"
-                 :disabled="uploadingFiles.length + files.length >= maxFiles"
-                 :accept="`${accept.length?'.':''}${accept.join(',.')}`"
-                 class="d-none" type="file"
+          <span class="fs-16">{{ $t('common.ui.pick-files') }}</span>
+          <input
+              :disabled="uploadingFiles.length + files.length >= maxFiles"
+              :accept="`${accept.length?'.':''}${accept.join(',.')}`"
+              class="d-none"
+              type="file"
+              @input="checkFiles($event.target.files)"
           >
         </label>
       </div>
@@ -33,39 +41,44 @@
     <div class="fs-14 red--text text--darken-3">
       <div v-if="tooLargeSizeMessageVisible">
         <span>{{ tooLargeSizeMessage }}</span>
-        Загружаемый файл слишком большой, максимальный размер {{ (this.maxSize / 1000000).toFixed(2) }} MB
+        {{ $tc('common.ui.file-too-large', (this.maxSize / 1000000).toFixed(2)) }}
         <span></span>
       </div>
       <div v-if="notAllowedExtensionMessageVisible">
         <span>{{ notAllowedExtensionsMessage }}</span>
-        <span>Для загрузки доступны только {{ accept.join(', ') }}  форматы.</span>
+        <span>{{ $tc('common.ui.file-accept-formats', accept.join(', ')) }} </span>
       </div>
       <div v-if="notAllowedFileCountVisible">
-        <span>Максимальное количество файлов {{ maxFiles }}</span>
+        <span>{{ $tc('common.ui.files-max-count', maxFiles) }} </span>
       </div>
     </div>
     <v-row class="mt-2">
-      <ui-document-preview v-for="file in files"
-                           :key="file.id"
-                           :name="file.name"
-                           @clear="files = files.filter(el => el.id !== file.id); $emit('input', files)"
-                           clearable
-                           class="ma-1"
-      >
-      </ui-document-preview>
-      <ui-document-preview v-for="file in uploadingFiles"
-                           :key="file.id"
-                           :name="file.name"
-                           :unsuccessful="file.error"
-                           @refresh="uploadingFiles = uploadingFiles.filter(el => el.id !== file.id); addFiles([file.data])"
-                           @clear="uploadingFiles = uploadingFiles.filter(el => el.id !== file.id)"
-                           class="ma-1">
+
+      <ui-document-preview
+          v-for="file in files"
+          :key="file.id"
+          :name="file.name"
+          @clear="files = files.filter(el => el.id !== file.id); $emit('input', files)"
+          clearable
+          class="ma-1"
+      ></ui-document-preview>
+
+      <ui-document-preview
+          v-for="file in uploadingFiles"
+          :key="file.id"
+          :name="file.name"
+          :unsuccessful="file.error"
+          @refresh="uploadingFiles = uploadingFiles.filter(el => el.id !== file.id); addFiles([file.data])"
+          @clear="uploadingFiles = uploadingFiles.filter(el => el.id !== file.id)"
+          class="ma-1">
+
         <template v-slot:before-name>
-          <v-progress-linear v-if="!file.error"
-                             class="mt-1"
-                             :value="file.progress*100"
-                             background-color="grey lighten-2"
-                             color="blue lighten-2">
+          <v-progress-linear
+              v-if="!file.error"
+              class="mt-1"
+              :value="file.progress*100"
+              background-color="grey lighten-2"
+              color="blue lighten-2">
           </v-progress-linear>
         </template>
         <template v-slot:after-name>
@@ -131,7 +144,7 @@ export default {
     }
   },
   computed: {
-    isMobile(){
+    isMobile() {
       return this.$store.getters.isMobile
     }
   },
@@ -165,7 +178,7 @@ export default {
         this.uploadingFiles.push(uploadingFile)
         const fd = new FormData()
         fd.set('file', file, file.name)
-        this.postData('http://localhost:3000/upload/document', fd, undefined, {onUploadProgress: v => uploadingFile.progress = v.progress})
+        this.postData('upload/document', fd, undefined, {onUploadProgress: v => uploadingFile.progress = v.progress})
             .then(resp => {
               this.uploadingFiles = this.uploadingFiles.filter(el => el.id !== tmpId)
               this.files.push({

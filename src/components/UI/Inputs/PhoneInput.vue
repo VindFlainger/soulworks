@@ -11,8 +11,10 @@
       @input="$emit('input', $event); lazyValue = $event"
       :value="value"
       :rules="[
-          v => (!required && !lazyValue) || (v && v.replace(/[\+ \()-]/g, '').length === 12) || 'Некорректный номер телефона',
-          v => (!required && !lazyValue) || (v && codes.some(code => v.replace(/[\+ \()-]/g, '').substring(3,5) === code)) || 'Некорректный код'
+          v => (!required && !lazyValue)
+          || (v && v.replace(/[\+ \()-]/g, '').length === 12) || $t('common.validation.invalid-phone'),
+          v => (!required && !lazyValue)
+          || (v && codes.some(code => v.replace(/[\+ \()-]/g, '').substring(3,5) === code)) ||  $t('common.validation.invalid-phone-code')
       ]"
       ref="phoneInput"
   >

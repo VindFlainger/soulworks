@@ -1,33 +1,28 @@
 <template>
-  <ui-input-badge :value="required && showRequiredBadge">
-    <v-text-field
-        @input="$emit('input', $event)"
-        :value="value"
-        v-bind="$attrs"
-        v-on="$listeners"
-        :style="{...$attrs.style, maxWidth: `${maxWidth}px`, minWidth: `${minWidth}px`}"
-        filled
-        background-color="white"
-        class="input"
-        dense
-        outlined
-        color="grey darken-2"
-        validate-on-blur
-        :rules="[
-          v => (!!v || !required) || 'Это обязательное поле',
+  <v-text-field
+      class="input"
+      :style="{maxWidth: $maxWidth, minWidth: $minWidth}"
+      @input="$emit('input', $event)"
+      :value="value"
+      v-bind="$attrs"
+      v-on="$listeners"
+      filled
+      background-color="white"
+      dense
+      outlined
+      color="grey darken-2"
+      validate-on-blur
+      :rules="[
+          v => (!!v || !required) || $t('common.validation.field-required'),
           ...rules
       ]"
-    >
-    </v-text-field>
-    <div class="ml-3 mt-n1">
-      <slot name="message"></slot>
-    </div>
-  </ui-input-badge>
+  ></v-text-field>
 </template>
 
 <script>
 import inputs from "@/mixins/inputs";
 import UiInputBadge from "@/components/UI/UiInputBadge";
+
 
 export default {
   name: "DefaultInput",
@@ -39,19 +34,12 @@ export default {
       type: Array,
       default: () => []
     },
-    minWidth: {
-      type: [Number, String],
-      default: 270
-    },
-    maxWidth: {
-      type: [Number, String],
-      default: 300
-    },
   },
 }
 </script>
 
 <style scoped>
+
 .input {
   border-radius: 14px
 }

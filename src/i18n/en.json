@@ -36,10 +36,23 @@
       "contact-email": "contact email",
       "sex": "sex",
       "visa": "visa",
-      "about": "about me"
+      "about": "about me",
+      "password": "password",
+      "repeat-password": "repeat password"
     },
     "validation": {
-      "unavailable-symbols": "Prohibited special characters have been introduced"
+      "unavailable-symbols": "Prohibited special characters have been introduced",
+      "field-required": "Field is required",
+      "at-least-one-required": "Pick at least one element",
+      "invalid-email": "Invalid email format",
+      "email-exists": "Given email already exists",
+      "email-not-exists": "Given email is not exists",
+      "password-min-length": "The password must contain at least {n} characters",
+      "password-max-length": "Maximum password length {n} characters",
+      "password-need-specsymbol": "The password must contain at least one special character",
+      "invalid-phone": "Invalid phone number",
+      "invalid-phone-code": "Invalid phone code",
+      "passwords-dont-match": "Passwords do not match"
     },
     "data": {
       "weekdays": [
@@ -62,7 +75,13 @@
       "classes": "Classes",
       "classes-confirmed": "Classes confirmed",
       "classes-canceled": "Classes confirmed",
-      "classes-missed": "Classes missed"
+      "classes-missed": "Classes missed",
+      "drag-and-drop": "Drag&Drop files",
+      "and": "or",
+      "pick-files": "Pick files",
+      "file-too-large": "The uploaded file is too large, the maximum size is {n} MB",
+      "file-accept-formats": "Only {n} formats are available for upload",
+      "files-max-count": "Maximum number of files {n}"
     },
     "feedbacks": {
       "edit-success": "Edited successful"

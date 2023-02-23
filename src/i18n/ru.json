@@ -36,10 +36,23 @@
       "contact-email": "контактная почта",
       "sex": "пол",
       "visa": "визитка",
-      "about": "обо мне"
+      "about": "обо мне",
+      "password": "пароль",
+      "repeat-password": "повторите пароль"
     },
     "validation": {
-      "unavailable-symbols": "Введены запрещенные специальные символы"
+      "unavailable-symbols": "Введены запрещенные специальные символы",
+      "field-required": "Это обязательное поле",
+      "at-least-one-required": "Необходимо выбрать хотя бы один элемент",
+      "invalid-email": "Недопустимый формат email",
+      "email-exists": "Данная почта уже занята",
+      "email-not-exists": "Данная почта не существует",
+      "password-min-length": "Пароль должен содержать не менее {n} символов",
+      "password-max-length": "Максимальная длина пароля {n} символов",
+      "password-need-specsymbol": "Пароль должен содержать хотя бы один специальный символ",
+      "invalid-phone": "Некорректный номер телефона",
+      "invalid-phone-code": "Некорректный телефонный код",
+      "passwords-dont-match": "Пароли не совпадают"
     },
     "data": {
       "weekdays": [
@@ -62,7 +75,13 @@
       "classes": "Консультации",
       "classes-confirmed": "Консультаций подтверждено",
       "classes-canceled": "Консультаций отменено",
-      "classes-missed": "Консультаций пропущено"
+      "classes-missed": "Консультаций пропущено",
+      "drag-and-drop": "Перетащите файлы",
+      "and": "или",
+      "pick-files": "Выберите файлы",
+      "file-too-large": "Загружаемый файл слишком большой, максимальный размер {n} MB",
+      "file-accept-formats": "Для загрузки доступны только {n} форматы",
+      "files-max-count": "Максимальное количество файлов {n}"
     },
     "feedbacks": {
       "edit-success": "Данные успешно изменены"
