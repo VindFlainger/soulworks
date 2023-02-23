@@ -12,17 +12,60 @@
       "upload": "upload",
       "share": "share",
       "see": "see",
-      "delete": "delete"
+      "delete": "delete",
+      "edit": "edit",
+      "show-more": "show more",
+      "clear": "clear",
+      "change": "change",
+      "return": "return"
     },
     "labels": {
       "description": "description",
-      "name": "name"
+      "name": "name",
+      "old-password": "your old password",
+      "person-name": "name",
+      "person-surname": "surname",
+      "role": "role",
+      "email": "email",
+      "methods": "methods",
+      "specializations": "specializations",
+      "opportunities": "opportunities",
+      "communication": "communication",
+      "address": "address",
+      "contact-phone": "contact phone",
+      "contact-email": "contact email",
+      "sex": "sex",
+      "visa": "visa",
+      "about": "about me"
     },
     "validation": {
       "unavailable-symbols": "Prohibited special characters have been introduced"
     },
     "data": {
-      "weekdays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+      "weekdays": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opportunities": {
+        "family": "family class",
+        "teens": "working with teens",
+        "children": "working with children",
+        "internal": "offline working"
+      }
+    },
+    "ui": {
+      "classes": "Classes",
+      "classes-confirmed": "Classes confirmed",
+      "classes-canceled": "Classes confirmed",
+      "classes-missed": "Classes missed"
+    },
+    "feedbacks": {
+      "edit-success": "Edited successful"
     }
   },
   "nav": {
@@ -101,6 +144,47 @@
         "confirm": "Confirmed",
         "not-confirm": "Not confirmed",
         "processing": "Considered"
+      },
+      "security": {
+        "section-name": "Security",
+        "about-password-change": "Changing the password is necessary to ensure your security, the Soul Works team highly recommends changing\n            temporary passwords,\n            which are installed for your account when restoring access to it.",
+        "password-change": "Password change",
+        "sessions": "Sessions",
+        "login": "Login",
+        "activity": "Activity",
+        "ip": "IP address",
+        "device": "Device",
+        "change-password-confirm": "Your account password will be changed and all active sessions will be completed within 5 minutes.",
+        "change-password-success": "A link to change the password has been sent to your email",
+        "delete-session-confirm": "The session on the selected device will be terminated, and you will need to log in again to continue working.",
+        "delete-session-success": "Session successfully completed"
+      },
+      "personal-data": {
+        "section-name": "Personal data",
+        "specialization": "Specialization",
+        "methods": "Methods",
+        "description": "Description",
+        "about-me": "About me",
+        "contacts": "Contact info",
+        "stats": "Stats",
+        "address": "Address",
+        "phone": "Phone",
+        "connection": "Connection",
+        "social-networks": "Social Networks"
+      },
+      "edit-personal-data": {
+        "section-name": "Edit account",
+        "personal-data": "Personal data",
+        "business-data": "Business data",
+        "services": "Services",
+        "presentation": "Self presentation",
+        "online-price": "Online classes price",
+        "internal-price": "Offline classes price",
+        "connection": "Address and connection",
+        "contacts": "Contacts",
+        "social-networks": "Social networks",
+        "about-social-links": "You can specify the IDs of your social\n            networks to go to them by click. The identifier is a simple string without special characters.",
+        "about-phone": "You can specify which social networks or messengers are available by this number."
       }
     }
   }

@@ -1,6 +1,6 @@
 <template>
   <v-card class="pa-4" elevation="0">
-    <ui-full-width-banner :img="previewImage">
+    <ui-full-width-banner v-if="previewImage && previewTitle" :img="previewImage">
       <div class="fill-height d-flex align-center justify-center">
         <div
             class="font-title pa-5 rounded text-title"
@@ -29,11 +29,11 @@ export default {
   props: {
     previewImage: {
       type: String,
-      required: true
+      required: false
     },
     previewTitle: {
       type: String,
-      required: true
+      required: false
     },
   }
 }

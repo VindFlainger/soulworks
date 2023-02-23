@@ -8,9 +8,9 @@ const AboutView = () => import("@/views/AboutView")
 
 
 import store from '../store'
-import SpecAccountTab from "@/components/Specialized/Account/Spec/SpecAccountTab";
+import SpecAccountTab from "@/components/Specialized/Account/Spec/AcccountTab/SpecAccountTab.vue";
 import SpecTimetableTab from "@/components/Specialized/Account/Spec/SpecTimetableTab";
-import SecurityTab from "@/components/Specialized/Account/SecurityTab";
+import SecurityTab from "@/components/Specialized/Account/Any/SecurityTab/SecurityTab.vue";
 import SpecReviewsTab from "@/components/Specialized/Account/Spec/ReviewsTab/SpecReviewsTab";
 import SpecQualificationTab from "@/components/Specialized/Account/Spec/QualificationTab/SpecQualificationTab";
 import SpecClassesTab from "@/components/Specialized/Account/Spec/ClassesTab/SpecClassesTab.vue";

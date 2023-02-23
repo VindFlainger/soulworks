@@ -11,11 +11,11 @@
         elevation="0"
     >
       <span
-          class="fs-16 blue--text text--lighten-3 text-decoration-underline"
+          class="text-subtitle-1 blue--text text--lighten-3 text-decoration-underline"
           style="position:absolute; right: 30px; top: 20px; cursor: pointer"
           @click="$router.push({name: 'specAccount'})"
       >
-         Вернуться
+         {{ $t('common.buttons.return') }}
        </span>
 
       <v-row justify="start">
@@ -47,9 +47,14 @@
             ></ui-avatar>
           </v-badge>
         </v-col>
+      </v-row>
 
-        <v-col class="col-4">
-          <div class="fs-18 font-weight-bold mb-2 font-title">Личная информация</div>
+      <v-row>
+        <div>
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.personal-data') }}
+          </h5>
+
           <v-form
               ref="personForm"
               v-model="personValid"
@@ -57,26 +62,29 @@
           >
             <name-input
                 v-model="name"
-                label="Имя"
+                :label="$t('common.labels.person-name')"
                 @change="setPerson"
             ></name-input>
 
             <name-input
                 v-model="surname"
-                label="Фамилия"
+                :label="$t('common.labels.person-surname')"
                 @change="setPerson"
             ></name-input>
 
             <default-input
-                label="Пол"
+                :label="$t('common.labels.sex')"
                 :value="sex | sex | capitalize"
                 disabled=""
             ></default-input>
           </v-form>
-        </v-col>
+        </div>
 
-        <v-col class="col-4">
-          <div class="fs-18 font-weight-bold mb-2 font-title">Бизнес информация</div>
+
+        <div class="ml-sm-10">
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.business-data') }}
+          </h5>
 
           <phone-input
               v-model="phone"
@@ -85,21 +93,23 @@
 
           <default-input
               v-model="email"
-              label="Почта"
+              :label="$t('common.labels.email')"
               disabled
           ></default-input>
 
           <default-input
-              label="Роль"
+              :label="$t('common.labels.role')"
               :value="role | role | capitalize"
-              disabled=""
+              disabled
           ></default-input>
-        </v-col>
+        </div>
       </v-row>
 
       <v-row>
-        <v-col style="max-width: 350px">
-          <div class="fs-18 font-weight-bold mb-2 font-title">Услуги</div>
+        <v-col class="pa-0" style="max-width: 330px">
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.services') }}
+          </h5>
 
           <v-form
               ref="servicesForm"
@@ -111,14 +121,14 @@
                 multiple
                 small-chips
                 :items="methodsSelectOptions.map(opt => ({...opt, value: opt._id}))"
-                label="Методы"
+                :label="$t('common.labels.methods')"
                 @blur="setServices"
             ></select-input>
 
             <select-input
                 v-model="specializations"
                 :items="specializationSelectOptions.map(opt => ({...opt, value: opt._id}))"
-                label="Специализации"
+                :label="$t('common.labels.specializations')"
                 small-chips
                 multiple
                 @blur="setServices"
@@ -128,7 +138,7 @@
                 v-model="opportunities"
                 :required="false"
                 :items="opportunitiesSelectOption"
-                label="Возможности"
+                :label="$t('common.labels.opportunities')"
                 multiple
                 small-chips
                 @blur="setServices"
@@ -137,8 +147,11 @@
           </v-form>
         </v-col>
 
-        <v-col>
-          <div class="fs-18 font-weight-bold mb-2 font-title">Презентация</div>
+        <v-col class="col-12 col-md pa-0">
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.presentation') }}
+          </h5>
+
 
           <v-form
               ref="aboutForm"
@@ -151,8 +164,8 @@
                 v-model="shortAbout"
                 :auto-grow="false"
                 :required="false"
-                :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
-                placeholder="Визитка"
+                :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^ё*()&+-,. ]*$/.test(v) || $t('common.validation.unavailable-symbols')]"
+                :label="$t('common.labels.visa')"
                 counter="400"
                 maxlength="400"
                 no-resize
@@ -164,11 +177,11 @@
                 v-model="fullAbout"
                 :auto-grow="false"
                 :required="false"
-                :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^*ё()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :rules="[v => /^[0-9a-zA-ZА-я=!@# :%^*ё()&+-,. ]*$/.test(v) || $t('common.validation.unavailable-symbols')]"
                 height="200"
                 counter="1000"
                 maxlength="1000"
-                placeholder="Обо мне"
+                :label="$t('common.labels.about')"
                 no-resize
                 @change="setAbout"
             ></text-area-input>
@@ -178,8 +191,10 @@
       </v-row>
 
       <v-row>
-        <v-col style="max-width: 450px">
-          <div class="fs-18 font-weight-bold mb-2 font-title">Цена онлайн консультации</div>
+        <v-col class="pa-0 mr-2" style="max-width: 350px">
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.online-price') }}
+          </h5>
 
           <range-input
               :min.sync="onlinePrices.min"
@@ -189,7 +204,10 @@
               @change="setPrices"
           ></range-input>
 
-          <div class="fs-18 font-weight-bold mb-2 font-title">Цена очной консультации</div>
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.internal-price') }}
+          </h5>
+
 
           <range-input
               :min.sync="internalPrices.min"
@@ -200,28 +218,31 @@
           ></range-input>
         </v-col>
 
-        <v-col>
+        <v-col class="col-12 col-md pa-0">
           <v-form
               ref="connectionForm"
               v-model="connectionValid"
               lazy-validation
           >
 
-            <div class="fs-18 font-weight-bold mb-2 font-title">Связь и адрес</div>
+            <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+              {{ $t('account.spec.edit-personal-data.connection') }}
+            </h5>
+
 
             <default-input
                 v-model="connection"
-                placeholder="Коммуникация"
+                :label="$t('common.labels.communication')"
                 :required="false"
-                :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || $t('common.validation.unavailable-symbols')]"
                 @change="setConnectionAndAddress"
             ></default-input>
 
             <default-input
                 v-model="address"
-                placeholder="Адрес"
+                :label="$t('common.labels.address')"
                 :required="false"
-                :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || 'Введены запрещенные специальные символы']"
+                :rules="[v => /^[0-9a-zA-ZА-я=!:@# %^ё*()&+-,. ]*$/.test(v) || $t('common.validation.unavailable-symbols')]"
                 @change="setConnectionAndAddress"
             ></default-input>
 
@@ -231,8 +252,10 @@
 
 
       <v-row>
-        <v-col style="max-width: 350px">
-          <div class="fs-18 font-weight-bold font-title mb-2">Контакты</div>
+        <v-col style="max-width: 350px" class="pa-0">
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.contacts') }}
+          </h5>
 
           <v-form lazy-validation ref="contactsForm" v-model="contactsValid">
 
@@ -240,14 +263,14 @@
               <phone-input
                   class="phone-input"
                   v-model="contactPhone"
-                  label="Контактный телефон"
+                  :label="$t('common.labels.contact-phone')"
                   :required="false"
                   @change="setContacts"
               ></phone-input>
 
-              <div class="fs-12 mt-n1 grey--text text--darken-2 mb-1">Вы можете указать какие социальные сети или
-                мессенджеры доступны по этому номеру.
-              </div>
+              <p class="text-caption sans mt-n1 grey--text text--darken-2 mb-2">
+                {{ $t('account.spec.edit-personal-data.about-phone') }}
+              </p>
 
               <picture-select-input
                   class="mt-n1"
@@ -260,7 +283,7 @@
             <email-input
                 class="mt-5"
                 v-model="contactEmail"
-                label="Контактная почта"
+                :label="$t('common.labels.contact-email')"
                 :required="false"
                 @change="setContacts"
             ></email-input>
@@ -268,12 +291,14 @@
           </v-form>
         </v-col>
 
-        <v-col>
-          <div class="fs-18 font-weight-bold font-title">Социальные сети</div>
+        <v-col class="pa-0">
+          <h5 class="comfortaa text-subtitle-1 font-weight-bold mb-2 font-title">
+            {{ $t('account.spec.edit-personal-data.social-networks') }}
+          </h5>
 
-          <div class="fs-12 mt-n1 grey--text text--darken-2 mb-2">Вы можете указать идентификаторы ваших социальных
-            сетей для перехода к ним по клику. Идентификатор - простая строка без спецсимволов.
-          </div>
+          <p class="text-caption sans mt-n1 grey--text text--darken-2 mb-2">
+            {{ $t('account.spec.edit-personal-data.about-social-links') }}
+          </p>
 
           <v-form
               ref="linksForm"
@@ -282,10 +307,11 @@
           >
             <v-list
                 class="ma-0 pa-0"
-                v-for="messenger in messengersOptions"
-                :key="messenger"
             >
-              <v-list-item>
+              <v-list-item
+                  v-for="messenger in messengersOptions"
+                  :key="messenger"
+              >
                 <v-img
                     class="d-inline-block"
                     style="position:relative; top: 2px"
@@ -294,6 +320,7 @@
                 ></v-img>
 
                 <default-input
+                    min-width="220"
                     class="d-inline-block ml-3"
                     :value="links.find(link => link.name === messenger)?.link"
                     @change="setLinks($event, messenger)"
@@ -302,6 +329,7 @@
                     :rules="[v => !v || (!!v && $validator.isAlphanumeric(v))]"
                     :required="false"
                 ></default-input>
+
               </v-list-item>
             </v-list>
           </v-form>
@@ -378,24 +406,6 @@ export default {
 
       methodsSelectOptions: [],
       specializationSelectOptions: [],
-      opportunitiesSelectOption: [
-        {
-          value: 'internal',
-          text: 'очная консультация'
-        },
-        {
-          value: 'teens',
-          text: 'работа с подростками'
-        },
-        {
-          value: 'family',
-          text: 'семейная консультация'
-        },
-        {
-          value: 'children',
-          text: 'работа с детьми'
-        },
-      ],
 
       messengersOptions: ['vk', 'whatsapp', 'viber', 'telegram', 'facebook', 'instagram'],
 
@@ -411,7 +421,7 @@ export default {
   },
   methods: {
     getAccountData() {
-      this.getData('http://localhost:3000/spec/account')
+      this.getDataAuthed('spec/account')
           .then(resp => {
             this.name = resp.data.name
             this.surname = resp.data.surname
@@ -436,55 +446,73 @@ export default {
           })
     },
     getSelectOptions() {
-      this.getData('http://localhost:3000/filters',)
+      this.getDataAuthed('filters',)
           .then(resp => {
             this.specializationSelectOptions = resp.data.specializations
             this.methodsSelectOptions = resp.data.methods
           })
-          .catch()
+          .catch(() => {
+          })
     },
     setAvatar(avatar) {
-      this.putData('http://localhost:3000/spec/account/avatar', {avatarId: avatar.id})
+      this.putDataAuthed('spec/account/avatar', {avatarId: avatar.id})
           .then(() => {
             this.croppingDialogVisible = false
             this.avatar = avatar
           })
-          .catch()
+          .catch(() => {
+          })
     },
     setPerson() {
       if (this.$refs.personForm.validate()) {
-        this.putData('http://localhost:3000/spec/account/person', {name: this.name, surname: this.surname})
-            .then(() => {
-              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
+        this.putDataAuthed('spec/account/person',
+            {
+              name: this.name,
+              surname: this.surname
+            },
+            {
+              handleError: true,
+              handleSuccess: true,
+              successMessage: this.$t('common.feedbacks.edit-success')
+            }
+        )
+            .catch(() => {
             })
-            .catch()
       }
     },
     setAbout() {
       if (this.$refs.aboutForm.validate()) {
-        this.putData('http://localhost:3000/spec/account/about',
+        this.putDataAuthed('spec/account/about',
             {
               shortAbout: this.shortAbout,
               fullAbout: this.fullAbout
+            },
+            {
+              handleError: true,
+              handleSuccess: true,
+              successMessage: this.$t('common.feedbacks.edit-success')
+            }
+        )
+            .catch(() => {
             })
-            .then(() => {
-              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
-            })
-            .catch()
       }
     },
     setContacts() {
       if (this.$refs.contactsForm.validate()) {
-        this.putData('http://localhost:3000/spec/account/contacts',
+        this.putDataAuthed('spec/account/contacts',
             {
               messengers: this.messengers,
               email: this.contactEmail || undefined,
               phone: this.contactPhone.replaceAll(/[-()+ ]/g, '')
+            },
+            {
+              handleError: true,
+              handleSuccess: true,
+              successMessage: this.$t('common.feedbacks.edit-success')
+            }
+        )
+            .catch(() => {
             })
-            .then(() => {
-              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
-            })
-            .catch()
       }
     },
     setLinks(link, messenger) {
@@ -493,64 +521,101 @@ export default {
 
         if (link) this.links.push({name: messenger, link})
 
-        this.putData('http://localhost:3000/spec/account/links',
+        this.putDataAuthed('spec/account/links',
             {
               links: this.links,
+            },
+            {
+              handleError: true,
+              handleSuccess: true,
+              successMessage: this.$t('common.feedbacks.edit-success')
+            }
+        )
+            .catch(() => {
             })
-            .then(() => {
-              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
-            })
-            .catch()
       }
     },
     setServices() {
       if (this.$refs.servicesForm.validate()) {
-        this.putData('http://localhost:3000/spec/account/services',
+        this.putDataAuthed('spec/account/services',
             {
               opportunities: this.opportunities,
               methods: this.methods,
               specializations: this.specializations
+            },
+            {
+              handleError: true,
+              handleSuccess: true,
+              successMessage: this.$t('common.feedbacks.edit-success')
             })
-            .then(() => {
-              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
+            .catch(() => {
             })
-            .catch()
       }
     },
     setPrices() {
-      this.putData('http://localhost:3000/spec/account/price',
+      this.putDataAuthed('spec/account/price',
           {
             minOnline: this.onlinePrices.min,
             maxOnline: this.onlinePrices.max,
             minInternal: this.internalPrices.min,
             maxInternal: this.internalPrices.max
+          },
+          {
+            handleError: true,
+            handleSuccess: true,
+            successMessage: this.$t('common.feedbacks.edit-success')
           })
-          .then(() => {
-            this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
+          .catch(() => {
           })
-          .catch()
     },
     setConnectionAndAddress() {
       this.$refs.connectionForm.validate()
       {
-        this.putData('http://localhost:3000/spec/account/connection',
+        this.putDataAuthed('spec/account/connection',
             {
               address: this.address,
               connection: this.connection
+            },
+            {
+              handleError: true,
+              handleSuccess: true,
+              successMessage: this.$t('common.feedbacks.edit-success')
             })
-            .then(() => {
-              this.$root.$emit('push-message', {text: 'Данные успешно обновлены', type: 'success', time: 2000})
+            .catch(() => {
             })
-            .catch()
       }
+    }
+  },
+  computed: {
+    opportunitiesSelectOption() {
+      return [
+        {
+          value: 'internal',
+          text: this.$t('common.data.opportunities.internal')
+        },
+        {
+          value: 'teens',
+          text: this.$t('common.data.opportunities.teens')
+        },
+        {
+          value: 'family',
+          text: this.$t('common.data.opportunities.family')
+        },
+        {
+          value: 'children',
+          text: this.$t('common.data.opportunities.children')
+        },
+      ]
     }
   },
   mounted() {
     this.getAccountData()
     this.getSelectOptions()
   },
-  metaInfo: {
-    title: 'Редактировать профиль'
+  metaInfo() {
+    return {
+      title: this.$t('account.spec.edit-personal-data.section-name')
+    }
   }
 }
 </script>

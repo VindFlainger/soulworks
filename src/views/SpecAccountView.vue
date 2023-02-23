@@ -41,33 +41,37 @@ export default {
   data() {
     return {
       tab: 'account',
-      tabs: [
+    }
+  },
+  computed: {
+    tabs() {
+      return [
         {
-          title: 'личная информация',
+          title: this.$t('account.spec.personal-data.section-name'),
           link: {name: 'specAccount'}
         },
         {
-          title: 'расписание',
+          title: this.$t('account.spec.timetable.section-name'),
           link: {name: 'specTimetable'}
         },
         {
-          title: 'консультации',
+          title: this.$t('account.spec.classes.section-name'),
           link: {name: 'specClasses'}
         },
         {
-          title: 'отзывы',
+          title: this.$t('account.spec.reviews.section-name'),
           link: {name: 'specReviews'}
         },
         {
-          title: 'квалификация',
+          title: this.$t('account.spec.qualification.section-name'),
           link: {name: 'specQualification'}
         },
         {
-          title: 'материалы',
+          title: this.$t('account.spec.materials.section-name'),
           link: {name: 'specMaterials'}
         },
         {
-          title: 'безопасность',
+          title: this.$t('account.spec.security.section-name'),
           link: {name: 'specSecurity'}
         }
       ]

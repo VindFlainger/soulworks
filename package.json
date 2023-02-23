@@ -1,9 +1,9 @@
 {
   "name": "soulworks",
-  "version": "1.0.0",
+  "version": "0.3.3",
   "private": true,
   "description": "",
-  "author": "",
+  "author": "Jonas VindFlainger",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

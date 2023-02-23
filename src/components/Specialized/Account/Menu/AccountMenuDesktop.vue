@@ -6,6 +6,7 @@
   >
     <v-tab
         class="justify-start black--text"
+        style="min-width: 240px"
         v-for="tab in tabs"
         :key="tab.title"
         :to="tab.link"

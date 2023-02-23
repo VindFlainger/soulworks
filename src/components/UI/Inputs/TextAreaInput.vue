@@ -1,15 +1,14 @@
 <template>
   <ui-input-badge :value="required && showRequiredBadge">
-    <v-textarea class="textarea-input"
-                @input="$emit('input', $event)"
-                :value="value"
-                v-bind="$attrs"
-                v-on="$listeners"
-                outlined color="black"
-                :auto-grow="autoGrow"
-                :rules="[
-                  v => (!!v || !required) || 'Это обязательное поле',
-                  ...rules]"
+    <v-textarea
+        class="input textarea-input"
+        @input="$emit('input', $event)"
+        :value="value"
+        v-bind="$attrs"
+        v-on="$listeners"
+        outlined color="black"
+        :auto-grow="autoGrow"
+        :rules="[v => (!!v || !required) || 'Это обязательное поле', ...rules]"
     >
 
     </v-textarea>
@@ -50,5 +49,9 @@ export default {
 
 .error--text >>> fieldset {
   border-color: red !important;
+}
+
+.input >>> .v-label:first-letter {
+  text-transform: uppercase;
 }
 </style>
