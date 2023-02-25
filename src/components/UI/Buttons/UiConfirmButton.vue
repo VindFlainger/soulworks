@@ -4,14 +4,13 @@
       elevation="0"
       color="blue lighten-4"
       v-on="$listeners"
-      v-bind="$attrs">
-
+      v-bind="$attrs"
+  >
     <div class="text-title">
       <slot>
-        Подтвердить
+        {{ $t('common.buttons.confirm') }}
       </slot>
     </div>
-
   </v-btn>
 </template>
 

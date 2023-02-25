@@ -1,9 +1,9 @@
 <template>
   <default-input
-      label="Повторите пароль"
+      :label="$t('common.labels.repeat-password')"
       type="password"
       :rules="[
-          v => v === value || 'Пароли не совпадают'
+          v => v === value || $t('common.validation.passwords-dont-match')
       ]"
   >
   </default-input>
@@ -11,8 +11,10 @@
 
 <script>
 import DefaultInput from "@/components/UI/Inputs/DefaultInput";
+import inputs from "@/mixins/inputs";
 export default {
   name: "RepeatPasswordInput",
+  mixins: [inputs],
   components: {DefaultInput},
   props: {
     value: String,

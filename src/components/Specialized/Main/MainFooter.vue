@@ -1,56 +1,64 @@
+<!--TODO: ask about this (links in data)-->
 <template>
   <v-footer v-show="show">
     <v-container fluid class="d-flex justify-center">
-      <v-responsive  width="100%" max-width="1450" class="pr-16 pl-16" style="border-top: 1px solid">
-        <v-row >
-          <v-col>
-            <div class="title">Клиентам</div>
+      <v-responsive
+          width="100%"
+          max-width="1450"
+          class="pr-md-16 pl-md-16"
+          style="border-top: 1px solid"
+      >
+        <v-row>
 
-            <v-list  class="pa-0" color="transparent">
-              <v-list-item  class="pa-0">
-                <router-link to="" class="link">Подобрать психолога</router-link>
-              </v-list-item >
-              <v-list-item  class="pa-0">
-                <router-link to="" class="link">Как работает сервис</router-link>
+          <v-col>
+            <h3 class="comfortaa font-weight-bold text-h6">{{ $t('footer.for-clients') }}</h3>
+
+            <v-list class="pa-0" color="transparent">
+              <v-list-item
+                  v-for="link in clientLinks"
+                  :key="link.name"
+                  class="pa-0"
+              >
+                <router-link :to="link.to" class="link">{{ link.name }}</router-link>
               </v-list-item>
             </v-list>
           </v-col>
 
           <v-col>
-            <div class="title">Специалистам</div>
+            <h3 class="comfortaa font-weight-bold text-h6">{{ $t('footer.for-specialists') }}</h3>
 
-            <v-list  class="pa-0" color="transparent">
-              <v-list-item  class="pa-0">
-                <router-link to="" class="link">Личный кабинет</router-link>
-              </v-list-item>
-              <v-list-item  class="pa-0">
-                <router-link to="" class="link">Подать заявку</router-link>
+            <v-list class="pa-0" color="transparent">
+              <v-list-item
+                  v-for="link in specialistLinks"
+                  :key="link.name"
+                  class="pa-0"
+              >
+                <router-link :to="link.to" class="link">{{ link.name }}</router-link>
               </v-list-item>
             </v-list>
           </v-col>
 
           <v-col>
-            <div class="title">Специалистам</div>
+            <h3 class="comfortaa font-weight-bold text-h6">{{ $t('footer.interacting') }}</h3>
 
-            <v-list  class="pa-0" color="transparent">
-              <v-list-item  class="pa-0">
-                <router-link to="" class="link">О компании</router-link>
-              </v-list-item>
-              <v-list-item  class="pa-0">
-                <router-link to="" class="link">Отзывы</router-link>
-              </v-list-item>
-              <v-list-item  class="pa-0">
-                <router-link :to="{name: 'qa'}" class="link">Вопросы и ответы</router-link>
+            <v-list class="pa-0" color="transparent">
+              <v-list-item
+                  v-for="link in interactingLinks"
+                  :key="link.name"
+                  class="pa-0"
+              >
+                <router-link :to="link.to" class="link">{{ link.name }}</router-link>
               </v-list-item>
             </v-list>
           </v-col>
 
           <v-col>
-            <div class="title">Экстренная помощь</div>
-            <div class="link fs-18"> +8801 123 45 67</div>
-            <div class="link mt-3">
-              Республиканская телефонная “горячая линия” по оказанию психологической помощи несовершеннолетним, попавшим в кризисную ситуацию
-            </div>
+            <h3 class="comfortaa font-weight-bold text-h6">{{ $t('footer.help') }}</h3>
+
+            <p class="link fs-18">{{ helpNumber }}</p>
+            <p class="link mt-3">
+              {{ $t('footer.help-about') }}
+            </p>
           </v-col>
 
         </v-row>
@@ -66,26 +74,59 @@ export default {
   name: "MainFooter",
   data() {
     return {
-      hideRouteNames: ['chat', 'chats']
+      hideRouteNames: ['chat', 'chats'],
+      helpNumber: '+8801 123 45 67'
     }
   },
   computed: {
-    show(){
+    show() {
       return this.hideRouteNames.every(name => name !== this.$route.name)
+    },
+    clientLinks() {
+      return [
+        {
+          name: this.$t('footer.find-specialist'),
+          to: {name: 'specialists'}
+        },
+        {
+          name: this.$t('footer.working-info'),
+          to: {name: 'about'}
+        }
+      ]
+    },
+    specialistLinks() {
+      return [
+        {
+          name: this.$t('footer.personal-account'),
+          to: {name: 'specAccount'}
+        },
+        {
+          name: this.$t('footer.send-request'),
+          to: {name: 'about'}
+        }
+      ]
+    },
+    interactingLinks() {
+      return [
+        {
+          name: this.$t('footer.about'),
+          to: {name: 'about'}
+        },
+        {
+          name: this.$t('footer.reviews'),
+          to: {name: 'about'}
+        },
+        {
+          name: this.$t('footer.qa'),
+          to: {name: 'qa'}
+        }
+      ]
     }
   }
 }
 </script>
 
 <style scoped>
-.title {
-  font-size: 22px;
-  font-family: Comfortaa, sans-serif !important;
-  color: black;
-  text-align: left;
-  font-weight: 700;
-}
-
 .link {
   font-size: 16px;
   font-family: "Open Sans", sans-serif !important;

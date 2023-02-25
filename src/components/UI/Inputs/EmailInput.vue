@@ -1,16 +1,17 @@
 <template>
   <default-input
-      maxlength="64"
       v-bind="$attrs"
       v-on="$listeners"
-      :rules="[v => (!required && !lazyValue) || (v && /^\w+@\w+\.\w+/.test(v)) || 'Некорректная почта']"
+      maxlength="64"
+      :rules="[v => (!required && !lazyValue) || (v && /^\w+@\w+\.\w+/.test(v)) || $t('common.validation.invalid-email')]"
       :required="required"
-      :show-required-badge="showRequiredBadge"
       @focusout="checkEmail"
       :label="label"
       @input="lazyValue = $event; $emit('input', $event)"
       :value="value"
-      :error-messages="emailExists || emailNotExists?emailExists?'Данная почта уже используется':'Указанная почта не зарегистрирована':''"
+      :error-messages="emailExists || emailNotExists?emailExists?$t('common.validation.email-exists'):$t('common.validation.email-not-exists'):''"
+      id="email_address"
+      name="email_address"
   >
   </default-input>
 </template>
@@ -44,7 +45,7 @@ export default {
   methods: {
     checkEmail() {
       if (this.check) {
-        this.getData(`http://localhost:3000/check/email?email=${this.lazyValue}`)
+        this.getData(`check/email?email=${this.lazyValue}`)
             .then(resp => {
               this.emailExists = this.check === 'exists' ? false : resp.data;
               this.emailNotExists = this.check === 'exists' ? !resp.data : false;

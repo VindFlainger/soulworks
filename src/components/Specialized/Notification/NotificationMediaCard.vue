@@ -8,7 +8,6 @@
       <v-icon size="64">
         {{ icon }}
       </v-icon>
-
     </template>
 
     <template v-slot:content>
@@ -43,7 +42,7 @@
           :href="url"
           small
       >
-        Перейти
+        {{$t('common.buttons.follow')}}
       </ui-default-button>
 
       <ui-confirm-button
@@ -51,7 +50,7 @@
           @click="$emit('read')"
           small
       >
-        Прочитано
+        {{ $t('common.buttons.read') }}
       </ui-confirm-button>
     </template>
   </notification-base-card>

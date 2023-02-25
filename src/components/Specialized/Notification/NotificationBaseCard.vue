@@ -1,32 +1,25 @@
 <template>
   <div
-      class="mb-2 mt-2 pb-1 pt-1"
-      style="border-radius: 14px; position:relative;"
+      class="mb-2 mt-2 pb-1 pt-1 pr"
       :class="{'notification-base-card__unread': !read}"
   >
     <v-row
-        class="flex-nowrap"
+        class="flex-nowrap ml-1"
         style="position:relative"
     >
-      <div style="width: 64px">
+      <v-sheet width="80" class="d-flex flex-column align-center">
         <slot name="preview"></slot>
-      </div>
-      <v-col
-          class="pl-2 pr-2 pa-0"
-          style="position:relative; width: calc(100% - 70px)"
-      >
 
-        <div
-            class="font-weight-medium fs-14"
-            style="position:absolute; top: 2px; right: 3px"
-        >
-          <code>{{ date | date }}</code>
-        </div>
+        <p class="font-weight-medium text-body-2 date-container mt-2">
+          <code>{{ dynamicDate(date) }}</code>
+        </p>
+      </v-sheet>
 
+      <v-col style="max-width: calc(100% - 80px)" class="pl-2 pr-2 pa-0 pr flex-grow-1">
         <slot name="title">
-          <div class="font-weight-bold fs-18">
+          <h4 class="font-weight-bold text-h6">
             {{ title }}
-          </div>
+          </h4>
         </slot>
 
         <slot name="content"></slot>
@@ -34,20 +27,18 @@
         <v-row class="mt-2" justify="space-between">
           <slot name="actions"></slot>
         </v-row>
-
       </v-col>
+
     </v-row>
   </div>
 </template>
 
 <script>
-import {date} from "@/filters/logic";
+import time from "@/mixins/filters/time";
 
 export default {
   name: "NotificationBaseCard",
-  filters: {
-    date
-  },
+  mixins: [time],
   props: {
     read: {
       type: Boolean,
@@ -72,8 +63,7 @@ export default {
   top: 5px;
   position: absolute;
   height: 100%;
-  width: 4px;
-  background: #7da67c;
-  border-radius: 5px 0 0 5px;
+  width: 2px;
+  background: #9ec99d;
 }
 </style>

@@ -1,10 +1,14 @@
 <template>
   <v-btn
       class="button"
-      outlined color="red" v-on="$listeners" v-bind="$attrs">
+      outlined
+      color="red"
+      v-on="$listeners"
+      v-bind="$attrs"
+  >
     <slot>
       <div class="back mr-2"></div>
-      Назад
+      {{ $t('common.buttons.back') }}
     </slot>
   </v-btn>
 </template>
@@ -16,18 +20,18 @@ export default {
 </script>
 
 <style scoped>
-.button{
+.button {
   border-radius: 15px;
   text-transform: none
 }
 
-.back{
+.back {
   position: relative;
   width: 10px;
   height: 20px;
 }
 
-.back::after{
+.back::after {
   content: "";
   position: absolute;
   right: 0;
@@ -39,7 +43,7 @@ export default {
   transform: rotate(-45deg);
 }
 
-.back::before{
+.back::before {
   content: "";
   position: absolute;
   right: 0;
@@ -51,7 +55,7 @@ export default {
   transform: rotate(45deg);
 }
 
-.v-btn--disabled .next::before, .v-btn--disabled .next::after{
+.v-btn--disabled .next::before, .v-btn--disabled .next::after {
   background: rgba(0, 0, 0, 0.26);
 }
 </style>

@@ -28,6 +28,7 @@
         <text-area-input
             v-model="description"
             :required="false"
+            max-width="100%"
             counter="250"
             maxlength="250"
             :label="$t('common.labels.description')"

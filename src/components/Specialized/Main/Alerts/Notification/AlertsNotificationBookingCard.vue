@@ -3,20 +3,20 @@
     <v-row class="flex-nowrap" align="center">
       <div>
         <h4 class="font-weight-bold text-h6 line-height-1rem">
-          Новая консультация
+          {{ $t('common.ui.new-class') }}
         </h4>
 
         <h5 class="font-weight-medium text-subtitle-1 text-uppercase mt-2 ">
-          Данные
+          {{ $t('common.words.data') }}
         </h5>
         <div class="text-subtitle-1 font-weight-regular line-height-1rem">
           <p class="ma-0 mt-1">
             <v-icon>mdi-calendar-month</v-icon>
-            {{ $moment(date).format('DD.MM.YYYY') }}
+            {{ $dj(date).format('DD.MM.YYYY') }}
           </p>
           <p class="ma-0 mt-1">
             <v-icon>mdi-clock-time-eleven-outline</v-icon>
-            {{ $moment(date).format('hh:mm') }}
+            {{ $dj(date).format('hh:mm') }}
           </p>
           <p class="ma-0 mt-1">
             <v-icon>mdi-cube</v-icon>
@@ -29,7 +29,7 @@
         </div>
 
         <h5 class="font-weight-medium text-subtitle-1 text-uppercase mt-2">
-          Клиент
+          {{ $t('common.words.client') }}
         </h5>
         <v-row>
           <router-link :to="{name: 'profile', params: {id: user.id}}">

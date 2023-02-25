@@ -1,7 +1,7 @@
 <template>
   <notification-base-card
       :read="read"
-      title="Новая консультация"
+      :title="$t('notifications.new-class')"
       :date="date"
   >
     <template v-slot:preview>
@@ -11,22 +11,23 @@
           :images="avatar?.images"
       ></ui-avatar>
     </template>
+
     <template v-slot:content>
-      <div>
-        Пользователь
+      <p class="text-title">
+        {{ $t('common.roles.user')}}
         <router-link
-            class="font-weight-medium text-decoration-none"
+            class="font-weight-medium text-decoration-none text-capitalize"
             :to="{name: 'profile', params: {id: userId}}"
         >
           {{ userName }} {{ userSurname }}
         </router-link>
-        записался на консультацию.
-      </div>
+        {{ $t('notifications.ordered-class')}}
+      </p>
       <div class="mt-1">
         <v-row class="flex-nowrap" align="center">
           <v-icon size="35" color="black">mdi-calendar</v-icon>
           <span class="ml-2 fs-14 font-weight-medium">
-            {{ $moment(classDate).format('DD.MM.YYYY') }}
+            {{ $dj(classDate).format('DD.MM.YYYY') }}
           </span>
         </v-row>
       </div>
@@ -35,7 +36,7 @@
         <v-row class="flex-nowrap" align="center">
           <v-icon size="35" color="black">mdi-clock</v-icon>
           <div class="ml-2 fs-14 font-weight-medium">
-            {{ $moment(classDate).format('HH:mm') }}
+            {{ $dj(classDate).format('HH:mm') }}
           </div>
         </v-row>
       </div>
@@ -77,7 +78,7 @@
           :to="{name: 'specClasses'}"
           small
       >
-        Просмотр
+        {{ $t('common.buttons.see') }}
       </ui-default-button>
 
       <ui-confirm-button
@@ -85,7 +86,7 @@
           @click="$emit('read')"
           small
       >
-        Прочитано
+        {{ $t('common.buttons.read') }}
       </ui-confirm-button>
     </template>
   </notification-base-card>

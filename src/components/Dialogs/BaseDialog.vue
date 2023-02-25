@@ -1,13 +1,14 @@
 <template>
-  <v-dialog v-on="$listeners"
-            v-bind="$attrs"
-            @click:outside="$emit('close')"
-            content-class="rounded-xl white"
+  <v-dialog
+      v-on="$listeners"
+      v-bind="$attrs"
+      @click:outside="$emit('close')"
+      content-class="rounded-xl white"
   >
 
     <v-row v-if="!easyContainer" style="position: sticky; z-index: 2; top: 0;">
       <v-spacer></v-spacer>
-      <slot name="close-button" >
+      <slot name="close-button">
         <v-btn
             icon
             class="mr-1 white"
@@ -68,6 +69,7 @@ export default {
   position: relative;
 }
 
-.no-overflow{}
+.no-overflow {
+}
 
 </style>

@@ -1,9 +1,22 @@
 <template>
   <v-row>
-    <div v-for="item in items" :key="item.value" class="ma-2">
+    <div
+        class="ma-2"
+        v-for="item in items"
+        :key="item.value"
+    >
       <label>
-        <v-img :src="item.img" :max-width="size" :class="{'checked': checked.includes(item.value)}"></v-img>
-        <input type="checkbox" :value="item.value" v-model="checked" class="d-none">
+        <v-img
+            :src="item.img"
+            :max-width="size"
+            :class="{'checked': checked.includes(item.value)}"
+        ></v-img>
+        <input
+            type="checkbox"
+            :value="item.value"
+            v-model="checked"
+            class="d-none"
+        >
       </label>
     </div>
 

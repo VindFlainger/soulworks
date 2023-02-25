@@ -5,16 +5,20 @@
       @input="$emit('input', $event)"
       :value="value"
       :rules="[
-          v => v.length>= 8 || 'Пароль должен содержать не менее 8 символов',
-          v => v.length<= 40 || 'Максимальная длина пароля 40 символов',
-          v => /[!@#$%^&*()_+]/.test(v) || 'Пароль должен содержать хотябы один специальный символ'
+          v => v.length>= minPasswordLength || $tc('common.validation.password-min-length', minPasswordLength),
+          v => v.length<= maxPasswordLength || $tc('common.validation.password-max-length', maxPasswordLength),
+          v => /[!@#$%^&*()_+]/.test(v) || $t('common.validation.password-need-specsymbol')
       ]"
+      id="current-password"
+      name="current-password"
   >
   </default-input>
 </template>
 
 <script>
 import DefaultInput from "@/components/UI/Inputs/DefaultInput";
+import I18n from "@/i18n";
+
 export default {
   name: "PasswordInput",
   components: {DefaultInput},
@@ -22,8 +26,16 @@ export default {
     value: String,
     label: {
       type: String,
-      default: 'Пароль'
+      default: I18n.t('common.labels.password')
     },
+    minPasswordLength: {
+      type: Number,
+      default: 8
+    },
+    maxPasswordLength: {
+      type: Number,
+      default: 40
+    }
   }
 }
 </script>

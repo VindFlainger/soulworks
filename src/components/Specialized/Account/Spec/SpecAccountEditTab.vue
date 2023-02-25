@@ -168,6 +168,7 @@
                 :label="$t('common.labels.visa')"
                 counter="400"
                 maxlength="400"
+                max-width="100%"
                 no-resize
                 @change="setAbout"
             ></text-area-input>
@@ -181,6 +182,7 @@
                 height="200"
                 counter="1000"
                 maxlength="1000"
+                max-width="100%"
                 :label="$t('common.labels.about')"
                 no-resize
                 @change="setAbout"

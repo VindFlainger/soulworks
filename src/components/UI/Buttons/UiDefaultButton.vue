@@ -8,7 +8,7 @@
   >
     <div class="text-title">
       <slot>
-        Подтвердить
+        {{ $t('common.buttons.confirm') }}
       </slot>
     </div>
   </v-btn>

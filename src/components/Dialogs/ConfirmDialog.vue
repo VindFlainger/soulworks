@@ -14,13 +14,13 @@
     >
 
       <div
-          class="fs-22 font-title font-weight-bold text-center pt-4 pl-4 pr-4"
+          class="comfortaa text-h6 font-weight-bold text-center pt-4 pl-4 pr-4"
           style="letter-spacing: 2px"
       >
-        Вы уверены?
+        {{ $t('common.ui.sure')}}
       </div>
 
-      <div class="mt-2 mb-2 text-center fs-14">
+      <div class="mt-2 mb-2 text-center text-body-2 sans">
         {{ text }}
       </div>
 
@@ -32,7 +32,7 @@
             width="150"
             @click="$root.$emit('close-confirm', false)"
         >
-          Отмена
+          {{ $t('common.buttons.cancel')}}
         </ui-default-button>
 
 
@@ -44,7 +44,7 @@
             width="150"
             @click="$root.$emit('close-confirm', true)"
         >
-          Подтвердить
+          {{ $t('common.buttons.confirm')}}
         </ui-default-button>
       </v-card-actions>
 

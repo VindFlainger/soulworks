@@ -12,7 +12,10 @@
 
     <v-row align="end">
       <div>
-        <span class="contact">Номер телефона:</span> +{{ phone }}
+        <span class="contact">
+          {{ $t('common.ui.phone-number') }}:
+        </span>
+        {{ phone | phone }}
       </div>
 
       <v-img
@@ -25,12 +28,13 @@
       ></v-img>
     </v-row>
 
-    <div>
-      <span class="contact">Адрес:</span> {{ address }}
-    </div>
-    <div>
-      <span class="contact">Контактная информация:</span> {{ connection }}
-    </div>
+    <p class="contact text-title ma-0">{{ $t('common.labels.address') }}:
+      <span class="font-weight-regular">{{ address || $t('common.ui.no-address') }}</span>
+    </p>
+
+    <p class="contact text-title ma-0">{{ $t('common.labels.communication') }}:
+      <span class="font-weight-regular">{{ connection || $t('common.ui.no-contacts') }}</span>
+    </p>
 
     <ui-social-links
         class="mt-1"
@@ -45,10 +49,14 @@
 <script>
 import BaseDialog from "@/components/Dialogs/BaseDialog";
 import UiSocialLinks from "@/components/UI/UiSocialLinks";
+import text from "@/filters/text";
 
 export default {
   name: "ContactsDialog",
   components: {UiSocialLinks, BaseDialog},
+  filters: {
+    text
+  },
   props: {
     value: {
       type: Boolean,
@@ -67,17 +75,19 @@ export default {
     },
     messengers: {
       type: Array,
+      required: false
     },
     links: {
       type: Array,
+      required: false
     },
     connection: {
       type: String,
-      default: 'Пользователь не указал свои контакты'
+      required: false
     },
     address: {
       type: String,
-      default: 'Пользователь не указал свой адрес'
+      required: false
     }
   }
 }

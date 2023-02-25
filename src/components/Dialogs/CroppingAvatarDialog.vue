@@ -3,7 +3,6 @@
       :value="value"
       max-width="600"
       class="pa-0"
-      easy-container
       @close="$emit('close')"
   >
     <label
@@ -20,7 +19,9 @@
             max-width="130"
         ></v-img>
 
-        <span class="fs-18 font-weight-bold font-title">Выбрать изображение</span>
+        <span class="text-h6 font-weight-bold comfortaa">
+          {{ $t('common.ui.pick-image')}}
+        </span>
       </v-row>
 
       <input
@@ -42,9 +43,13 @@
     ></cropper>
 
     <v-row class="mt-3">
-      <ui-default-button @click="$emit('close')"></ui-default-button>
+      <ui-default-button @click="$emit('close')">
+        {{ $t('common.buttons.cancel')}}
+      </ui-default-button>
       <v-spacer></v-spacer>
-      <ui-confirm-button @click="uploadImage">Сохранить</ui-confirm-button>
+      <ui-confirm-button @click="uploadImage">
+        {{ $t('common.buttons.save')}}
+      </ui-confirm-button>
     </v-row>
 
   </base-dialog>
@@ -61,6 +66,7 @@ import requests from "@/mixins/requests";
 export default {
   name: "CroppingAvatarDialog",
   components: {UiConfirmButton, UiDefaultButton, BaseDialog, Cropper},
+  mixins: [requests],
   props: {
     value: Boolean
   },
@@ -68,6 +74,12 @@ export default {
     return {
       img: undefined,
       croppedImg: undefined
+    }
+  },
+  watch: {
+    value(){
+      this.img = ''
+      this.croppedImg = ''
     }
   },
   methods: {
@@ -83,7 +95,7 @@ export default {
         const file = new File([blob], 'avatar.png')
         const fd = new FormData()
         fd.set('image', file, file.name)
-        this.postData('http://localhost:3000/upload/avatar', fd)
+        this.postData('upload/avatar', fd)
             .then(resp => {
               this.img = undefined
               this.croppedImg = undefined
@@ -93,7 +105,7 @@ export default {
       }))
     }
   },
-  mixins: [requests]
+
 }
 </script>
 

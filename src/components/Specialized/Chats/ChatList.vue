@@ -212,6 +212,10 @@ export default {
   height: calc(100% - 120px);
 }
 
+.chat-area-list__wrapper::-webkit-scrollbar{
+  display: none;
+}
+
 .chat-area-list__top-observer {
   height: 1px;
 }
