@@ -13,13 +13,13 @@
 
       <div class="pa-4">
         <div
-            class="fs-22 font-title font-weight-bold text-center"
+            class="text-h6 comfortaa font-weight-bold text-center"
             style="letter-spacing: 2px"
         >
           {{ title }}
         </div>
 
-        <div class="text-center fs-12">{{ subtitle }}</div>
+        <div class="text-center text-caption">{{ subtitle }}</div>
       </div>
 
       <v-card-actions class="pa-0">
@@ -52,6 +52,7 @@ export default {
     },
     subtitle: {
       type: String,
+      required: false
     }
   }
 }

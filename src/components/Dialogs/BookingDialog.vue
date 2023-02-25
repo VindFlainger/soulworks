@@ -1,67 +1,60 @@
 <template>
-  <base-dialog :value="value" @close="$emit('close')" max-width="700" :empty="this.isLoading">
-    <div v-if="!this.isLoading">
-      <div class="fs-18">
-        Специалист: <span class="font-title font-weight-bold">{{ name }} {{ surname }}</span>
+  <base-dialog
+      :value="value"
+      @close="$emit('close')"
+      max-width="640"
+      :empty="this.isLoading"
+  >
+    <div class="pa-sm-1" v-if="!this.isLoading">
+      <div class="text-h6 text-title font-weight-regular sans">
+        {{ $t('common.roles.specialist') }}:
+        <span class="font-title font-weight-bold text-capitalize">{{ name }} {{ surname }}</span>
       </div>
 
-      <v-form ref="form">
-        <v-row class="mt-2">
-          <v-col class="pa-0">
-            <select-input
-                label="Методология"
-                small-chips
-                v-model="method"
-                :items="methods.map(method => {return {text: method.text, value: method._id}})"
-            >
-            </select-input>
+      <v-row class="justify-center align-center flex-column flex-sm-row" style="min-height: 460px">
+        <date-input
+            v-model="date"
+            max-width="270"
+            :width="260"
+            @change="getBookingTimetable(new Date($event).getTime())"
+            :min="this.$dj().toISOString()"
+            :max="this.$dj().add(7, 'days').toISOString()"
+        ></date-input>
 
-            <select-input
-                small-chips
-                label="Специализация"
-                v-model="specialization"
-                :items="specializations.map(specialization => {return {text: specialization.text, value: specialization._id}})"
-            >
-            </select-input>
-          </v-col>
+        <v-form class="ml-0 ml-sm-3 mt-3 mt-sm-0 flex-grow-1" ref="form">
 
-          <v-col class="pa-0">
-            <select-input
-                small-chips
-                multiple
-                :required="false"
-                label="Условия"
-                v-model="opportunities"
-                :items="$store.state.params.opportunities"
-            >
-            </select-input>
-          </v-col>
-        </v-row>
-      </v-form>
+          <select-input
+              :label="$t('common.labels.method')"
+              min-width="250"
+              small-chips
+              v-model="method"
+              :items="methods.map(method => {return {text: method.text, value: method._id}})"
+          ></select-input>
 
-      <v-row style="min-height: 380px">
-        <v-col class="pa-0">
-          <v-date-picker v-model="date"
-                         :title-date-format="v => $moment(v).format('LL')"
-                         :month-format="v => $moment(v).format('MMMM')"
-                         :weekday-format="v => $moment(v).format('dd')"
-                         :first-day-of-week="1"
-                         :header-date-format="v => $moment(v).format('MMMM')"
-                         class="picker datepicker"
-                         color="blue lighten-4"
-                         elevation="1"
-                         @change="getBookingTimetable(new Date($event).getTime())"
-                         :min="this.$moment().toISOString()"
-                         :max="this.$moment().add(7, 'days').toISOString()"
-          >
-          </v-date-picker>
-        </v-col>
-        <v-col class="pa-0 ml-5">
-          <div class="font-title fs-22 font-weight-bold">
-            {{ $moment(date).format('LL') }}
-          </div>
+          <select-input
+              :label="$t('common.labels.specialization')"
+              min-width="250"
+              small-chips
+              v-model="specialization"
+              :items="specializations.map(specialization => {return {text: specialization.text, value: specialization._id}})"
+          ></select-input>
+
+          <select-input
+              small-chips
+              multiple
+              :required="false"
+              :label="$t('common.labels.opportunities')"
+              min-width="250"
+              v-model="opportunities"
+              :items="$store.state.params.opportunities"
+          ></select-input>
+
+        </v-form>
+
+        <v-col class="pa-0 col-auto">
           <v-radio-group v-if="timetable.length > 0" v-model="time" class="radios ma-0">
-            <div style="-webkit-column-count: 2; -moz-column-count: 2; column-count: 2; column-fill: auto" class="mt-2">
+            <div style="column-count: 3; column-fill: auto"
+                 class="mt-2">
               <v-radio
                   :ripple="false"
                   class="mb-4"
@@ -74,18 +67,25 @@
               ></v-radio>
             </div>
           </v-radio-group>
+
           <div v-else class="d-flex flex-column align-center mt-4">
             <v-img :src="require('@/assets/images/content/no-content-1.png')" max-width="50" height="50"></v-img>
-            <div class="text-center fs-14" style="font-weight: 600; max-width: 200px">На выбранную дату нет свободный
-              мест
-            </div>
+            <v-sheet max-width="200" class="text-center text-body-1">
+              {{ $t('booking.no-time') }}
+            </v-sheet>
           </div>
+
         </v-col>
       </v-row>
 
       <div class="d-flex justify-space-between mt-3">
         <ui-default-button large @click="$emit('close')"></ui-default-button>
-        <ui-confirm-button large :disabled="time<=0 || this.internalLoading" @click="booking">Записаться
+        <ui-confirm-button
+            large
+            :disabled="time<=0 || this.internalLoading"
+            @click="booking"
+        >
+          {{ $t('common.buttons.order') }}
         </ui-confirm-button>
       </div>
     </div>
@@ -101,10 +101,17 @@ import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import BaseDialog from "@/components/Dialogs/BaseDialog";
 import requests from "@/mixins/requests";
+import DateInput from "@/components/UI/Inputs/DateInput.vue";
 
 export default {
   name: "BookingDialog",
-  components: {UiDefaultButton, BaseDialog, UiConfirmButton, SelectInput},
+  components: {
+    DateInput,
+    UiDefaultButton,
+    BaseDialog,
+    UiConfirmButton,
+    SelectInput
+  },
   data() {
     return {
       name: '',
@@ -123,7 +130,7 @@ export default {
     value: {
       type: Boolean,
     },
-    specId: { // wrapper over content for prevent mounted loading
+    specId: {
       type: String,
     },
   },
@@ -131,12 +138,12 @@ export default {
     getBookingTimetable(date) {
       this.addInternalLoading()
       this.time = -1
-      this.getData(`http://localhost:3000/user/classes/bookingTimetable`, null, false,
+      this.getDataAuthed(`user/classes/bookingTimetable`, {handleError: true},
           {
             params: {
               specId: this.specId,
               date,
-              timeOffset: -new Date().getTimezoneOffset() / 60
+              timeOffset: this.$store.getters.getTimeZoneOffset
             }
           })
           .then(resp => {
@@ -149,7 +156,7 @@ export default {
     },
     getBookingData() {
       this.addLoadingProcess()
-      this.getDataAuthed(`http://localhost:3000/user/classes/bookingData?specId=${this.specId}`)
+      this.getDataAuthed(`user/classes/bookingData?specId=${this.specId}`, {handleError: true})
           .then(resp => {
             this.specializations = resp.data.specializations
             this.methods = resp.data.methods
@@ -161,24 +168,24 @@ export default {
     },
     booking() {
       if (this.$refs.form.validate()) {
-        this.postDataAuthed('http://localhost:3000/user/classes/booking', {
+        this.postDataAuthed('user/classes/booking', {
           specId: this.specId,
           date: new Date(this.date).setUTCHours(0, 0, 0, 0),
           method: this.method,
           specialization: this.specialization,
           opportunities: this.opportunities,
           time: this.time,
-          timeOffset: this.$store.state.timeZoneOffset
+          timeOffset: this.$store.getters.getTimeZoneOffset
+        }, {
+          handleError: true,
+          handleSuccess: true,
+          successMessage: this.$t('booking.add-success')
         })
             .then(() => {
               this.$emit('close')
-              this.$root.$emit('push-message', {
-                time: 2000,
-                type: 'success',
-                text: 'Вы успешно записались на консультацию'
-              })
             })
-            .catch()
+            .catch(() => {
+            })
 
       }
     }

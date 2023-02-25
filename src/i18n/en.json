@@ -26,7 +26,11 @@
       "follow": "follow",
       "back": "back",
       "next": "next",
-      "confirm": "confirm"
+      "confirm": "confirm",
+      "order": "order",
+      "save": "save",
+      "close": "close",
+      "login": "login"
     },
     "labels": {
       "description": "description",
@@ -38,6 +42,8 @@
       "email": "email",
       "methods": "methods",
       "specializations": "specializations",
+      "method": "method",
+      "specialization": "specialization",
       "opportunities": "opportunities",
       "communication": "communication",
       "address": "address",
@@ -47,7 +53,8 @@
       "visa": "visa",
       "about": "about me",
       "password": "password",
-      "repeat-password": "repeat password"
+      "repeat-password": "repeat password",
+      "find-tags": "Name/surname/@id"
     },
     "validation": {
       "unavailable-symbols": "Prohibited special characters have been introduced",
@@ -100,7 +107,19 @@
         "warn": "Warn",
         "description": "Description",
         "code": "Code"
-      }
+      },
+      "sure": "Are you sure?",
+      "pick-image": "Pick image",
+      "no-users": "No users found",
+      "phone-number": "Phone number",
+      "no-contacts": "The user did not specify his contacts",
+      "no-address": "The user did not specify his address",
+      "forget-password": "Forget password?",
+      "system-auth": "Login in system",
+      "is-new-user": "A new user?",
+      "register": "Register",
+      "password-recover": "Password Recovery",
+      "password-recover-info": "An email with the steps to restore your password will be sent to the email you specified!"
     },
     "feedbacks": {
       "edit-success": "Edited successful"
@@ -247,5 +266,9 @@
     "new-class": "New Class",
     "ordered-class": "ordered class",
     "no-notifications": "You haven't received notifications yet!"
+  },
+  "booking": {
+    "no-time": "There are no available seats for the selected date",
+    "add-success": "You have successfully signed up for a consultation"
   }
 }

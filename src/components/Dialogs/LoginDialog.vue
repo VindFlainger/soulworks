@@ -18,7 +18,9 @@
           v-model="loginFormValid"
           lazy-validation
       >
-        <div class="text-center font-title fs-24 mb-3">Войти в систему</div>
+        <h5 class="text-center text-h5 comfortaa mb-3">
+          {{ $t('common.ui.system-auth') }}
+        </h5>
 
         <email-input
             v-model="email"
@@ -28,10 +30,10 @@
         <default-input
             class="password-input"
             v-model="password"
-            label="Пароль"
+            :label="$t('common.labels.password')"
             type="password"
             :hide-details="correct"
-            messages="Неверный пароль"
+            :messages="$t('common.feedbacks.incorrect-password')"
             :error="!correct"
             @focusin="correct = true"
             id="current-password"
@@ -39,10 +41,10 @@
         >
           <template v-slot:message>
             <a
-                class="font-weight-light fs-14"
-                @click="recoverDialog = true;"
+                class="font-weight-light text-body-1"
+                @click="recoverDialog = true"
             >
-              Забыли пароль?
+              {{ $t('common.ui.forget-password') }}
             </a>
           </template>
         </default-input>
@@ -57,7 +59,7 @@
               color="red"
               @click="$root.$emit('close-login')"
           >
-            Закрыть
+            {{ $t('common.buttons.close') }}
           </ui-default-button>
 
           <v-spacer></v-spacer>
@@ -68,7 +70,7 @@
               :loading="internalLoading"
               @click="login"
           >
-            Вход
+            {{ $t('common.buttons.login') }}
           </ui-default-button>
         </v-row>
       </v-form>
@@ -76,13 +78,13 @@
           class="mt-2"
           style="width: 300px"
       >
-        <div class="font-weight-light fs-14">
-          Новый пользователь?
+        <div class="font-weight-light text-caption">
+          {{ $t('common.ui.is-new-user') }}
           <a
               class="fs-14"
               @click="$root.$emit('close-login'); $root.$emit('show-registration')"
           >
-            Зарегистрируйтесь
+            {{ $t('common.ui.register') }}
           </a>
         </div>
       </v-row>
@@ -92,11 +94,13 @@
 
       <div class="d-flex flex-column align-center pa-10">
 
-        <div class="text-center font-title fs-24 mb-3">Восстановление пароля</div>
+        <h5 class="text-center comfortaa text-h6 mb-3">
+          {{ $t('common.ui.password-recover') }}
+        </h5>
 
-        <div class="text-center fs-12 mb-3">
-          На указанную вами почту будет выслано письмо с шагами для восстановления вашего пароля!
-        </div>
+        <p class="text-center text-caption mb-3 ma-0">
+          {{ $t('common.ui.password-recover-info') }}
+        </p>
 
         <v-form
             ref="recoverForm"
@@ -143,7 +147,6 @@ import requests from "@/mixins/requests";
 import {SET_AUTH_DATA} from "@/store/mutation-types";
 import BaseDialog from "@/components/Dialogs/BaseDialog.vue";
 
-const axios = require('axios').default
 
 export default {
   name: "LoginDialog",
@@ -164,11 +167,11 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.internalLoading = true
 
-        axios.post(`${process.env.VUE_APP_API_URL}/auth/login`, {
+        this.postData('auth/login', {
           email: this.email,
           password: this.password,
           device: window.navigator.userAgent
-        })
+        }, {handlerError: true})
             .then(resp => {
               this.$store.commit(SET_AUTH_DATA, {
                 id: resp.data.id,
@@ -201,18 +204,19 @@ export default {
     recover() {
       if (this.$refs.recoverForm.validate()) {
         this.internalLoading = true
-        this.postData('http://localhost:3000/auth/recover', {
+        this.postData('auth/recover', {
           email: this.email,
         })
             .then(() => {
               this.$root.$emit('close-login')
               this.$root.$emit('show-info',
                   {
-                    title: 'Восстановление',
-                    subtitle: 'На вашу электронную почту отправлено письмо для восстановления пароля'
+                    title: this.$t('common.ui.password-recover'),
+                    subtitle: this.$t('common.ui.password-recover-info')
                   })
             })
-            .catch()
+            .catch(() => {
+            })
             .finally(() => {
               this.internalLoading = false
             })

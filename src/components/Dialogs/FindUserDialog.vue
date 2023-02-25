@@ -6,7 +6,7 @@
   >
     <default-input
         v-model="row"
-        placeholder="Имя/фамилия/@id"
+        :placeholder="$t('common.labels.find-tags')"
         :required="false"
         hide-details
         @input="getUsers"
@@ -20,11 +20,12 @@
       >
 
         <v-row align="center">
-          <v-btn color="green"
-                 fab
-                 x-small
-                 outlined
-                 @click="$root.$emit('close-find-user', user)"
+          <v-btn
+              color="green"
+              fab
+              x-small
+              outlined
+              @click="$root.$emit('close-find-user', user)"
           >
             <v-icon color="green">mdi-plus</v-icon>
           </v-btn>
@@ -37,19 +38,19 @@
           ></ui-avatar>
 
           <v-col class="pa-0 ml-3">
-            <div class="fs-20 font-weight-medium">
+            <p class="sans text-subtitle-1 font-weight-bold ma-0">
               {{ user.surname }} {{ user.name }}
-            </div>
-            <div>
+            </p>
+            <p class="text-caption sans ma-0">
               {{ user.email }}
-            </div>
+            </p>
           </v-col>
         </v-row>
 
       </v-list-item>
-      <div v-if="!users.length">
-        Пользователи не найдены
-      </div>
+      <p v-if="!users.length" class="ma-0">
+        {{$t('common.ui.no-users')}}
+      </p>
     </v-list>
   </base-dialog>
 </template>
@@ -62,7 +63,11 @@ import requests from "@/mixins/requests";
 
 export default {
   name: "FindUserDialog",
-  components: {UiAvatar, DefaultInput, BaseDialog},
+  components: {
+    UiAvatar,
+    DefaultInput,
+    BaseDialog
+  },
   mixins: [requests],
   data() {
     return {
@@ -72,11 +77,12 @@ export default {
   },
   methods: {
     getUsers() {
-      this.getData(`http://localhost:3000/data/findUser?row=${this.row}`)
+      this.getData(`data/findUser?row=${this.row}`, {handleError: true})
           .then(resp => {
             this.users = resp.data
           })
-          .catch()
+          .catch(() => {
+          })
     }
   },
   mounted() {
