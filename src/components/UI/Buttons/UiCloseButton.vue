@@ -1,6 +1,10 @@
 <template>
-  <v-btn icon v-bind="$attrs" v-on="$listeners">
-      <div class="cross"></div>
+  <v-btn
+      icon
+      v-bind="$attrs"
+      v-on="$listeners"
+  >
+    <div class="cross"></div>
   </v-btn>
 </template>
 
@@ -17,7 +21,7 @@ export default {
   height: 20px;
 }
 
-.cross::after{
+.cross::after {
   content: "";
   position: absolute;
   left: 0;
@@ -29,7 +33,7 @@ export default {
   transform: rotate(45deg);
 }
 
-.cross::before{
+.cross::before {
   content: "";
   position: absolute;
   right: 0;
@@ -41,7 +45,7 @@ export default {
   transform: rotate(-45deg);
 }
 
-.cross::before{
+.cross::before {
 
 }
 </style>

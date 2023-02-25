@@ -12,7 +12,7 @@
     </template>
     <template v-slot:content>
       <div class="fs-16">
-        {{text}}
+        {{ text }}
       </div>
     </template>
 
@@ -22,7 +22,7 @@
           :href="url"
           small
       >
-        Перейти
+        {{ $t('common.buttons.follow') }}
       </ui-default-button>
 
       <ui-confirm-button
@@ -30,7 +30,7 @@
           @click="$emit('read')"
           small
       >
-        Прочитано
+        {{ $t('common.buttons.read') }}
       </ui-confirm-button>
     </template>
   </notification-base-card>
@@ -40,6 +40,7 @@
 import UiConfirmButton from "@/components/UI/Buttons/UiConfirmButton";
 import UiDefaultButton from "@/components/UI/Buttons/UiDefaultButton";
 import NotificationBaseCard from "@/components/Specialized/Notification/NotificationBaseCard";
+
 export default {
   name: "NotificationMessageCard",
   components: {

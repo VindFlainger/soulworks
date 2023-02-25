@@ -1,9 +1,13 @@
 <template>
   <v-btn
       class="button"
-      outlined color="green" v-on="$listeners" v-bind="$attrs">
+      outlined
+      color="green"
+      v-on="$listeners"
+      v-bind="$attrs"
+  >
     <slot>
-      Далее
+      {{$t('common.buttons.next')}}
       <div class="next ml-2"></div>
     </slot>
   </v-btn>

@@ -6,6 +6,10 @@
       "admin": "admin",
       "user": "user"
     },
+    "words": {
+      "data": "data",
+      "client": "client"
+    },
     "buttons": {
       "add": "add",
       "cancel": "cancel",
@@ -17,7 +21,12 @@
       "show-more": "show more",
       "clear": "clear",
       "change": "change",
-      "return": "return"
+      "return": "return",
+      "read": "read",
+      "follow": "follow",
+      "back": "back",
+      "next": "next",
+      "confirm": "confirm"
     },
     "labels": {
       "description": "description",
@@ -81,7 +90,17 @@
       "pick-files": "Pick files",
       "file-too-large": "The uploaded file is too large, the maximum size is {n} MB",
       "file-accept-formats": "Only {n} formats are available for upload",
-      "files-max-count": "Maximum number of files {n}"
+      "files-max-count": "Maximum number of files {n}",
+      "loading": "Loading...",
+      "new-class": "New class",
+      "yesterday": "yesterday",
+      "alerts": {
+        "success": "Success",
+        "error": "Error",
+        "warn": "Warn",
+        "description": "Description",
+        "code": "Code"
+      }
     },
     "feedbacks": {
       "edit-success": "Edited successful"
@@ -107,6 +126,23 @@
       "register": "Register",
       "no-login": "Log in to your account or register a new one to get access to the unique functionality!"
     }
+  },
+  "footer": {
+    "for-clients": "For clients",
+    "find-specialist": "Find specialist",
+    "working-info": "How service works",
+    "for-specialists": "For specialists",
+    "personal-account": "Personal account",
+    "send-request": "Send a request",
+    "interacting": "Interacting",
+    "about": "About us",
+    "reviews": "Reviews",
+    "qa": "QA",
+    "help": "Emergency help",
+    "help-about": "Republican telephone hotline for providing psychological assistance to minors in a crisis situation"
+  },
+  "header": {
+    "notifications": "Notifications"
   },
   "account": {
     "spec": {
@@ -206,5 +242,10 @@
         "about-phone": "You can specify which social networks or messengers are available by this number."
       }
     }
+  },
+  "notifications": {
+    "new-class": "New Class",
+    "ordered-class": "ordered class",
+    "no-notifications": "You haven't received notifications yet!"
   }
 }

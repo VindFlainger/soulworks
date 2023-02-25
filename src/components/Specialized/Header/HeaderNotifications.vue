@@ -16,7 +16,7 @@
       >
         mdi-bell-outline
       </v-icon>
-      Уведомления
+      {{ $t('header.notifications') }}
     </div>
 
     <v-list class="pa-2">
@@ -68,25 +68,19 @@
       </div>
     </v-list>
 
-    <div
-        class="fs-20 font-weight-medium pa-2"
+    <ui-fullscreen-no-content-banner
+        class="mt-2"
         v-if="!notifications.length && isLastLoaded"
-    >
-      <ui-fullscreen-no-content-banner>
-        <template v-slot:append>
-          <div>
-            Вы еще не получали уведомлений!
-          </div>
-        </template>
-      </ui-fullscreen-no-content-banner>
-    </div>
+        :title="$t('notifications.no-notifications')"
+    ></ui-fullscreen-no-content-banner>
 
     <v-row
         v-if="!isLastLoaded"
         class="pa-2"
-        justify="center">
+        justify="center"
+    >
       <ui-default-button @click="$emit('load-more')">
-        Загрузить еще
+        {{ $t('common.buttons.show-more') }}
       </ui-default-button>
     </v-row>
 
