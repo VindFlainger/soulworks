@@ -21,19 +21,38 @@ npm run lint
 ```
 
 ## Galery
-![image](https://user-images.githubusercontent.com/82903533/207991488-9b1d98d8-9ffd-4d60-8216-979fafaa8989.png)
-![image](https://user-images.githubusercontent.com/82903533/207991505-ca5f3854-ec64-4880-8664-73fd90466bde.png)
-![image](https://user-images.githubusercontent.com/82903533/207991526-adf638a6-7310-48ac-871b-3011993ecdb0.png)
-![image](https://user-images.githubusercontent.com/82903533/207991549-28579355-3fde-4bc6-8b33-91de02cd8eef.png)
-![image](https://user-images.githubusercontent.com/82903533/207991630-d71d3638-b4dc-4653-a04f-d6b4dbbfe459.png)
-![image](https://user-images.githubusercontent.com/82903533/207991860-1bed0296-993f-4df8-a7ec-a2378373528c.png)
-![image](https://user-images.githubusercontent.com/82903533/207991914-9fc71ac8-63e3-46dc-a5b8-476de9ad2524.png)
-![image](https://user-images.githubusercontent.com/82903533/207992158-a02b8848-3679-424b-a9a6-3a20eacb2075.png)
-![image](https://user-images.githubusercontent.com/82903533/207992218-3f0f8b11-0e06-4e65-978b-568e6c511e08.png)
-![image](https://user-images.githubusercontent.com/82903533/207992337-daaa9cae-f369-4c64-972d-eab189e0734e.png)
-![image](https://user-images.githubusercontent.com/82903533/207992359-cdda76bf-9c53-4d2b-b871-128d4efabaf3.png)
-![image](https://user-images.githubusercontent.com/82903533/207992399-5434cd0b-eb9a-4800-9860-7beed139c222.png)
-![image](https://user-images.githubusercontent.com/82903533/207992452-3bf8986c-776a-46b1-b007-1cc751cde849.png)
+### Full personalization
+![image](https://user-images.githubusercontent.com/82903533/221357968-0724ffd5-4116-40d0-83e9-87d197b67c6a.png)
+![image](https://user-images.githubusercontent.com/82903533/221358359-b14a5b21-c8d8-43f5-bcaf-96d6b07ede7c.png)
+
+### Comfortable and user friendly interface
+![image](https://user-images.githubusercontent.com/82903533/221357993-5a6af6da-ddfb-49c3-9776-0cbf942cea80.png)
+
+### Full internationalization
+![image](https://user-images.githubusercontent.com/82903533/221358117-ca70e71a-fd35-42a0-8dd0-a6a515a21b51.png)
+
+### Content broadcasting
+![image](https://user-images.githubusercontent.com/82903533/221358260-54eaa639-3cd4-4012-b326-8214d32f678e.png)
+![image](https://user-images.githubusercontent.com/82903533/221358295-a5e8e6c9-3f2f-4864-a8f3-75435093dbc3.png)
+
+### Security options
+![image](https://user-images.githubusercontent.com/82903533/221358331-f787b395-6a1e-4d5d-9583-316a48164147.png)
+
+### Live chatting
+![image](https://user-images.githubusercontent.com/82903533/221358719-b7fcc195-da23-4dd5-a8fa-856610db30ed.png)
+
+### Usefull notifications
+![image](https://user-images.githubusercontent.com/82903533/221358757-f3c3470e-482c-4604-9563-301a5c2a3ea1.png)
+
+### Minimalistic search for specialists
+![image](https://user-images.githubusercontent.com/82903533/221358800-7ca08f13-774b-417d-a201-b96ee8cf437e.png)
+
+### Quality assessment
+![image](https://user-images.githubusercontent.com/82903533/221358856-7e97d85f-af98-4153-b5a8-f6b810b8b22f.png)
+
+#### and more...
+
+
 
 
 
