@@ -122,7 +122,7 @@ export default {
   methods: {
     getSpecialists() {
       this.addGlobalLoadingProcess()
-      this.postData('http://localhost:3000/specialists', {
+      this.postData('specialists', {
         methods: this.$route.query.methods ? [this.$route.query.methods].flat() : undefined,
         specializations: this.$route.query.specializations ? [this.$route.query.specializations].flat() : undefined,
         opportunities:
@@ -150,7 +150,7 @@ export default {
     },
     getFilters() {
       this.addGlobalLoadingProcess()
-      this.getData('http://localhost:3000/filters')
+      this.getData('filters')
           .then(resp => {
             this.methodParams = resp.data.methods
             this.specializationParams = resp.data.specializations
@@ -203,7 +203,7 @@ export default {
   },
   computed: {
     opportunityParams() {
-      return this.$store.state.params.opportunities.filter(opt => opt.value !== 'internal')
+      return this.$store.getters["params/getOpportunities"].filter(opt => opt.value !== 'internal')
     },
     sortOptions() {
       return this.$store.state.params.specSort

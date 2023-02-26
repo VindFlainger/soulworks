@@ -7,7 +7,7 @@
       v-bind="$attrs"
   >
     <slot>
-      {{$t('common.buttons.next')}}
+      <div class="text-title"> {{$t('common.buttons.next')}}</div>
       <div class="next ml-2"></div>
     </slot>
   </v-btn>

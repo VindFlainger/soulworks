@@ -8,7 +8,7 @@
   >
     <slot>
       <div class="back mr-2"></div>
-      {{ $t('common.buttons.back') }}
+      <div class="text-title">{{ $t('common.buttons.back') }}</div>
     </slot>
   </v-btn>
 </template>

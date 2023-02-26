@@ -9,24 +9,23 @@
             <v-img :src="require(`@/assets/images/spec.png`)"></v-img>
           </v-avatar>
 
-
           <v-col>
             <name-input
                 v-model="name"
-                label="Имя"
+                :label="$t('common.labels.person-name')"
                 maxlength="30"
             ></name-input>
 
             <name-input
                 v-model="surname"
-                label="Фамилия"
+                :label="$t('common.labels.person-surname')"
                 maxlength="30"
             ></name-input>
 
             <select-input
                 v-model="sex"
-                label="Пол"
-                :items="$store.state.params.specSex"
+                :label="$t('common.labels.sex')"
+                :items="$store.getters['params/getSpecGenders']"
             ></select-input>
 
             <phone-input v-model="phone"></phone-input>
@@ -34,7 +33,9 @@
 
 
           <v-col>
-            <div class="font-title fs-16 font-weight-bold">Цена за 1 час онлайн консультации</div>
+            <div class="comfortaa text-subtitle-1 font-weight-bold">
+              {{ $t('registration.online-class-price-label') }}
+            </div>
 
             <range-input
                 :min.sync="minInternalPrice"
@@ -43,7 +44,9 @@
                 :max-limit="1000"
             ></range-input>
 
-            <div class="font-title fs-16 font-title font-weight-bold">Цена за 1 час очной консультации</div>
+            <div class="comfortaa text-subtitle-1 font-weight-bold">
+              {{ $t('registration.offline-class-price-label') }}
+            </div>
 
             <range-input
                 :min.sync="minOnlinePrice"
@@ -59,7 +62,7 @@
           <select-input
               v-model="specializations"
               :items="specializationsParams.map(el => {return {text: el.text, value: el._id}})"
-              label="Специализация"
+              :label="$t('common.labels.specialization')"
               multiple
               chips
               small-chips
@@ -71,7 +74,7 @@
           <select-input
               v-model="methods_"
               :items="methodsParams.map(el => {return {text: el.text, value: el._id}})"
-              label="Методы"
+              :label="$t('common.labels.methods')"
               multiple
               chips
               small-chips
@@ -82,9 +85,9 @@
 
           <select-input
               v-model="opportunities"
-              label="Условия"
+              :label="$t('common.labels.opportunities')"
               :required="false"
-              :items="$store.state.params.opportunities"
+              :items="$store.getters['params/getOpportunities']"
               multiple
               chips
               small-chips
@@ -102,38 +105,36 @@
 
     </v-stepper-content>
 
-    <v-stepper-content step="3">
-
+    <v-stepper-content step="3" class="pa-1 pa-md-4">
       <v-form
           ref="authForm"
           lazy-validation
       >
-        <v-row align="center">
+        <v-row class="align-center justify-center">
 
-          <v-col class="col-4">
-            <email-input v-model="email" :check="true"></email-input>
-            <password-input v-model="password"></password-input>
-            <repeat-password-input :value="password"></repeat-password-input>
+          <v-col class="col-12 col-md-4">
+            <v-row class="flex-column align-center" >
+              <email-input v-model="email" :check="true"></email-input>
+              <password-input v-model="password"></password-input>
+              <repeat-password-input :value="password"></repeat-password-input>
+            </v-row>
           </v-col>
 
-          <v-col class="col-8">
-
+          <v-col>
             <v-row
                 class="fill-height rounded pa-2"
                 style="position:relative; top: -10px; outline: 1px solid grey"
                 align="center"
             >
 
-              <div
-                  class="fs-14 overflow-y-auto"
-                  style="max-height: 400px"
-                  v-html="$store.state.content.specAgreement">
-              </div>
+              <v-sheet max-height="500" class="overflow-y-auto">
+                <registration-spec-agreement></registration-spec-agreement>
+              </v-sheet>
 
               <v-checkbox
                   style="border-top: 1px solid grey; width: 100%"
                   v-model="confirm"
-                  label="Согласен с пользовательским соглашением"
+                  :label="$t('registration.agree')"
                   hide-details
                   dense
               ></v-checkbox>
@@ -146,9 +147,13 @@
       <v-row>
         <ui-back-button @click="$emit('input', 2)"></ui-back-button>
         <v-spacer></v-spacer>
-        <ui-next-button :disabled="!confirm" @click="register">Завершить</ui-next-button>
+        <ui-next-button
+            :disabled="!confirm"
+            @click="register"
+        >
+          <div class="text-title">{{ $t('common.buttons.finish') }}</div>
+        </ui-next-button>
       </v-row>
-
     </v-stepper-content>
   </div>
 </template>
@@ -164,10 +169,12 @@ import RepeatPasswordInput from "@/components/UI/Inputs/RepeatPasswordInput";
 import UiNextButton from "@/components/UI/Buttons/UiNextButton";
 import UiBackButton from "@/components/UI/Buttons/UiBackButton";
 import requests from "@/mixins/requests";
+import RegistrationSpecAgreement from "@/components/Dialogs/RegistrationDialog/RegistrationSpecAgreement.vue";
 
 export default {
   name: "RegistrationSpec",
   components: {
+    RegistrationSpecAgreement,
     UiBackButton,
     UiNextButton,
     RepeatPasswordInput,
@@ -206,7 +213,7 @@ export default {
   methods: {
     register() {
       this.internalLoading = true
-      this.postData('http://localhost:3000/registration/spec', {
+      this.postData('registration/spec', {
         name: this.name,
         surname: this.surname,
         sex: this.sex,
@@ -226,11 +233,11 @@ export default {
             max: this.maxOnlinePrice
           }
         }
-      }, {handleErrorResponse: true, handleError: true})
+      }, {handleError: true})
           .then(() => {
             this.$root.$emit('show-info', {
-              title: 'Подтверждение',
-              subtitle: 'На вашу электронную почту отправлено письмо для подтверждения регистрации'
+              title: this.$t('registration.confirm'),
+              subtitle: this.$t('registration.confirm-info')
             })
             this.$root.$emit('close-registration')
           })
@@ -239,12 +246,13 @@ export default {
           .finally(() => this.internalLoading = false)
     },
     getMethodsSpecializations() {
-      this.getData('http://localhost:3000/filters')
+      this.getData('filters')
           .then(resp => {
             this.specializationsParams = resp.data.specializations
             this.methodsParams = resp.data.methods
           })
-          .catch()
+          .catch(() => {
+          })
     }
   },
   mounted() {

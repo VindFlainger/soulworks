@@ -30,7 +30,8 @@
       "order": "order",
       "save": "save",
       "close": "close",
-      "login": "login"
+      "login": "login",
+      "finish": "finish"
     },
     "labels": {
       "description": "description",
@@ -85,6 +86,11 @@
         "teens": "working with teens",
         "children": "working with children",
         "internal": "offline working"
+      },
+      "sex": {
+        "male": "male",
+        "female": "female",
+        "none": "not set"
       }
     },
     "ui": {
@@ -266,6 +272,19 @@
     "new-class": "New Class",
     "ordered-class": "ordered class",
     "no-notifications": "You haven't received notifications yet!"
+  },
+  "registration": {
+    "steps": {
+      "pick-role": "Pick role",
+      "data": "Data entry",
+      "auth": "Authentication"
+    },
+    "online-class-price-label": "Price for 1 hour online consultation",
+    "offline-class-price-label": "Price for 1 hour of online consultation",
+    "agree": "Price for 1 hour of online consultation",
+    "confirm": "Confirm",
+    "confirm-info": "An email has been sent to your email address to confirm registration",
+    "user-warn": "Remember! The data entered on this tab will be available to psychologists and other users of the site if\n          if you want to remain anonymous, use a pseudonym. You can change your first and last name at any time in\n          your personal account."
   },
   "booking": {
     "no-time": "There are no available seats for the selected date",
