@@ -150,7 +150,7 @@ export default {
   },
   computed: {
     activeOpportunities() {
-      return this.$store.state.params.opportunities.filter(opt => this.opportunities[opt.value])
+      return this.$store.getters["params/getOpportunities"].filter(opt => this.opportunities[opt.value])
     }
   },
 }

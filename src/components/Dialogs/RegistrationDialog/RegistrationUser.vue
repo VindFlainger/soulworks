@@ -1,47 +1,52 @@
 <template>
   <div class="registration-user">
 
-    <v-stepper-content step="2">
+    <v-stepper-content step="2" class="pa-1 pa-md-2">
 
       <v-form ref="accountForm">
 
-        <v-row align="center">
+        <v-row class="align-center justify-center justify-md-start">
 
-          <v-avatar size="200">
-            <v-img :src="require(`@/assets/images/user.png`)"></v-img>
-          </v-avatar>
+          <v-row class="col-12 col-md-auto justify-center justify-sm-start">
+            <v-avatar size="200">
+              <v-img :src="require(`@/assets/images/user.png`)"></v-img>
+            </v-avatar>
+          </v-row>
 
-          <v-col>
-            <name-input
-                v-model="name"
-                label="Имя"
-                maxlength="30"
-            ></name-input>
 
-            <name-input
-                v-model="surname"
-                label="Фамилия"
-                maxlength="30"
-                class="mt-1"
-            ></name-input>
+          <v-col class="col-12 col-sm-6 col-md-auto pa-1">
+            <v-row class="flex-column align-center align-sm-start">
+              <name-input
+                  v-model="name"
+                  :label="$t('common.labels.person-name')"
+                  maxlength="30"
+              ></name-input>
+
+              <name-input
+                  v-model="surname"
+                  :label="$t('common.labels.person-surname')"
+                  maxlength="30"
+                  class="mt-1"
+              ></name-input>
+            </v-row>
           </v-col>
 
-          <v-col>
-            <select-input
-                v-model="sex"
-                label="Пол"
-                :items="$store.state.params.userSex"
-            ></select-input>
+          <v-col class="col-12 col-sm-6 col-md-auto pa-1">
+            <v-row class="flex-column align-center align-sm-start">
+              <select-input
+                  v-model="sex"
+                  :label="$t('common.labels.sex')"
+                  :items="$store.getters['params/getUserGenders']"
+              ></select-input>
 
-            <phone-input v-model="phone"></phone-input>
+              <phone-input v-model="phone"></phone-input>
+            </v-row>
           </v-col>
         </v-row>
 
-        <div class="mb-2 fs-14">
-          Помните! Введенные данные на этой вкладке данные будут доступны психологам и другим пользователям сайта, если
-          вы желаете сохранить анонимность воспользуйтесь псевдонимом. Вы сможете изменить имя и фамилию в любое время в
-          вашем личном кабинете.
-        </div>
+        <p class="mb-2 text-body-2 sans">
+          {{ $t('registration.user-warn') }}
+        </p>
 
       </v-form>
 
@@ -58,44 +63,49 @@
           ref="authForm"
           lazy-validation
       >
+        <v-row class="align-center justify-center">
 
-        <v-row align="center">
-
-          <v-col class="col-4">
-            <email-input v-model="email" :check="true"></email-input>
-            <password-input v-model="password"></password-input>
-            <repeat-password-input :value="password"></repeat-password-input>
+          <v-col class="col-12 col-md-4">
+            <v-row class="flex-column align-center">
+              <email-input v-model="email" :check="true"></email-input>
+              <password-input v-model="password"></password-input>
+              <repeat-password-input :value="password"></repeat-password-input>
+            </v-row>
           </v-col>
 
-          <v-col class="col-8">
+          <v-col>
             <v-row
                 class="fill-height rounded pa-2"
                 style="position:relative; top: -10px; outline: 1px solid grey"
                 align="center"
             >
-              <div
-                  class="fs-14 overflow-y-auto"
-                  style="max-height: 400px"
-                  v-html="$store.state.content.userAgreement"
-              ></div>
+
+              <v-sheet max-height="500" class="overflow-y-auto">
+                <registration-user-agreement></registration-user-agreement>
+              </v-sheet>
 
               <v-checkbox
                   style="border-top: 1px solid grey; width: 100%"
                   v-model="confirm"
-                  label="Согласен с пользовательским соглашением"
+                  :label="$t('registration.agree')"
                   hide-details
                   dense
               ></v-checkbox>
             </v-row>
-          </v-col>
 
+          </v-col>
         </v-row>
       </v-form>
 
       <v-row>
         <ui-back-button @click="$emit('input', 2)"></ui-back-button>
         <v-spacer></v-spacer>
-        <ui-next-button :disabled="!confirm" @click="register">Завершить</ui-next-button>
+        <ui-next-button
+            :disabled="!confirm"
+            @click="register"
+        >
+          <div class="text-title">{{ $t('common.buttons.finish') }}</div>
+        </ui-next-button>
       </v-row>
     </v-stepper-content>
   </div>
@@ -111,10 +121,12 @@ import RepeatPasswordInput from "@/components/UI/Inputs/RepeatPasswordInput";
 import UiNextButton from "@/components/UI/Buttons/UiNextButton";
 import UiBackButton from "@/components/UI/Buttons/UiBackButton";
 import requests from "@/mixins/requests";
+import RegistrationUserAgreement from "@/components/Dialogs/RegistrationDialog/RegistrationUserAgreement.vue";
 
 export default {
   name: "RegistrationUser",
   components: {
+    RegistrationUserAgreement,
     UiBackButton,
     UiNextButton,
     RepeatPasswordInput,
@@ -142,7 +154,7 @@ export default {
   methods: {
     register() {
       this.internalLoading = true
-      this.postData('http://localhost:3000/registration/user', {
+      this.postData('registration/user', {
         name: this.name,
         surname: this.surname,
         sex: this.sex,
@@ -152,12 +164,13 @@ export default {
       }, {handleErrorResponse: true, handleError: true})
           .then(() => {
             this.$root.$emit('show-info', {
-              title: 'Подтверждение',
-              subtitle: 'На вашу электронную почту отправлено письмо для подтверждения регистрации'
+              title: this.$t('registration.confirm'),
+              subtitle: this.$t('registration.confirm-info')
             })
             this.$root.$emit('close-registration')
           })
-          .catch()
+          .catch(() => {
+          })
           .finally(() => this.internalLoading = false)
     },
   },

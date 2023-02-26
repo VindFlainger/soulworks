@@ -46,7 +46,7 @@
               :label="$t('common.labels.opportunities')"
               min-width="250"
               v-model="opportunities"
-              :items="$store.state.params.opportunities"
+              :items="$store.getters['params/getOpportunities']"
           ></select-input>
 
         </v-form>

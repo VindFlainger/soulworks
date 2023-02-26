@@ -1,10 +1,12 @@
 <template>
   <base-dialog
+      class="dialog"
       :value="true"
       max-width="1200"
       content-class="white"
       easy-container
       @close="$root.$emit('close-registration')"
+      :scrollbar="false"
   >
 
     <v-stepper
@@ -13,7 +15,6 @@
         elevation="0"
         flat
     >
-
       <v-stepper-header>
 
         <v-divider></v-divider>
@@ -23,7 +24,7 @@
             :complete="step > 1"
             color="green lighten-3"
         >
-          <span class="fs-16 font-title">Выбор профиля</span>
+          <span class="fs-16 font-title">{{$t('registration.steps.pick-role')}}</span>
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -32,7 +33,7 @@
             step="2"
             :complete="step > 2"
         >
-          <span class="fs-16 font-title">Личная/рабочая информация</span>
+          <span class="fs-16 font-title">{{$t('registration.steps.data')}}</span>
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -41,7 +42,7 @@
             step="3"
             :complete="step > 3"
         >
-          <span class="fs-16 font-title">Аутенцификация</span>
+          <span class="fs-16 font-title">{{$t('registration.steps.auth')}}</span>
         </v-stepper-step>
 
         <v-divider></v-divider>
@@ -50,7 +51,7 @@
 
       <v-stepper-content
           step="1"
-          class="pb-16"
+          class="pa-2 pa-sm-4 mb-10"
       >
         <ui-next-button
             min-width="100"
@@ -64,7 +65,7 @@
         <v-row justify="space-around">
 
           <v-card
-              class="pa-2"
+              class="pa-2 ma-2"
               width="300"
               height="400"
               outlined
@@ -98,7 +99,7 @@
           </v-card>
 
           <v-card
-              class="pa-2"
+              class="pa-2 ma-2"
               width="300"
               height="400"
               outlined
@@ -165,13 +166,20 @@ export default {
   data() {
     return {
       step: 1,
-      role: 'spec',
+      role: 'user',
     }
   },
 }
 </script>
 
+
+
 <style scoped>
+
+.dialog::-webkit-scrollbar{
+  display: none !important;
+}
+
 .v-btn::before {
   background-color: transparent;
 }

@@ -3,7 +3,7 @@
       v-on="$listeners"
       v-bind="$attrs"
       @click:outside="$emit('close')"
-      content-class="rounded-xl white"
+      :content-class="`rounded-xl white ${scrollbar?'':'scrollbar-hidden'}`"
   >
 
     <v-row v-if="!easyContainer" style="position: sticky; z-index: 2; top: 0;">
@@ -47,6 +47,10 @@ export default {
     background: {
       type: Boolean,
       default: false
+    },
+    scrollbar: {
+      type: Boolean,
+      default: true
     }
   },
 }
@@ -67,6 +71,10 @@ export default {
 
 .v-dialog {
   position: relative;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
 }
 
 .no-overflow {
