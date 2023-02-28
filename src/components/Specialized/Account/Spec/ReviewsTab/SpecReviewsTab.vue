@@ -119,6 +119,7 @@ export default {
           .then(resp => {
             this.reviews = resp.data.reviews
             this.totalCount = resp.data.totalCount
+            this.avgStars = resp.data.avg
             this.send('CONTENT_RESOLVE')
           })
           .catch(() => this.send('CONTENT_REJECT'))

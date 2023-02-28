@@ -6,15 +6,16 @@
       </v-img>
     </v-row>
     <v-row>
-      <v-img :src="require('@/assets/images/about/person.png')"
-             max-width="300"
-             class="d-none d-md-block mr-md-8 ml-md-8">
+      <v-img
+          :src="require('@/assets/images/about/person.png')"
+          max-width="300"
+          class="d-none d-md-block mr-md-8 ml-md-8">
       </v-img>
-      <v-img :src="require('@/assets/images/about/person.png')"
-             contain position="left center"
-             max-width="200"
-             class="d-none d-sm-block d-md-none">
-
+      <v-img
+          :src="require('@/assets/images/about/person.png')"
+          contain position="left center"
+          max-width="200"
+          class="d-none d-sm-block d-md-none">
       </v-img>
       <v-col class="about-statistic__content pa-0 pa-md-3">
         <v-row>
@@ -133,7 +134,7 @@ export default {
 
 }
 
-.about-statistic__card p{
+.about-statistic__card p {
   font-size: 16px;
   font-weight: lighter;
   margin-top: 8px;

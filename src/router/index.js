@@ -36,6 +36,8 @@ import ChatView from "@/views/ChatView";
 
 Vue.use(VueRouter)
 
+
+
 const routes = [
     {
         path: '/',

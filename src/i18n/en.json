@@ -289,5 +289,8 @@
   "booking": {
     "no-time": "There are no available seats for the selected date",
     "add-success": "You have successfully signed up for a consultation"
+  },
+  "about": {
+
   }
 }

@@ -1,8 +1,8 @@
 <template>
   <ui-content-wrapper>
     <ui-view-headline
-        title="О платформе"
-        subtitle="В данном разделе собрана наиболее актуальная информация об основании, целях, функционале и версиях платформы."
+        :title="$t('about.section-name')"
+        :subtitle="$t('about.description')"
     ></ui-view-headline>
 
     <v-img
@@ -14,17 +14,23 @@
     <div class="about-view">
 
       <h3 class="text-center mt-16">
-        Преимущества
+        {{ $t('about.categories.advantages') }}
       </h3>
-      <about-adv-list class="mt-8"></about-adv-list>
+      <about-adv-list
+          class="mt-8"
+          :advantages="advantages"
+      ></about-adv-list>
 
       <h3 class="text-center mt-16">
-        Функциональность
+        {{ $t('about.categories.services') }}
       </h3>
-      <about-services-list class="mt-8"></about-services-list>
+      <about-services-list
+          class="mt-8"
+          :services="services"
+      ></about-services-list>
 
       <h3 class="text-center mt-16">
-        Показатели
+        {{ $t('about.categories.metrics') }}
       </h3>
       <about-statistic class="mt-8"></about-statistic>
 
@@ -41,13 +47,40 @@ import AboutStatistic from "@/components/Static/About/AboutStatistic";
 
 export default {
   name: "AboutView",
-  components: {AboutStatistic, AboutServicesList, AboutAdvList, UiContentWrapper, UiViewHeadline},
-
-  data() {
-    return {}
+  components: {
+    AboutStatistic,
+    AboutServicesList,
+    AboutAdvList,
+    UiContentWrapper,
+    UiViewHeadline
   },
-  metaInfo: {
-    title: 'О нас'
+  data() {
+    return {
+      advantagesImages: [
+        require('@/assets/images/about/ui.png'),
+        require('@/assets/images/about/security.png'),
+        require('@/assets/images/about/calendar.png'),
+        require('@/assets/images/about/integration.png')
+      ],
+      servicesImages: [
+        require('@/assets/images/about/booking.jpg'),
+        require('@/assets/images/about/material.png'),
+        require('@/assets/images/about/chat.jpg'),
+      ]
+    }
+  },
+  computed: {
+    advantages() {
+      return this.$t('about.advantages').map((el, index) => ({image: this.advantagesImages[index], ...el}))
+    },
+    services() {
+      return this.$t('about.services').map((el, index) => ({image: this.servicesImages[index], ...el}))
+    }
+  },
+  metaInfo() {
+    return {
+      title: this.$t('about.section-name')
+    }
   }
 }
 </script>

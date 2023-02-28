@@ -1,4 +1,3 @@
-<!--TODO: ask about this (links in data)-->
 <template>
   <v-footer v-show="show">
     <v-container fluid class="d-flex justify-center">
