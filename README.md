@@ -1,3 +1,5 @@
+Author: Girzhon Alexander 
+
 # ![shortlogo](https://user-images.githubusercontent.com/82903533/207991327-cd2fb7bb-070f-4d72-a21a-d3872e55ebac.png) soulworks
 
 ## Project setup
